@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!--
+   Copyright 2022 by the Dart4E authors.
+   SPDX-License-Identifier: EPL-2.0
+
+   @author Sebastian Thomschke
+-->
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+   <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+      <groupId>org.dart4e</groupId>
+      <artifactId>org.dart4e.parent</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+   </parent>
+
+   <name>dart4e-plugin</name>
+   <artifactId>org.dart4e</artifactId>
+   <packaging>eclipse-plugin</packaging>
+
+   <properties>
+      <!--
+      [WARNING] Rule 0: org.apache.maven.plugins.enforcer.BanCircularDependencies failed with message:
+      Circular Dependency found. Your project's groupId:artifactId combination must not exist in the list of direct or transitive dependencies.
+        org.dart4e:org.dart4e
+       -->
+      <skip.enforcer.basic-checks>true</skip.enforcer.basic-checks>
+      <skip.enforcer.dependency-convergence>false</skip.enforcer.dependency-convergence>
+
+      <!--
+      if set to true during maven build (e.g. -Dupdate-language-grammar=true), new versions of the grammar files will be downloaded
+      -->
+      <update-language-grammar>false</update-language-grammar>
+   </properties>
+
+   <build>
+      <resources>
+         <resource>
+            <directory>src/main/resources</directory>
+            <targetPath>src/main/resources</targetPath>
+            <filtering>false</filtering>
+         </resource>
+      </resources>
+      <plugins>
+         <plugin>
+            <groupId>com.googlecode.maven-download-plugin</groupId>
+            <artifactId>download-maven-plugin</artifactId>
+            <!-- https://github.com/maven-download-plugin/maven-download-plugin/releases -->
+            <version>1.6.8</version>
+            <executions>
+               <!-- *.dart lang config -->
+               <execution>
+                  <id>dart-language-configuration.json</id>
+                  <phase>generate-resources</phase>
+                  <goals>
+                     <goal>wget</goal>
+                  </goals>
+                  <configuration>
+                     <uri>https://raw.githubusercontent.com/Dart-Code/Dart-Code/master/syntaxes/dart-language-configuration.json</uri>
+                     <outputDirectory>src/main/resources/langcfg</outputDirectory>
+                     <outputFileName>dart.language-configuration.json</outputFileName>
+                     <skipCache>true</skipCache>
+                     <overwrite>${update-language-grammar}</overwrite>
+                  </configuration>
+               </execution>
+               <execution>
+                  <id>dart.tmLanguage</id>
+                  <phase>generate-resources</phase>
+                  <goals>
+                     <goal>wget</goal>
+                  </goals>
+                  <configuration>
+                     <uri>https://raw.githubusercontent.com/dart-lang/dart-syntax-highlight/master/grammars/dart.json</uri>
+                     <outputDirectory>src/main/resources/langcfg</outputDirectory>
+                     <outputFileName>dart.tmLanguage.json</outputFileName>
+                     <skipCache>true</skipCache>
+                     <overwrite>${update-language-grammar}</overwrite>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <!-- https://tycho.eclipseprojects.io/doc/3.0.0/tycho-compiler-plugin/plugin-info.html -->
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-compiler-plugin</artifactId>
+            <configuration>
+               <!-- workaround for tycho-compiler-plugin ignoring EEAs loaded via
+                    build.properties: jars.extra.classpath = ...,platform:/plugin/com.vegardit.no-npe.eea-all
+               -->
+               <compilerArgs>
+                  <arg>-annotationpath</arg>
+                  <arg>${com.vegardit.no-npe:no-npe-eea-all:jar}</arg>
+               </compilerArgs>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+
+   <dependencies>
+      <dependency>
+         <!-- only required for workaround for tycho-compiler-plugin ignoring EEAs loaded via
+              build.properties: jars.extra.classpath = ...,platform:/plugin/com.vegardit.no-npe.eea-all
+         -->
+         <groupId>com.vegardit.no-npe</groupId>
+         <artifactId>no-npe-eea-all</artifactId>
+         <version>1.0.0-SNAPSHOT</version>
+         <scope>provided</scope>
+      </dependency>
+   </dependencies>
+   <repositories>
+      <repository>
+         <id>no-npe-snapshots</id>
+         <url>https://raw.githubusercontent.com/vegardit/no-npe/mvn-snapshots-repo/</url>
+      </repository>
+   </repositories>
+
+</project>

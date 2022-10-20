@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<!--
+   Copyright 2022 by the Dart4E authors.
+   SPDX-License-Identifier: EPL-2.0
+
+   @author Sebastian Thomschke
+-->
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+   <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+      <groupId>org.dart4e</groupId>
+      <artifactId>org.dart4e.parent</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+   </parent>
+
+   <name>dart4e-tests</name>
+   <artifactId>org.dart4e.tests</artifactId>
+   <packaging>eclipse-test-plugin</packaging>
+
+   <properties>
+      <tycho-surefire-plugin.platformArgs></tycho-surefire-plugin.platformArgs>
+   </properties>
+
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-surefire-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>default-test</id>
+                  <!-- https://www.eclipse.org/tycho/sitedocs/tycho-surefire-plugin/test-mojo.html -->
+                  <goals>
+                     <goal>test</goal>
+                  </goals>
+                  <!-- https://stackoverflow.com/questions/28721925/is-it-possible-to-configure-tycho-surefire-to-run-in-the-test-phase -->
+                  <phase>integration-test</phase>
+                  <configuration>
+                     <!-- https://wiki.eclipse.org/Tycho/FAQ#How_to_use_SWTBot_or_some_UI_tool_for_testing.3F -->
+                     <useUIHarness>true</useUIHarness>
+                     <useUIThread>false</useUIThread>
+
+                     <argLine>-Xmx512m ${tycho-surefire-plugin.platformArgs}</argLine>
+
+                     <failIfNoTests>true</failIfNoTests>
+                     <enableAssertions>true</enableAssertions>
+                     <forkedProcessTimeoutInSeconds>120</forkedProcessTimeoutInSeconds>
+                     <showEclipseLog>false</showEclipseLog>
+
+                     <product>org.eclipse.platform.ide</product>
+                     <application>org.eclipse.ui.ide.workbench</application>
+<!--
+
+                     <dependencies combine.children="append">
+                        <dependency>
+                           <type>p2-installable-unit</type>
+                           <artifactId>org.eclipse.platform</artifactId>
+                           <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                           <type>p2-installable-unit</type>
+                           <artifactId>org.eclipse.jdt.ui</artifactId>
+                           <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                           <type>p2-installable-unit</type>
+                           <artifactId>org.eclipse.jdt.junit</artifactId>
+                           <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                           <type>p2-installable-unit</type>
+                           <artifactId>org.eclipse.e4.rcp.feature.group</artifactId>
+                           <version>0.0.0</version>
+                        </dependency>
+                     </dependencies>-->
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <!-- https://tycho.eclipseprojects.io/doc/3.0.0/tycho-compiler-plugin/plugin-info.html -->
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-compiler-plugin</artifactId>
+            <configuration>
+               <!-- workaround for tycho-compiler-plugin ignoring EEAs loaded via
+                    build.properties: jars.extra.classpath = ...,platform:/plugin/com.vegardit.no-npe.eea-all
+               -->
+               <compilerArgs>
+                  <arg>-annotationpath</arg>
+                  <arg>${com.vegardit.no-npe:no-npe-eea-all:jar}</arg>
+               </compilerArgs>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+
+   <dependencies>
+      <dependency>
+         <!-- only required for workaround for tycho-compiler-plugin ignoring EEAs loaded via
+              build.properties: jars.extra.classpath = ...,platform:/plugin/com.vegardit.no-npe.eea-all
+         -->
+         <groupId>com.vegardit.no-npe</groupId>
+         <artifactId>no-npe-eea-all</artifactId>
+         <version>1.0.0-SNAPSHOT</version>
+         <scope>provided</scope>
+      </dependency>
+   </dependencies>
+   <repositories>
+      <repository>
+         <id>no-npe-snapshots</id>
+         <url>https://raw.githubusercontent.com/vegardit/no-npe/mvn-snapshots-repo/</url>
+      </repository>
+   </repositories>
+
+   <profiles>
+      <profile>
+         <id>macosx</id>
+         <activation>
+            <os>
+               <family>mac</family>
+            </os>
+         </activation>
+         <properties>
+            <tycho-surefire-plugin.platformArgs>-XstartOnFirstThread</tycho-surefire-plugin.platformArgs>
+         </properties>
+      </profile>
+   </profiles>
+</project>

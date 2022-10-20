@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="org.dart4e.feature">
+      <category name="Dart Language Support" />
+   </feature>
+   <bundle id="org.eclipse.lsp4e">
+      <category name="Eclipse Language Server Support" />
+   </bundle>
+   <bundle id="org.eclipse.lsp4e.debug">
+      <category name="Eclipse Language Server Support" />
+   </bundle>
+   <bundle id="org.eclipse.lsp4e.source">
+      <category name="Eclipse Language Server Support" />
+   </bundle>
+   <bundle id="org.eclipse.lsp4j">
+      <category name="Eclipse Language Server Support" />
+   </bundle>
+   <bundle id="org.eclipse.lsp4j.debug">
+      <category name="Eclipse Language Server Support" />
+   </bundle>
+   <bundle id="org.eclipse.lsp4j.jsonrpc">
+      <category name="Eclipse Language Server Support" />
+   </bundle>
+   <category-def name="Dart Language Support" label="Dart programming language support for the Eclipse IDE" />
+   <category-def name="Eclipse Language Server Support" label="Eclipse Language Server Support" />
+   <repository-reference location="https://raw.githubusercontent.com/sebthom/eclipse-commons/updatesite" enabled="true" />
+</site>

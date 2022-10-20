@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Dart4E Tests
+Bundle-SymbolicName: org.dart4e.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: The Dart4E Project
+Fragment-Host: org.dart4e
+Automatic-Module-Name: org.dart4e.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: org.junit,
+ org.eclipse.jdt.ui,
+ org.eclipse.reddeer.go,
+ assertj-core
