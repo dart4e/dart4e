@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="org.eclipse.ui.startup">
+      <startup class="org.dart4e.Dart4EStartupListener" />
+   </extension>
+
+   <!-- ===================================== -->
+   <!-- Content Type                          -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+         id="org.dart4e.content.base"
+         base-type="org.eclipse.core.runtime.text"
+         name="Dart"
+         priority="high" />
+
+      <content-type
+         id="org.dart4e.content.dart"
+         base-type="org.dart4e.content.base"
+         file-extensions="dart"
+         name="%Label_Dart_File"
+         priority="high" />
+      <file-association
+         content-type="org.dart4e.content.dart"
+         file-extensions="dart" />
+   </extension>
+
+   <extension point="org.eclipse.core.expressions.definitions">
+      <definition id="org.dart4e.resource.isDartFile">
+         <test property="org.dart4e.util.FileTypePropertyTester.contentTypeId" value="org.dart4e.content.dart" />
+      </definition>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Keywords                              -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.keywords">
+      <keyword id="org.dart4e.prefs.keyword.dart" label="dart" />
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Preferences                           -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.preferencePages">
+      <page id="org.dart4e.prefs.DartSDKPreferencePage"
+         class="org.dart4e.prefs.DartSDKPreferencePage"
+         name="Dart">
+         <keywordReference id="org.dart4e.prefs.keyword.dart" />
+      </page>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Language Server                       -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.lsp4e.languageServer">
+      <server id="org.dart4e.langserv"
+         class="org.dart4e.langserver.DartLangServerLauncher"
+         clientImpl="org.dart4e.langserver.DartLangServerClientImpl"
+         label="%Label_Dart_Language_Server"
+      />
+      <contentTypeMapping id="org.dart4e.langserv" contentType="org.dart4e.content.dart" />
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Text Editor                           -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.contexts">
+      <context
+         id="org.dart4e.editor.DartEditorContext"
+         name="Dart Editor Scope"
+         parentId="org.eclipse.ui.genericeditor.genericEditorContext" />
+    </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+         id="org.dart4e.editor.DartEditor"
+         class="org.dart4e.editor.DartEditor"
+         contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+         default="true"
+         extensions="dart"
+         icon="src/main/resources/images/navigator/dart_file.png"
+         name="%Label_Dart_Editor">
+         <contentTypeBinding contentTypeId="org.dart4e.content.dart" />
+      </editor>
+      <editorContentTypeBinding contentTypeId="org.dart4e.content.dart" editorId="org.dart4e.editor.DartEditor" />
+   </extension>
+
+   <extension point="org.eclipse.ui.genericeditor.icons">
+      <icon contentType="org.dart4e.content.dart" icon="src/main/resources/images/navigator/dart_file.png" />
+   </extension>
+
+   <extension point="org.eclipse.core.filebuffers.documentSetup">
+      <participant
+         class="org.dart4e.editor.DartFileLoadingListener"
+         contentTypeId="org.dart4e.content.dart" />
+   </extension>
+
+   <extension point="org.eclipse.ui.genericeditor.presentationReconcilers">
+      <presentationReconciler
+         class="org.dart4e.editor.DartFileSpellCheckingReconciler"
+         contentType="org.dart4e.content.dart" />
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Compare/Merge Viewers                 -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.compare.contentViewers">
+      <contentTypeBinding contentViewerId="org.eclipse.ui.genericeditor.compareViewer" contentTypeId="org.dart4e.content.dart" />
+   </extension>
+
+   <extension point="org.eclipse.compare.contentMergeViewers">
+      <contentTypeBinding contentMergeViewerId="org.eclipse.ui.genericeditor.compareViewer" contentTypeId="org.dart4e.content.dart" />
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Outline Configuration                 -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.navigator.navigatorContent">
+      <!-- https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Fguide%2Fcnf_config.htm -->
+      <!-- https://git.eclipse.org/r/plugins/gitiles/lsp4e/lsp4e/+/refs/heads/master/org.eclipse.lsp4e/src/org/eclipse/lsp4e/outline/SymbolInformationPropertyTester.java -->
+      <navigatorContent
+         id="org.dart4e.content.dart.outline"
+         contentProvider="org.eclipse.lsp4e.outline.LSSymbolsContentProvider"
+         labelProvider="org.dart4e.navigation.DartOutlineSymbolsProvider"
+         activeByDefault="true"
+         priority="high"
+         name="Dart Symbols">
+         <triggerPoints>
+            <!-- activates this outline provider only for Dart files -->
+            <reference definitionId="org.dart4e.resource.isDartFile" />
+         </triggerPoints>
+      </navigatorContent>
+   </extension>
+
+   <extension point="org.eclipse.ui.navigator.viewer">
+      <viewer viewerId="org.eclipse.lsp4e.outline" />
+      <viewerContentBinding viewerId="org.eclipse.lsp4e.outline">
+         <includes>
+            <contentExtension pattern="org.dart4e.content.dart.outline" />
+         </includes>
+      </viewerContentBinding>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Syntax Highlighting                   -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.tm4e.registry.grammars">
+      <grammar path="src/main/resources/langcfg/dart.tmLanguage.json" scopeName="source.dart" />
+      <scopeNameContentTypeBinding contentTypeId="org.dart4e.content.dart" scopeName="source.dart" />
+   </extension>
+
+   <extension point="org.eclipse.tm4e.languageconfiguration.languageConfigurations">
+      <languageConfiguration contentTypeId="org.dart4e.content.dart" path="src/main/resources/langcfg/dart.language-configuration.json" />
+   </extension>
+
+   <extension point="org.eclipse.tm4e.ui.themes">
+      <themeAssociation scopeName="source.dart" themeId="org.eclipse.tm4e.ui.themes.EclipseLight" />
+   </extension>
+
+   <extension point="org.eclipse.tm4e.ui.snippets">
+      <snippet name="Dart Example" path="src/main/resources/langcfg/dart.sample.dart" scopeName="source.dart" />
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Property Tester                       -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.core.expressions.propertyTesters">
+      <!-- https://wiki.eclipse.org/Platform_Expression_Framework -->
+      <propertyTester
+         id="org.dart4e.util.FileTypePropertyTester"
+         class="org.dart4e.util.FileTypePropertyTester"
+         namespace="org.dart4e.util.FileTypePropertyTester"
+         properties="contentTypeId,fileExtension"
+         type="java.lang.Object" />
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Wizards                               -->
+   <!-- ===================================== -->
+   <!-- https://wiki.eclipse.org/FAQ_How_do_I_add_my_wizard_to_the_New,_Import,_or_Export_menu_categories%3F -->
+   <!-- https://www.vogella.com/tutorials/EclipseWizards/article.html -->
+   <extension point="org.eclipse.ui.newWizards">
+      <category id="org.dart4e.wizards" name="Dart" />
+      <wizard
+         id="org.dart4e.project.NewDartFileWizard"
+         category="org.dart4e.wizards"
+         class="org.dart4e.project.NewDartFileWizard"
+         icon="src/main/resources/images/navigator/dart_file.png"
+         name="%Label_Dart_File"
+         project="false">
+         <description>%NewDartFile_Descr</description>
+         <selection class="org.eclipse.core.resources.IResource" />
+         <keywordReference id="org.dart4e.prefs.keyword.dart" />
+      </wizard>
+      <wizard
+         id="org.dart4e.project.NewDartProjectWizard"
+         category="org.dart4e.wizards"
+         class="org.dart4e.project.NewDartProjectWizard"
+         icon="src/main/resources/images/navigator/dart_project.png"
+         name="%Label_Dart_Project"
+         project="true">
+         <description>%NewDartProject_Descr</description>
+         <selection class="org.eclipse.core.resources.IResource" />
+         <keywordReference id="org.dart4e.prefs.keyword.dart" />
+      </wizard>
+      <!--<primaryWizard id="org.dart4e.project.NewDartFileWizard" />-->
+   </extension>
+
+   <extension point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="*">
+         <!-- register Wizard directly under main menu "File -> New" -->
+         <newWizardShortcut id="org.dart4e.project.NewDartFileWizard" />
+         <newWizardShortcut id="org.dart4e.project.NewDartProjectWizard" />
+      </perspectiveExtension>
+   </extension>
+
+   <extension point="org.eclipse.ui.navigator.navigatorContent">
+      <!-- register Wizard in Project Explorer's popup menu under "New -> Dart File" -->
+      <commonWizard
+         menuGroupId="org.dart4e"
+         type="new"
+         wizardId="org.dart4e.project.NewDartFileWizard">
+         <enablement>
+            <reference definitionId="org.dart4e.project.nature.isConfigured" />
+         </enablement>
+      </commonWizard>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Dart Console                          -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.console.consoleFactories">
+      <consoleFactory
+         class="org.dart4e.console.DartConsole$Factory"
+         icon="src/main/resources/images/logo/dart_icon.png"
+         label="Dart" />
+    </extension>
+
+   <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
+      <consolePatternMatchListener
+         id="org.dart4e.console.DartConsoleLinkifier"
+         class="org.dart4e.console.DartConsoleLinkifier"
+         regex="\((package:|dart:|file:\/\/\/)(\w|[-:\/])+\.dart\:\d+\:\d+\)">
+         <enablement>
+         <or>
+            <test property="org.eclipse.ui.console.consoleTypeTest" value="org.dart4e.console.DartConsole">
+               <!-- see org.dart4e.console.DartConsole.CONSOLE_TYPE -->
+            </test>
+            <test property="org.eclipse.ui.console.consoleTypeTest" value="org.eclipse.debug.ui.ProcessConsoleType">
+               <!-- see org.eclipse.debug.ui.IDebugUIConstants.ID_PROCESS_CONSOLE_TYPE -->
+            </test>
+            </or>
+         </enablement>
+      </consolePatternMatchListener>
+   </extension>
+
+   <extension point="org.eclipse.ui.console.consolePageParticipants">
+      <consolePageParticipant
+         id="org.dart4e.console.DartConsoleActions"
+         class="org.dart4e.console.DartConsoleActions">
+         <enablement>
+            <instanceof value="org.dart4e.console.DartConsole" />
+         </enablement>
+      </consolePageParticipant>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Project Nature                        -->
+   <!-- ===================================== -->
+   <!-- https://www.vogella.com/tutorials/EclipseProjectNatures/article.html -->
+   <!-- https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Fguide%2FresAdv_natures.htm -->
+   <extension point="org.eclipse.core.resources.natures"
+      id="org.dart4e.project.nature"
+      name="Dart Project Nature">
+      <runtime>
+         <run class="org.dart4e.project.DartProjectNature" />
+      </runtime>
+   </extension>
+
+   <extension point="org.eclipse.ui.commands">
+      <command id="org.dart4e.commands.project_nature_add"    name="Convert to Dart Project" />
+      <command id="org.dart4e.commands.project_nature_remove" name="Remove Dart Project Nature" />
+   </extension>
+
+   <extension point="org.eclipse.ui.handlers">
+      <handler
+         class="org.dart4e.project.DartProjectNature$AddNatureHandler"
+         commandId="org.dart4e.commands.project_nature_add" />
+      <handler
+         class="org.dart4e.project.DartProjectNature$RemoveNatureHandler"
+         commandId="org.dart4e.commands.project_nature_remove" />
+   </extension>
+
+   <extension point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+         id="org.dart4e.project.nature.icon"
+         icon="src/main/resources/images/navigator/dart_project_overlay.png"
+         natureId="org.dart4e.project.nature" />
+   </extension>
+
+   <extension point="org.eclipse.core.expressions.definitions">
+      <definition id="org.dart4e.project.nature.isConfigured">
+         <!-- expression to check if a project or project resource has the Dart project nature -->
+         <adapt type="org.eclipse.core.resources.IResource">
+            <test property="org.eclipse.core.resources.projectNature" value="org.dart4e.project.nature" />
+         </adapt>
+      </definition>
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="popup:org.eclipse.ui.projectConfigure">
+         <!-- add entries to project popup menu "Configure -> ... -->
+         <command
+            commandId="org.dart4e.commands.project_nature_add"
+            icon="src/main/resources/images/logo/dart_icon.png">
+            <visibleWhen>
+               <iterate>
+                  <not>
+                     <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                  </not>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+            commandId="org.dart4e.commands.project_nature_remove"
+            icon="src/main/resources/images/logo/dart_icon_gray.png">
+            <visibleWhen>
+               <iterate>
+                  <reference definitionId="org.dart4e.project.nature.isConfigured" />
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Project Decorators                    -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.decorators">
+      <decorator
+         id="org.dart4e.navigation.DartResourcesDecorator"
+         class="org.dart4e.navigation.DartResourcesDecorator"
+         label="Dart Source Directories Decorator"
+         lightweight="false"
+         location="REPLACE"
+         state="true">
+         <enablement>
+            <or>
+               <objectClass name="org.eclipse.core.resources.IFile" />
+               <objectClass name="org.eclipse.core.resources.IFolder" />
+            </or>
+         </enablement>
+      </decorator>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Project Settings                      -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.propertyPages">
+      <page
+         id="org.dart4e.project.DartProjectPropertyPage"
+         class="org.dart4e.project.DartProjectPropertyPage"
+         name="Dart">
+         <filter name="open" value="true" />
+         <enabledWhen>
+            <and>
+               <reference definitionId="org.dart4e.project.nature.isConfigured" />
+               <adapt type="org.eclipse.core.resources.IProject" />
+            </and>
+         </enabledWhen>
+         <keywordReference id="org.dart4e.prefs.keyword.dart" />
+      </page>
+   </extension>
+
+   <extension point="org.eclipse.ui.ide.projectConfigurators">
+      <projectConfigurator
+         class="org.dart4e.project.DartProjectImportConfigurator"
+         label="%Label_Dart_Project" />
+   </extension>
+
+   <extension point="org.eclipse.ui.importWizards">
+      <wizard
+         id="org.dart4e.wizards.importProject"
+         category="org.dart4e.wizards"
+         class="org.eclipse.ui.internal.wizards.datatransfer.SmartImportWizard"
+         icon="src/main/resources/images/logo/dart_icon.png"
+         name="%Label_Dart_Project" />
+      <category id="org.dart4e.wizards" name="Dart" />
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Launch Configuration                  -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.ui.resourcePerspective">
+         <!-- enable Run/Launch buttons in Resource Perspective -->
+         <actionSet id="org.eclipse.debug.ui.launchActionSet" />
+      </perspectiveExtension>
+   </extension>
+
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+         id="org.dart4e.launch.dart"
+         delegate="org.dart4e.launch.LaunchConfigLauncher"
+         modes="run,debug"
+         name="%Label_Dart_Program"
+         sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+         sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+         id="org.dart4e.launch.LaunchTabGroup"
+         class="org.dart4e.launch.LaunchTabGroup"
+         type="org.dart4e.launch.dart"
+         description="%DartLaunchGroup_Description" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+         id="org.dart4e.launch.dart.shortcut.run_as"
+         class="org.dart4e.launch.RunProjectShortcut"
+         label="%Label_Dart_Program"
+         icon="src/main/resources/images/logo/dart_icon.png"
+         modes="run,debug">
+         <contextualLaunch>
+            <enablement>
+               <!-- see https://github.com/eclipse-platform/eclipse.platform.ui/blob/632e59d1bbec83dd81994befe4bfbf6a3db0de28/bundles/org.eclipse.ui.workbench/Eclipse%20UI/org/eclipse/ui/ISources.java#L297 -->
+               <with variable="selection">
+                  <count value="1" />
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
+         id="org.dart4e.launch.dart.shortcut.file"
+         class="org.dart4e.launch.RunDartFileShortcut"
+         label="%Label_Dart_Program"
+         icon="src/main/resources/images/logo/dart_icon.png"
+         modes="run,debug">
+         <contextualLaunch>
+            <enablement>
+               <!-- see https://github.com/eclipse-platform/eclipse.platform.ui/blob/632e59d1bbec83dd81994befe4bfbf6a3db0de28/bundles/org.eclipse.ui.workbench/Eclipse%20UI/org/eclipse/ui/ISources.java#L297 -->
+               <with variable="selection">
+                  <count value="1" />
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IFile" />
+                        <test property="org.eclipse.debug.ui.matchesPattern" value="*.dart" />
+                     </and>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+         id="org.dart4e.launch.dart.image"
+         configTypeID="org.dart4e.launch.dart"
+         icon="src/main/resources/images/logo/dart_icon.png" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchGroups">
+      <launchGroup
+         id="org.dart4e.launch.dart.group"
+         label="%Label_Dart_LaunchGroup"
+         bannerImage="src/main/resources/images/logo/dart_wizard_banner.png"
+         image="src/main/resources/images/logo/dart_icon.png"
+         mode="run" />
+   </extension>
+
+   <extension point="org.eclipse.core.runtime.adapters">
+      <factory
+         class="org.eclipse.core.runtime.IAdaptable"
+         adaptableType="org.eclipse.core.resources.IResource">
+         <!-- https://insights.sigasi.com/tech/run-menu-item-strangely-disappearing-context-menu/ -->
+         <adapter type="org.eclipse.debug.ui.actions.ILaunchable" />
+      </factory>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Perspective                           -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.dart4e.perspective.DartPerspective"
+            icon="src/main/resources/images/logo/dart_icon.png"
+            id="org.dart4e.perspective"
+            name="Dart">
+      </perspective>
+   </extension>
+
+   <extension point="org.eclipse.core.expressions.definitions">
+      <definition id="org.dart4e.perspective.isActive">
+         <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/632e59d1bbec83dd81994befe4bfbf6a3db0de28/bundles/org.eclipse.ui.workbench/Eclipse%20UI/org/eclipse/ui/ISources.java#L192 -->
+         <with variable="activeWorkbenchWindow.activePerspective">
+            <equals value="org.dart4e.perspective" />
+         </with>
+      </definition>
+   </extension>
+</plugin>

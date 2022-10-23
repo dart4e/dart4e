@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2022 by the Dart4E authors.
+   SPDX-License-Identifier: EPL-2.0
+
+   @author Sebastian Thomschke
+-->
+<feature
+      id="org.dart4e.feature"
+      label="%name"
+      version="1.0.0.qualifier"
+      provider-name="The Dart4E Project"
+      plugin="org.dart4e"
+      license-feature="org.eclipse.license"
+      license-feature-version="2.0.2.qualifier">
+
+   <description url="https://github.com/dart4e/dart4e/">
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="Dart4E Latest" url="https://raw.githubusercontent.com/dart4e/dart4e/updatesite/"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.platform" version="4.22.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.expressions"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.jface.notifications"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.genericeditor"/>
+      <import plugin="org.eclipse.ui.navigator"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.lsp4e"/>
+      <import plugin="org.eclipse.lsp4e.debug"/>
+      <import plugin="org.eclipse.lsp4j"/>
+      <import plugin="org.eclipse.lsp4j.debug"/>
+      <import plugin="org.eclipse.lsp4j.jsonrpc"/>
+      <import plugin="org.eclipse.tm4e.core"/>
+      <import plugin="org.eclipse.tm4e.ui"/>
+      <import plugin="org.eclipse.tm4e.languageconfiguration"/>
+      <import plugin="org.eclipse.tm4e.registry"/>
+      <import plugin="org.eclipse.wildwebdeveloper.embedder.node"/>
+      <import plugin="org.apache.commons.commons-io" version="2.11.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.lang3" version="3.12.0" match="greaterOrEqual"/>
+      <import plugin="de.sebthom.eclipse.commons"/>
+      <import plugin="org.yaml.snakeyaml" version="1.27.0" match="greaterOrEqual"/>
+      <import feature="de.sebthom.eclipse.commons.feature" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="net.sf.jstuff.core" version="7.2.0" match="compatible"/>
+      <import plugin="net.sf.jstuff.xml" version="7.2.0" match="compatible"/>
+   </requires>
+
+   <plugin
+         id="org.dart4e"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.sf.jstuff.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.lang3"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.commons-io"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.sf.jstuff.xml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="jakarta.xml.bind-api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="jakarta.activation-api"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.fasterxml.jackson.core.jackson-annotations"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.fasterxml.jackson.core.jackson-core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.fasterxml.jackson.core.jackson-databind"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.yaml.snakeyaml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
