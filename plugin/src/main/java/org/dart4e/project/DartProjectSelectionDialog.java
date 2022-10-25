@@ -41,7 +41,7 @@ public class DartProjectSelectionDialog {
       dialog.setTitle("Select a Dart project");
       dialog.setMessage("Enter a string to filter the project list:");
       dialog.setEmptyListMessage("No Dart projects found in workspace.");
-      setProjects(Projects.findOpenProjectsWithNature(DartProjectNature.NATURE_ID));
+      setProjects(Projects.getOpenProjectsWithNature(DartProjectNature.NATURE_ID).toArray(IProject[]::new));
    }
 
    public @Nullable IProject getSelectedProject() {

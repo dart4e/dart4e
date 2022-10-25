@@ -24,7 +24,7 @@ public class Dart4EStartupListener implements IStartup {
       ResourcesPlugin.getWorkspace().addResourceChangeListener(DartDependenciesUpdater.INSTANCE, IResourceChangeEvent.POST_CHANGE);
 
       // refresh dependencies when workbench first starts
-      DartDependenciesUpdater.INSTANCE.onProjectsConfigChanged(Projects.findOpenProjectsWithNature(DartProjectNature.NATURE_ID));
+      DartDependenciesUpdater.INSTANCE.onProjectsConfigChanged(Projects.getOpenProjectsWithNature(DartProjectNature.NATURE_ID).toList());
 
       ActiveEditorChangeListener.INSTANCE.attach();
    }
