@@ -45,9 +45,15 @@
    <!-- Preferences                           -->
    <!-- ===================================== -->
    <extension point="org.eclipse.ui.preferencePages">
+      <page id="org.dart4e.prefs.DartPreferencePage"
+         class="org.dart4e.prefs.DartPreferencePage"
+         name="Dart">
+         <keywordReference id="org.dart4e.prefs.keyword.dart" />
+      </page>
       <page id="org.dart4e.prefs.DartSDKPreferencePage"
          class="org.dart4e.prefs.DartSDKPreferencePage"
-         name="Dart">
+         category="org.dart4e.prefs.DartPreferencePage"
+         name="SDKs">
          <keywordReference id="org.dart4e.prefs.keyword.dart" />
       </page>
    </extension>

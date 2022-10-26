@@ -4,21 +4,22 @@
  */
 package org.dart4e.project;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNullUnsafe;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
 
 import org.dart4e.prefs.DartProjectPreference;
+import org.dart4e.prefs.DartWorkspacePreference;
 import org.dart4e.util.ui.GridDatas;
 import org.dart4e.widget.DartBuildSystemSelectionGroup;
 import org.dart4e.widget.DartSDKSelectionGroup;
+import org.dart4e.widget.FormatterSettingsGroup;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import de.sebthom.eclipse.commons.resources.Projects;
-import de.sebthom.eclipse.commons.ui.Buttons;
 
 /**
  * @author Sebastian Thomschke
@@ -52,12 +53,12 @@ public final class DartProjectPropertyPage extends org.eclipse.ui.dialogs.Proper
       grpBuildSystem.setProject(project);
 
       /*
-       * auto build check box
+       * formatter
        */
-      final var btnAutoBuild = new Button(container, SWT.CHECK);
-      btnAutoBuild.setText("Enable auto build");
-      btnAutoBuild.setSelection(prefs.isAutoBuild());
-      Buttons.onSelected(btnAutoBuild, () -> prefs.setAutoBuild(btnAutoBuild.getSelection()));
+      final var formatterSettings = new FormatterSettingsGroup(container, GridDatas.fillHorizontalExcessive());
+      formatterSettings.defaultMaxLineLength.set(DartWorkspacePreference.getFormatterMaxLineLength());
+      formatterSettings.maxLineLength.set(prefs.getFormatterMaxLineLength());
+      formatterSettings.maxLineLength.subscribe(newValue -> prefs.setFormatterMaxLineLength(newValue));
       return container;
    }
 

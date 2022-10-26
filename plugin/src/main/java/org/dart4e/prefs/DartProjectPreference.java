@@ -5,6 +5,7 @@
 package org.dart4e.prefs;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +16,9 @@ import org.dart4e.localization.Messages;
 import org.dart4e.model.DartSDK;
 import org.dart4e.model.buildsystem.BuildSystem;
 import org.dart4e.navigation.DartDependenciesUpdater;
+import org.ec4j.core.Resource;
+import org.ec4j.core.ResourcePath.ResourcePaths;
+import org.ec4j.core.ResourcePropertiesService;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.jdt.annotation.Nullable;
@@ -22,6 +26,7 @@ import org.eclipse.jface.preference.IPersistentPreferenceStore;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
+import de.sebthom.eclipse.commons.resources.Resources;
 import de.sebthom.eclipse.commons.ui.Dialogs;
 import net.sf.jstuff.core.Strings;
 
@@ -32,9 +37,9 @@ public final class DartProjectPreference {
 
    private static final WeakHashMap<IProject, DartProjectPreference> PREFS_BY_PROJECT = new WeakHashMap<>();
 
-   private static final String PROPERTY_ALTERNATE_AUTO_BUILD = "dart.project.auto_build";
    private static final String PROPERTY_ALTERNATE_DART_SDK = "dart.project.alternate_sdk";
    private static final String PROPERTY_BUILD_SYSTEM = "dart.project.build_system";
+   private static final String PROPERTY_FORMATTER_MAX_LINE_LENGTH = "dart.formatter.max_line_length";
 
    public static DartProjectPreference get(final IProject project) {
       synchronized (PREFS_BY_PROJECT) {
@@ -49,7 +54,6 @@ public final class DartProjectPreference {
    private DartProjectPreference(final IProject project) {
       this.project = project;
       prefs = new ScopedPreferenceStore(new ProjectScope(project), Dart4EPlugin.PLUGIN_ID);
-      prefs.setDefault(PROPERTY_ALTERNATE_AUTO_BUILD, true);
       prefs.addPropertyChangeListener(changeEvents::add);
    }
 
@@ -83,12 +87,28 @@ public final class DartProjectPreference {
       return sdk;
    }
 
-   public IProject getProject() {
-      return project;
+   public int getFormatterMaxLineLength() {
+      // try to resolve max-line-length via .editorconfig
+      try {
+         final var propService = ResourcePropertiesService.builder() //
+            .rootDirectory(ResourcePaths.ofPath(Resources.toAbsolutePath(project), StandardCharsets.UTF_8)) //
+            .build();
+
+         final var props = propService.queryProperties(Resource.Resources.ofPath(Resources.toAbsolutePath(project.getFile("some.dart")),
+            StandardCharsets.UTF_8));
+         final var maxLineLength = props.getValue("max_line_length", null, true);
+         if (maxLineLength != null)
+            return Integer.parseInt(maxLineLength.toString());
+      } catch (final Exception ex) {
+         Dart4EPlugin.log().error(ex);
+      }
+
+      final var maxLineLength = prefs.getInt(PROPERTY_FORMATTER_MAX_LINE_LENGTH);
+      return maxLineLength > 0 ? maxLineLength : DartWorkspacePreference.getFormatterMaxLineLength();
    }
 
-   public boolean isAutoBuild() {
-      return prefs.getBoolean(PROPERTY_ALTERNATE_AUTO_BUILD);
+   public IProject getProject() {
+      return project;
    }
 
    /**
@@ -137,11 +157,15 @@ public final class DartProjectPreference {
       prefs.setValue(PROPERTY_ALTERNATE_DART_SDK, sdk == null ? "" : sdk.getName());
    }
 
-   public void setAutoBuild(final boolean value) {
-      prefs.setValue(PROPERTY_ALTERNATE_AUTO_BUILD, value);
-   }
-
    public void setBuildSystem(final @Nullable BuildSystem buildSystem) {
       prefs.setValue(PROPERTY_BUILD_SYSTEM, buildSystem == null ? "" : buildSystem.name());
+   }
+
+   public void setFormatterMaxLineLength(final int maxLineLength) {
+      if (DartWorkspacePreference.getFormatterMaxLineLength() == maxLineLength) {
+         prefs.setToDefault(PROPERTY_FORMATTER_MAX_LINE_LENGTH);
+      } else {
+         prefs.setValue(PROPERTY_FORMATTER_MAX_LINE_LENGTH, maxLineLength);
+      }
    }
 }

@@ -4,7 +4,7 @@
  */
 package org.dart4e.localization;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -42,7 +42,8 @@ public final class Messages extends NLS {
    public static String SDKPathInvalid = "Dart SDK Path invalid.";
    public static String SDKPathInvalid_Descr = "\"{0}\" does not point to a valid Dart SDK";
 
-   public static String Prefs_ManageSDKsDescription = "Manage installed Dart SDKs. By default the checked SDK will be used for newly created Dart projects.";
+   public static String Prefs_GeneralDescription = "General settings for Dart development:";
+   public static String Prefs_ManageSDKsDescription = "Manage installed Dart SDKs. By default the checked SDK will be used for newly created Dart projects:";
    public static String Prefs_NoSDKRegistered_Title = "Dart SDK missing";
    public static String Prefs_NoSDKRegistered_Body = "No Dart SDK configured";
    public static String Prefs_SDKPath = "Dart SDK path";

@@ -49,6 +49,12 @@
         <location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
             <dependencies>
                 <dependency>
+                    <groupId>org.ec4j.core</groupId>
+                    <artifactId>ec4j-core</artifactId>
+                    <version>0.3.0</version>
+                    <type>jar</type>
+                </dependency>
+                <dependency>
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-databind</artifactId>
                     <version>2.13.4</version>

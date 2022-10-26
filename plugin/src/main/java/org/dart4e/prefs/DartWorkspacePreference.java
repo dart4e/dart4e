@@ -46,6 +46,7 @@ public final class DartWorkspacePreference {
    private static final String PROPERTY_DEFAULT_DART_SDK = "dart.default_sdk";
    private static final String PROPERTY_DART_SDKS = "dart.sdks";
    private static final String PROPERTY_WARNED_NO_SDK_REGISTERED = "dart.warned_no_sdk_registered";
+   private static final String PROPERTY_FORMATTER_MAX_LINE_LENGTH = "dart.formatter.max_line_length";
 
    static {
       // this disables usage of com.fasterxml.jackson.databind.ext.NioPathDeserializer
@@ -125,40 +126,6 @@ public final class DartWorkspacePreference {
    /**
     * @return null if not found
     */
-   public static @Nullable DartSDK getDefaultDartSDK(final boolean verify, final boolean searchPATH) {
-      final var defaultSDK = getDartSDK(PREFS.getString(PROPERTY_DEFAULT_DART_SDK));
-
-      if (defaultSDK != null) {
-         if (verify) {
-            if (defaultSDK.isValid())
-               return defaultSDK;
-         } else
-            return defaultSDK;
-      }
-
-      ensureDartSDKsInitialized();
-
-      synchronized (dartSDKs) {
-         if (!dartSDKs.isEmpty()) {
-            if (verify) {
-               for (final var sdk : dartSDKs) {
-                  if (sdk.isValid())
-                     return sdk;
-               }
-            } else
-               return dartSDKs.first();
-         }
-      }
-
-      if (!searchPATH)
-         return null;
-
-      return DartSDK.fromPath();
-   }
-
-   /**
-    * @return null if not found
-    */
    public static @Nullable DartSDK getDartSDK(final String name) {
       if (Strings.isEmpty(name))
          return null;
@@ -181,6 +148,41 @@ public final class DartWorkspacePreference {
       }
    }
 
+   /**
+    * @return null if not found
+    */
+   public static @Nullable DartSDK getDefaultDartSDK(final boolean verify, final boolean searchPATH) {
+      final var defaultSDK = getDartSDK(PREFS.getString(PROPERTY_DEFAULT_DART_SDK));
+
+      if (defaultSDK != null) {
+         if (!verify || defaultSDK.isValid())
+            return defaultSDK;
+      }
+
+      ensureDartSDKsInitialized();
+
+      synchronized (dartSDKs) {
+         if (!dartSDKs.isEmpty()) {
+            if (!verify)
+               return dartSDKs.first();
+            for (final var sdk : dartSDKs) {
+               if (sdk.isValid())
+                  return sdk;
+            }
+         }
+      }
+
+      if (!searchPATH)
+         return null;
+
+      return DartSDK.fromPath();
+   }
+
+   public static int getFormatterMaxLineLength() {
+      final var maxLineLength = PREFS.getInt(PROPERTY_FORMATTER_MAX_LINE_LENGTH);
+      return maxLineLength > 0 ? maxLineLength : 80;
+   }
+
    public static boolean save() {
       try {
          PREFS.save();
@@ -189,10 +191,6 @@ public final class DartWorkspacePreference {
          Dialogs.showStatus(Messages.Prefs_SavingPreferencesFailed, Dart4EPlugin.status().createError(ex), true);
          return false;
       }
-   }
-
-   public static void setDefaultDartSDK(final String name) {
-      PREFS.setValue(PROPERTY_DEFAULT_DART_SDK, name);
    }
 
    public static void setDartSDKs(final @Nullable Set<DartSDK> newSDKs) {
@@ -209,6 +207,14 @@ public final class DartWorkspacePreference {
             throw new RuntimeIOException(ex);
          }
       }
+   }
+
+   public static void setDefaultDartSDK(final String name) {
+      PREFS.setValue(PROPERTY_DEFAULT_DART_SDK, name);
+   }
+
+   public static void setFormatterMaxLineLength(final int maxLineLength) {
+      PREFS.setValue(PROPERTY_FORMATTER_MAX_LINE_LENGTH, maxLineLength);
    }
 
    private DartWorkspacePreference() {
