@@ -21,7 +21,7 @@ public final class GridDatas {
    }
 
    public static GridData fillExcessive(final int horizontalSpan, final int verticalSpan) {
-      return new GridData(SWT.FILL, SWT.CENTER, true, true, horizontalSpan, verticalSpan);
+      return new GridData(SWT.FILL, SWT.FILL, true, true, horizontalSpan, verticalSpan);
    }
 
    public static GridData fillHorizontal() {
@@ -38,6 +38,12 @@ public final class GridDatas {
 
    public static GridData fillHorizontalExcessive(final int horizontalSpan) {
       return new GridData(SWT.FILL, SWT.CENTER, true, false, horizontalSpan, 1);
+   }
+
+   public static GridData fillHorizontalExcessive(final int horizontalSpan, final int heightHint) {
+      final var gridData = fillHorizontalExcessive(horizontalSpan);
+      gridData.heightHint = heightHint;
+      return gridData;
    }
 
    private GridDatas() {

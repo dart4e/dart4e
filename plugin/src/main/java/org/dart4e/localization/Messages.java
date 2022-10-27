@@ -23,6 +23,7 @@ public final class Messages extends NLS {
    // CHECKSTYLE:IGNORE .* FOR NEXT 100 LINES
 
    public static String Label_Dart_Configuration = "Dart Configuration";
+   public static String Label_Dart_Test_Configuration = "Dart Test Configuration";
    public static String Label_Dart_SDK = "Dart SDK";
    public static String Label_Dart_File = lazyNonNull();
    public static String Label_Dart_Project = lazyNonNull();
@@ -67,6 +68,7 @@ public final class Messages extends NLS {
    public static String Launch_NoProjectSelected_Descr = "Please select a project to launch";
    public static String Launch_SDKPath_Descr = "The path where the Dart SDK is installed";
    public static String Launch_RunningFile = "Running {0}";
+   public static String Launch_TestingResource = "Testing {0}";
    public static String Launch_CouldNotRunDart = "Could not run Dart";
    public static String Launch_InitializingLaunchConfigTabFailed = "Initializing LaunchConfigTab failed";
    public static String Launch_CreatingLaunchConfigFailed = "Creating new launch configuration failed";

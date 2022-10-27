@@ -24,39 +24,40 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  */
 public class DartFileSelectionDialog extends ElementTreeSelectionDialog {
 
+   public static class DartFileViewerFilter extends ViewerFilter {
+      @Override
+      public boolean select(final Viewer viewer, final @Nullable Object parent, final Object element) {
+         if (element instanceof final IFile file)
+            return Constants.DART_FILE_EXTENSION.equals(file.getFileExtension());
+
+         if (element instanceof final IContainer container && container.isAccessible()) {
+            if (container.getName().startsWith(".") //
+               || DartDependenciesUpdater.DEPS_MAGIC_FOLDER_NAME.equals(container.getName()) //
+               || DartDependenciesUpdater.STDLIB_MAGIC_FOLDER_NAME.equals(container.getName()))
+               return false;
+
+            try {
+               for (final var child : container.members()) {
+                  if (select(viewer, parent, child))
+                     return true;
+               }
+            } catch (final CoreException ex) {
+               Dart4EPlugin.log().error(ex);
+            }
+         }
+
+         return false;
+      }
+   }
+
    public DartFileSelectionDialog(final Shell parentShell, final String title, final IContainer parentContainer) {
       super(parentShell, new WorkbenchLabelProvider(), new BaseWorkbenchContentProvider());
-      setAllowMultiple(false);
+      setAllowMultiple(true);
       setEmptyListMessage("No Dart files in [" + parentContainer.getName() + "]!");
       setTitle(title);
       setMessage("Select a Dart file (*." + Constants.DART_FILE_EXTENSION + ")");
       setInput(parentContainer);
-
-      addFilter(new ViewerFilter() {
-         @Override
-         public boolean select(final Viewer viewer, final @Nullable Object parent, final Object element) {
-            if (element instanceof final IFile file)
-               return Constants.DART_FILE_EXTENSION.equals(file.getFileExtension());
-
-            if (element instanceof final IContainer container && container.isAccessible()) {
-               if (container.getName().startsWith(".") //
-                  || DartDependenciesUpdater.DEPS_MAGIC_FOLDER_NAME.equals(container.getName()) //
-                  || DartDependenciesUpdater.STDLIB_MAGIC_FOLDER_NAME.equals(container.getName()))
-                  return false;
-
-               try {
-                  for (final var child : container.members()) {
-                     if (select(viewer, parent, child))
-                        return true;
-                  }
-               } catch (final CoreException ex) {
-                  Dart4EPlugin.log().error(ex);
-               }
-            }
-
-            return false;
-         }
-      });
+      addFilter(new DartFileViewerFilter());
 
       setValidator(selection -> {
          if (selection.length > 0 && selection[0] instanceof final IFile file)

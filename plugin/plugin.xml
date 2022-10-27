@@ -427,6 +427,13 @@
          name="%Label_Dart_Program"
          sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
          sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer" />
+      <launchConfigurationType
+         id="org.dart4e.launch.dart_test"
+         delegate="org.dart4e.launch.test.LaunchTestConfigLauncher"
+         modes="run,debug"
+         name="%Label_Dart_Test"
+         sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+         sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer" />
    </extension>
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -435,11 +442,16 @@
          class="org.dart4e.launch.LaunchTabGroup"
          type="org.dart4e.launch.dart"
          description="%DartLaunchGroup_Description" />
+      <launchConfigurationTabGroup
+         id="org.dart4e.launch.LaunchTabGroup"
+         class="org.dart4e.launch.test.LaunchTestTabGroup"
+         type="org.dart4e.launch.dart_test"
+         description="%DartTestLaunchGroup_Description" />
    </extension>
 
    <extension point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-         id="org.dart4e.launch.dart.shortcut.run_as"
+         id="org.dart4e.launch.dart.shortcut.run_project"
          class="org.dart4e.launch.RunProjectShortcut"
          label="%Label_Dart_Program"
          icon="src/main/resources/images/logo/dart_icon.png"
@@ -460,7 +472,7 @@
          </contextualLaunch>
       </shortcut>
       <shortcut
-         id="org.dart4e.launch.dart.shortcut.file"
+         id="org.dart4e.launch.dart.shortcut.run_file"
          class="org.dart4e.launch.RunDartFileShortcut"
          label="%Label_Dart_Program"
          icon="src/main/resources/images/logo/dart_icon.png"
@@ -481,6 +493,54 @@
             </enablement>
          </contextualLaunch>
       </shortcut>
+      <shortcut
+         id="org.dart4e.launch.dart.shortcut.run_project_tests"
+         class="org.dart4e.launch.test.RunProjectTestsShortcut"
+         label="%Label_Dart_Test"
+         icon="src/main/resources/images/logo/dart_icon_test.png"
+         modes="run,debug">
+         <contextualLaunch>
+            <enablement>
+               <!-- see https://github.com/eclipse-platform/eclipse.platform.ui/blob/632e59d1bbec83dd81994befe4bfbf6a3db0de28/bundles/org.eclipse.ui.workbench/Eclipse%20UI/org/eclipse/ui/ISources.java#L297 -->
+               <with variable="selection">
+                  <count value="1" />
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
+         id="org.dart4e.launch.dart.shortcut.run_selected_test"
+         class="org.dart4e.launch.test.RunSelectedTestShortcut"
+         label="%Label_Dart_Test"
+         icon="src/main/resources/images/logo/dart_icon_test.png"
+         modes="run,debug">
+         <contextualLaunch>
+            <enablement>
+               <!-- see https://github.com/eclipse-platform/eclipse.platform.ui/blob/632e59d1bbec83dd81994befe4bfbf6a3db0de28/bundles/org.eclipse.ui.workbench/Eclipse%20UI/org/eclipse/ui/ISources.java#L297 -->
+               <with variable="selection">
+                  <count value="1" />
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <or>
+                           <and>
+                              <adapt type="org.eclipse.core.resources.IFile" />
+                              <test property="org.eclipse.debug.ui.matchesPattern" value="*.dart" />
+                           </and>
+                           <adapt type="org.eclipse.core.resources.IFolder" />
+                        </or>
+                     </and>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
    </extension>
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
@@ -488,6 +548,10 @@
          id="org.dart4e.launch.dart.image"
          configTypeID="org.dart4e.launch.dart"
          icon="src/main/resources/images/logo/dart_icon.png" />
+      <launchConfigurationTypeImage
+         id="org.dart4e.launch.dart.image"
+         configTypeID="org.dart4e.launch.dart_test"
+         icon="src/main/resources/images/logo/dart_icon_test.png" />
    </extension>
 
    <extension point="org.eclipse.debug.ui.launchGroups">

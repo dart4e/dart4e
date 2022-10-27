@@ -24,11 +24,13 @@ public interface Constants {
    String LAUNCH_ATTR_PROJECT = "launch.dart.project";
    String LAUNCH_ATTR_DART_SDK = "launch.dart.sdk";
    String LAUNCH_ATTR_DART_MAIN_FILE = "launch.dart.dart_main_file";
+   String LAUNCH_ATTR_DART_TEST_RESOURCES = "launch.dart.dart_test_resources";
    String LAUNCH_ATTR_PROGRAM_ARGS = "launch.dart.program_args";
    String LAUNCH_ATTR_VM_ARGS = "launch.dart.vm_args";
 
    String DART_FILE_EXTENSION = "dart";
 
+   String TEST_FOLDER_NAME = "test";
    String PUBSPEC_LOCK_FILENAME = "pubspec.lock";
    String PUBSPEC_YAML_FILENAME = "pubspec.yaml";
 
@@ -36,6 +38,11 @@ public interface Constants {
     * id of <launchConfigurationType/> as specified in plugin.xml
     */
    String LAUNCH_DART_CONFIGURATION_ID = "org.dart4e.launch.dart";
+
+   /**
+    * id of <launchConfigurationType/> as specified in plugin.xml
+    */
+   String LAUNCH_DART_TEST_CONFIGURATION_ID = "org.dart4e.launch.dart_test";
 
    /**
     * id of <launchGroup/> as specified in plugin.xml

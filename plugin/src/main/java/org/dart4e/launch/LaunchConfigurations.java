@@ -4,7 +4,7 @@
  */
 package org.dart4e.launch;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public abstract class LaunchConfigurations {
       final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_CONFIGURATION_ID);
       final var newLaunchConfig = launchConfigType.newInstance(null, launchMgr.generateLaunchConfigurationName(project.getName() + " ("
          + dartFile.getName() + ")"));
-      LaunchConfigurations.initialize(newLaunchConfig, dartFile);
+      initialize(newLaunchConfig, dartFile);
       return newLaunchConfig;
    }
 
@@ -44,7 +44,7 @@ public abstract class LaunchConfigurations {
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
       final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_CONFIGURATION_ID);
       final var newLaunchConfig = launchConfigType.newInstance(null, launchMgr.generateLaunchConfigurationName(project.getName()));
-      LaunchConfigurations.initialize(newLaunchConfig, project);
+      initialize(newLaunchConfig, project);
       return newLaunchConfig;
    }
 
