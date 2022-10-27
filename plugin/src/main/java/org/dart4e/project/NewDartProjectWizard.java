@@ -7,7 +7,6 @@ package org.dart4e.project;
 import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.console.DartConsole;
@@ -77,8 +76,8 @@ public final class NewDartProjectWizard extends Wizard implements INewWizard {
                final var newProject = this.newProject = (IProject) asNonNullUnsafe(create.getAffectedObjects())[0];
 
                // generate the Dart Template files
-               DartConsole.runWithConsole(newProject, List.of("create", "--force", "-t", newDartProjectPage.selectedTemplate.get(), "."),
-                  monitor);
+               DartConsole.runWithConsole(monitor, "Creating new project layout...", newProject, "create", "--force", "-t",
+                  newDartProjectPage.selectedTemplate.get(), ".");
 
                DartProjectNature.addToProject(newProject);
                final var prefs = DartProjectPreference.get(newProject);

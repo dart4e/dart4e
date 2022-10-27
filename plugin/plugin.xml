@@ -494,6 +494,48 @@
          </contextualLaunch>
       </shortcut>
       <shortcut
+         id="org.dart4e.launch.dart.shortcut.run_shell_embedded"
+         class="org.dart4e.shell.RunShellEmbeddedShortcut"
+         label="%Label_Dart_Shell_Embedded"
+         icon="src/main/resources/images/logo/dart_icon_shell.png"
+         modes="run,debug">
+         <contextualLaunch>
+            <enablement>
+               <!-- see https://github.com/eclipse-platform/eclipse.platform.ui/blob/632e59d1bbec83dd81994befe4bfbf6a3db0de28/bundles/org.eclipse.ui.workbench/Eclipse%20UI/org/eclipse/ui/ISources.java#L297 -->
+               <with variable="selection">
+                  <count value="1" />
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
+         id="org.dart4e.launch.dart.shortcut.run_shell_external"
+         class="org.dart4e.shell.RunShellExternalShortcut"
+         label="%Label_Dart_Shell_External"
+         icon="src/main/resources/images/logo/dart_icon_shell.png"
+         modes="run,debug">
+         <contextualLaunch>
+            <enablement>
+               <!-- see https://github.com/eclipse-platform/eclipse.platform.ui/blob/632e59d1bbec83dd81994befe4bfbf6a3db0de28/bundles/org.eclipse.ui.workbench/Eclipse%20UI/org/eclipse/ui/ISources.java#L297 -->
+               <with variable="selection">
+                  <count value="1" />
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+      <shortcut
          id="org.dart4e.launch.dart.shortcut.run_project_tests"
          class="org.dart4e.launch.test.RunProjectTestsShortcut"
          label="%Label_Dart_Test"

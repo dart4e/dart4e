@@ -4,7 +4,7 @@
  */
 package org.dart4e.model.buildsystem;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,15 +50,6 @@ public class DartBuildFile extends BuildFile {
       super(BuildSystem.DART, location);
    }
 
-   private void downloadDependencies(final IProgressMonitor monitor) {
-      final var project = getProject();
-      try {
-         DartConsole.runWithConsole(project, List.of("pub", "get"), monitor);
-      } catch (final CoreException ex) {
-         throw new RuntimeException(ex);
-      }
-   }
-
    @Override
    public Set<DartDependency> getDependencies(final IProgressMonitor monitor) {
       final var project = getProject();
@@ -73,7 +64,7 @@ public class DartBuildFile extends BuildFile {
        * check if pubspec.lock file exists, if not run `dart pub deps get` to create it
        */
       if (!lockFile.exists() || Resources.lastModified(lockFile) < Resources.lastModified(location)) {
-         downloadDependencies(monitor); // update needed
+         resolveDependencies(monitor); // update needed
       } else if (!deps.isEmpty())
          return deps;
 
@@ -154,5 +145,14 @@ public class DartBuildFile extends BuildFile {
          Dart4EPlugin.log().error(ex);
       }
       return false;
+   }
+
+   private void resolveDependencies(final IProgressMonitor monitor) {
+      final var project = getProject();
+      try {
+         DartConsole.runWithConsole(monitor, "Resolving dependencies of [" + project.getName() + "]...", project, "pub", "get");
+      } catch (final CoreException ex) {
+         throw new RuntimeException(ex);
+      }
    }
 }

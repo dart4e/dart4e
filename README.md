@@ -98,6 +98,7 @@ Dart4E would not have been possible without the following technologies and learn
 - [Eclipse TM4E](https://projects.eclipse.org/projects/technology.tm4e) - TextMate support for Eclipse
 - [Eclipse Tycho](https://projects.eclipse.org/projects/technology.tycho) - tools to build Eclipse plug-ins with Maven
 - [Eclipse RedDeer](https://projects.eclipse.org/projects/technology.reddeer) - UI testing framework
+- [dart_interactive](https://github.com/fzyzcjy/dart_interactive) - Interactive Shell (REPL) for Dart
 
 **Tutorials**
 - https://eclipse.org/articles

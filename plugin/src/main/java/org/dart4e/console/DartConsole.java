@@ -4,13 +4,13 @@
  */
 package org.dart4e.console;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.model.DartSDK;
 import org.dart4e.prefs.DartProjectPreference;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -32,7 +33,6 @@ import de.sebthom.eclipse.commons.ui.Consoles;
 import de.sebthom.eclipse.commons.ui.UI;
 import net.sf.jstuff.core.Strings;
 import net.sf.jstuff.core.concurrent.Threads;
-import net.sf.jstuff.core.io.Processes;
 
 /**
  * @author Sebastian Thomschke
@@ -58,20 +58,15 @@ public final class DartConsole extends MessageConsole {
    /**
     * Runs the dart command in the DartConsole.
     */
-   public static void runWithConsole(final IProject project, final List<String> args, final IProgressMonitor monitor) throws CoreException {
-      final var prefs = DartProjectPreference.get(project);
-      final var dartSDK = prefs.getEffectiveDartSDK();
-      if (dartSDK == null)
-         throw new IllegalStateException("No Dart SDK found!");
+   public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final DartSDK dartSDK,
+      final @Nullable Path workdir, final String... args) throws CoreException {
 
-      monitor.setTaskName("Running dart with '" + project.getName() + "'");
-      System.err.println(args);
-      final Processes.Builder processBuilder = Processes.builder(dartSDK.getDartExecutable()).withArgs(args.toArray(String[]::new));
+      final var processBuilder = dartSDK.getDartProcessBuilder(false).withArgs(args);
 
       final var onTerminated = new CompletableFuture<@Nullable Void>();
-      final var console = new DartConsole(project, onTerminated, monitor);
+      final var console = new DartConsole(null, onTerminated, monitor);
       Consoles.closeConsoles(c -> c instanceof final DartConsole dartConsole //
-         && dartConsole.project.equals(project) //
+         && dartConsole.project == null // CHECKSTYLE:IGNORE .*
          && dartConsole.onTerminated.toCompletableFuture().isDone());
       Consoles.showConsole(console);
 
@@ -86,16 +81,12 @@ public final class DartConsole extends MessageConsole {
          final var startAt = LocalTime.now();
          final var startAtStr = startAt.truncatedTo(ChronoUnit.SECONDS).format(DateTimeFormatter.ISO_TIME);
 
-         out.println("Building project '" + project.getName() + "'...");
+         out.println(headLine);
          out.println();
 
-         var workdir = asNonNull(project.getLocation()).toFile();
-         if (!workdir.exists()) {
-            workdir = asNonNull(workdir.getParentFile());
-         }
          final var hasOutput = new AtomicBoolean(false);
          final var proc = processBuilder //
-            .withWorkingDirectory(workdir) //
+            .withWorkingDirectory(workdir == null ? Path.of(".") : workdir) //
             .withEnvironment(env -> {
                if (Consoles.isAnsiColorsSupported()) {
                   env.put("ANSICON", "1");
@@ -116,9 +107,7 @@ public final class DartConsole extends MessageConsole {
          console.setTitle("<running> " + exe + " (" + startAtStr + ")");
 
          while (proc.isAlive()) {
-            /*
-             * kill process if job was aborted by user
-             */
+            // kill process if job was aborted by user
             if (monitor.isCanceled()) {
                proc.terminate() //
                   .waitForExit(2, TimeUnit.SECONDS) //
@@ -170,11 +159,30 @@ public final class DartConsole extends MessageConsole {
       }
    }
 
-   public final IProject project;
+   /**
+    * Runs the dart command in the DartConsole.
+    */
+   public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final IProject project, final String... args)
+      throws CoreException {
+      final var prefs = DartProjectPreference.get(project);
+      final var dartSDK = prefs.getEffectiveDartSDK();
+      if (dartSDK == null)
+         throw new IllegalStateException("No Dart SDK found!");
+
+      var workdir = asNonNull(project.getLocation()).toFile();
+      if (!workdir.exists()) {
+         workdir = asNonNull(workdir.getParentFile());
+      }
+
+      runWithConsole(monitor, headLine, dartSDK, workdir.toPath(), args);
+   }
+
+   public final @Nullable IProject project;
    public final CompletionStage<@Nullable Void> onTerminated;
    public final IProgressMonitor monitor;
 
-   private DartConsole(final IProject project, final CompletionStage<@Nullable Void> onTerminated, final IProgressMonitor monitor) {
+   private DartConsole(final @Nullable IProject project, final CompletionStage<@Nullable Void> onTerminated,
+      final IProgressMonitor monitor) {
       super("Dart", CONSOLE_TYPE, null, true);
       this.project = project;
       this.onTerminated = onTerminated;
