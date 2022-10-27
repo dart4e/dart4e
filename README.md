@@ -1,4 +1,4 @@
-# dart4e
+# Dart4E <a href="https://github.com/dart4e/dart4e/" title="GitHub Repo"><img height="30" src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/github.svg?sanitize=true"></a>
 
 [![Build Status](https://github.com/dart4e/dart4e/actions/workflows/build.yml/badge.svg)](https://github.com/dart4e/dart4e/actions/workflows/build.yml)
 [![License](https://img.shields.io/github/license/dart4e/dart4e.svg?color=blue)](LICENSE.txt)
