@@ -86,7 +86,7 @@ public final class DartConsole extends MessageConsole {
 
          final var hasOutput = new AtomicBoolean(false);
          final var proc = processBuilder //
-            .withWorkingDirectory(workdir == null ? Path.of(".") : workdir) //
+            .withWorkingDirectory(workdir) //
             .withEnvironment(env -> {
                if (Consoles.isAnsiColorsSupported()) {
                   env.put("ANSICON", "1");

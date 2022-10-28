@@ -41,6 +41,7 @@ import de.sebthom.eclipse.commons.ui.Consoles;
 import de.sebthom.eclipse.commons.ui.Dialogs;
 import de.sebthom.eclipse.commons.ui.UI;
 import net.sf.jstuff.core.Strings;
+import net.sf.jstuff.core.SystemUtils;
 
 /**
  * This class is registered via the plugin.xml
@@ -90,8 +91,8 @@ public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
       final var envVars = config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.emptyMap());
       final var appendEnvVars = config.getAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
 
-      final var programArgs = Strings.splitToList(config.getAttribute(Constants.LAUNCH_ATTR_PROGRAM_ARGS, "").strip(), ' ');
-      final var vmArgs = Strings.splitToList(config.getAttribute(Constants.LAUNCH_ATTR_VM_ARGS, "").strip(), ' ');
+      final var programArgs = SystemUtils.splitCommandLine(config.getAttribute(Constants.LAUNCH_ATTR_PROGRAM_ARGS, "").strip());
+      final var vmArgs = SystemUtils.splitCommandLine(config.getAttribute(Constants.LAUNCH_ATTR_VM_ARGS, "").strip());
 
       switch (mode) {
 
