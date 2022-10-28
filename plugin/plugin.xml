@@ -419,6 +419,28 @@
       </perspectiveExtension>
    </extension>
 
+   <extension point="org.eclipse.core.runtime.adapters">
+      <factory
+         class="org.eclipse.core.runtime.IAdaptable"
+         adaptableType="org.eclipse.core.resources.IResource">
+         <!-- https://insights.sigasi.com/tech/run-menu-item-strangely-disappearing-context-menu/ -->
+         <adapter type="org.eclipse.debug.ui.actions.ILaunchable" />
+      </factory>
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchGroups">
+      <launchGroup
+         id="org.dart4e.launch.dart.group"
+         label="%Label_Dart_LaunchGroup"
+         bannerImage="src/main/resources/images/logo/dart_wizard_banner.png"
+         image="src/main/resources/images/logo/dart_icon.png"
+         mode="run" />
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Launch Configuration - Dart Program   -->
+   <!-- ===================================== -->
    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
          id="org.dart4e.launch.dart"
@@ -427,13 +449,13 @@
          name="%Label_Dart_Program"
          sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
          sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer" />
-      <launchConfigurationType
-         id="org.dart4e.launch.dart_test"
-         delegate="org.dart4e.launch.test.LaunchTestConfigLauncher"
-         modes="run,debug"
-         name="%Label_Dart_Test"
-         sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
-         sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+         id="org.dart4e.launch.dart.image"
+         configTypeID="org.dart4e.launch.dart"
+         icon="src/main/resources/images/logo/dart_icon.png" />
    </extension>
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -442,11 +464,6 @@
          class="org.dart4e.launch.program.LaunchTabGroup"
          type="org.dart4e.launch.dart"
          description="%DartLaunchGroup_Description" />
-      <launchConfigurationTabGroup
-         id="org.dart4e.launch.LaunchTabGroup"
-         class="org.dart4e.launch.test.LaunchTestTabGroup"
-         type="org.dart4e.launch.dart_test"
-         description="%DartTestLaunchGroup_Description" />
    </extension>
 
    <extension point="org.eclipse.debug.ui.launchShortcuts">
@@ -493,6 +510,38 @@
             </enablement>
          </contextualLaunch>
       </shortcut>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Launch Configuration - Dart Test       -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+         id="org.dart4e.launch.dart_test"
+         delegate="org.dart4e.launch.program.LaunchConfigLauncher"
+         modes="run,debug"
+         name="%Label_Dart_Test"
+         sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+         sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+         id="org.dart4e.launch.dart.image"
+         configTypeID="org.dart4e.launch.dart_test"
+         icon="src/main/resources/images/logo/dart_icon_test.png" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+         id="org.dart4e.launch.LaunchTabGroup"
+         class="org.dart4e.launch.test.LaunchTestTabGroup"
+         type="org.dart4e.launch.dart_test"
+         description="%DartTestLaunchGroup_Description" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
          id="org.dart4e.launch.dart.shortcut.run_project_tests"
          class="org.dart4e.launch.test.RunProjectTestsShortcut"
@@ -541,35 +590,6 @@
             </enablement>
          </contextualLaunch>
       </shortcut>
-   </extension>
-
-   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
-      <launchConfigurationTypeImage
-         id="org.dart4e.launch.dart.image"
-         configTypeID="org.dart4e.launch.dart"
-         icon="src/main/resources/images/logo/dart_icon.png" />
-      <launchConfigurationTypeImage
-         id="org.dart4e.launch.dart.image"
-         configTypeID="org.dart4e.launch.dart_test"
-         icon="src/main/resources/images/logo/dart_icon_test.png" />
-   </extension>
-
-   <extension point="org.eclipse.debug.ui.launchGroups">
-      <launchGroup
-         id="org.dart4e.launch.dart.group"
-         label="%Label_Dart_LaunchGroup"
-         bannerImage="src/main/resources/images/logo/dart_wizard_banner.png"
-         image="src/main/resources/images/logo/dart_icon.png"
-         mode="run" />
-   </extension>
-
-   <extension point="org.eclipse.core.runtime.adapters">
-      <factory
-         class="org.eclipse.core.runtime.IAdaptable"
-         adaptableType="org.eclipse.core.resources.IResource">
-         <!-- https://insights.sigasi.com/tech/run-menu-item-strangely-disappearing-context-menu/ -->
-         <adapter type="org.eclipse.debug.ui.actions.ILaunchable" />
-      </factory>
    </extension>
 
 
