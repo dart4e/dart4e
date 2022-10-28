@@ -2,7 +2,7 @@
  * Copyright 2022 by the Dart4E authors.
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.dart4e.launch;
+package org.dart4e.launch.program;
 
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;

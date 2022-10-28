@@ -31,7 +31,7 @@
         <setEntry value="com.fasterxml.jackson.core.jackson-annotations*2.13.4@default:default"/>
         <setEntry value="com.fasterxml.jackson.core.jackson-core*2.13.4@default:default"/>
         <setEntry value="com.fasterxml.jackson.core.jackson-databind*2.13.4@default:default"/>
-        <setEntry value="com.google.gson@default:default"/>
+        <setEntry value="com.google.gson*2.9.1.v20220915-1632@default:default"/>
         <setEntry value="com.google.guava@default:default"/>
         <setEntry value="com.ibm.icu@default:default"/>
         <setEntry value="com.sun.jna*5.8.0.v20210503-0343@default:default"/>
@@ -128,10 +128,10 @@
         <setEntry value="org.eclipse.jface@default:default"/>
         <setEntry value="org.eclipse.lsp4e.debug@default:default"/>
         <setEntry value="org.eclipse.lsp4e@default:default"/>
-        <setEntry value="org.eclipse.lsp4j.debug@default:default"/>
-        <setEntry value="org.eclipse.lsp4j.jsonrpc.debug@default:default"/>
-        <setEntry value="org.eclipse.lsp4j.jsonrpc@default:default"/>
-        <setEntry value="org.eclipse.lsp4j@default:default"/>
+        <setEntry value="org.eclipse.lsp4j*0.17.0.v20221018-0134@default:default"/>
+        <setEntry value="org.eclipse.lsp4j.debug*0.17.0.v20221018-0134@default:default"/>
+        <setEntry value="org.eclipse.lsp4j.jsonrpc*0.17.0.v20221018-0134@default:default"/>
+        <setEntry value="org.eclipse.lsp4j.jsonrpc.debug*0.17.0.v20221018-0134@default:default"/>
         <setEntry value="org.eclipse.ltk.core.refactoring@default:default"/>
         <setEntry value="org.eclipse.ltk.ui.refactoring@default:default"/>
         <setEntry value="org.eclipse.mylyn.wikitext.markdown@default:default"/>
@@ -188,11 +188,17 @@
     <booleanAttribute key="tracing" value="true"/>
     <mapAttribute key="tracingOptions">
         <mapEntry key="org.dart4e/trace/debugserv/io" value="false"/>
-        <mapEntry key="org.dart4e/trace/langserv/init_options" value="true"/>
+        <mapEntry key="org.dart4e/trace/langserv/init_options" value="false"/>
         <mapEntry key="org.dart4e/trace/langserv/io" value="false"/>
         <mapEntry key="org.dart4e/trace/langserv/method_results" value="false"/>
         <mapEntry key="org.dart4e/trace/spellcheck/regions" value="false"/>
         <mapEntry key="org.dart4e/trace/spellcheck/tokens" value="false"/>
+        <mapEntry key="org.eclipse.cdt.core.native/debug" value="false"/>
+        <mapEntry key="org.eclipse.cdt.core.native/debug/spawner" value="false"/>
+        <mapEntry key="org.eclipse.cdt.core.native/debug/spawner/details" value="false"/>
+        <mapEntry key="org.eclipse.cdt.core.native/debug/spawner/read_report" value="false"/>
+        <mapEntry key="org.eclipse.cdt.core.native/debug/spawner/starter" value="false"/>
+        <mapEntry key="org.eclipse.cdt.core.native/debug/win32/registry" value="false"/>
         <mapEntry key="org.eclipse.core.contenttype/debug" value="false"/>
         <mapEntry key="org.eclipse.core.expressions/debug/TypeExtensionManager" value="false"/>
         <mapEntry key="org.eclipse.core.expressions/tracePropertyResolving" value="false"/>
@@ -493,6 +499,10 @@
         <mapEntry key="org.eclipse.team.ui/dnd" value="false"/>
         <mapEntry key="org.eclipse.team.ui/history" value="false"/>
         <mapEntry key="org.eclipse.team.ui/syncmodels" value="false"/>
+        <mapEntry key="org.eclipse.tm.terminal.control/debug/log" value="false"/>
+        <mapEntry key="org.eclipse.tm.terminal.control/debug/log/VT100Backend" value="false"/>
+        <mapEntry key="org.eclipse.tm.terminal.control/debug/log/char" value="false"/>
+        <mapEntry key="org.eclipse.tm.terminal.control/debug/log/hover" value="false"/>
         <mapEntry key="org.eclipse.tm4e.ui/debug/log/GenerateTest" value="false"/>
         <mapEntry key="org.eclipse.tm4e.ui/debug/log/ThrowError" value="false"/>
         <mapEntry key="org.eclipse.tm4e.ui/trace" value="false"/>
@@ -575,12 +585,12 @@
         <mapEntry key="org.eclipse.ui/trace/perspectives" value="false"/>
         <mapEntry key="org.eclipse.ui/trace/sources" value="false"/>
         <mapEntry key="org.eclipse.update.configurator/debug" value="false"/>
-        <mapEntry key="org.dart4e/trace/debugserv/io" value="false"/>
-        <mapEntry key="org.dart4e/trace/langserv/init_options" value="false"/>
-        <mapEntry key="org.dart4e/trace/langserv/io" value="false"/>
-        <mapEntry key="org.dart4e/trace/langserv/method_results" value="false"/>
-        <mapEntry key="org.dart4e/trace/spellcheck/regions" value="false"/>
-        <mapEntry key="org.dart4e/trace/spellcheck/tokens" value="false"/>
+        <mapEntry key="org.haxe4e/trace/debugserv/io" value="false"/>
+        <mapEntry key="org.haxe4e/trace/langserv/init_options" value="false"/>
+        <mapEntry key="org.haxe4e/trace/langserv/io" value="false"/>
+        <mapEntry key="org.haxe4e/trace/langserv/method_results" value="false"/>
+        <mapEntry key="org.haxe4e/trace/spellcheck/regions" value="false"/>
+        <mapEntry key="org.haxe4e/trace/spellcheck/tokens" value="false"/>
     </mapAttribute>
     <booleanAttribute key="useCustomFeatures" value="false"/>
     <booleanAttribute key="useDefaultConfig" value="true"/>

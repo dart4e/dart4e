@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.editor.DartEditor;
-import org.dart4e.launch.LaunchConfigLauncher;
+import org.dart4e.launch.program.LaunchConfigLauncher;
 import org.dart4e.navigation.DartDependenciesUpdater;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;

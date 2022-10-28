@@ -2,7 +2,7 @@
  * Copyright 2022 by the Dart4E authors.
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.dart4e.launch;
+package org.dart4e.launch.program;
 
 import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
 
@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.launch.LaunchDebugConfig;
 import org.dart4e.localization.Messages;
 import org.dart4e.model.buildsystem.BuildSystem;
 import org.dart4e.prefs.DartProjectPreference;

@@ -4,7 +4,6 @@
  */
 package org.dart4e.launch.test;
 
-import org.dart4e.launch.LaunchConfigurations;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
@@ -28,6 +27,6 @@ public class LaunchTestTabGroup extends AbstractLaunchConfigurationTabGroup {
    public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
       super.setDefaults(configuration);
 
-      LaunchConfigurations.initialize(configuration);
+      LaunchTestConfigurations.initialize(configuration);
    }
 }
