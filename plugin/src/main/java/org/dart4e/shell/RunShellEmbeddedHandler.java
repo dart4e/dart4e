@@ -14,20 +14,21 @@ import org.dart4e.localization.Messages;
 import org.dart4e.model.DartSDK;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.prefs.DartWorkspacePreference;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.tm.terminal.view.core.TerminalServiceFactory;
 import org.eclipse.tm.terminal.view.core.interfaces.constants.ITerminalsConnectorConstants;
 import org.eclipse.tm.terminal.view.ui.interfaces.IUIConstants;
 import org.eclipse.tm.terminal.view.ui.view.TerminalsView;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.handlers.HandlerUtil;
 
+import de.sebthom.eclipse.commons.resources.Projects;
 import de.sebthom.eclipse.commons.resources.Resources;
 import de.sebthom.eclipse.commons.ui.Dialogs;
 import de.sebthom.eclipse.commons.ui.UI;
@@ -37,30 +38,16 @@ import net.sf.jstuff.core.net.NetUtils;
 /**
  * @author Sebastian Thomschke
  */
-public class RunShellEmbeddedShortcut implements ILaunchShortcut {
+public class RunShellEmbeddedHandler extends AbstractHandler {
 
    @Override
-   public void launch(final IEditorPart editor, final String mode) {
-      IProject project = null;
-      final var editorInput = editor.getEditorInput();
-      if (editorInput instanceof final IFileEditorInput fileInput) {
-         project = fileInput.getFile().getProject();
+   public @Nullable Object execute(final ExecutionEvent event) throws ExecutionException {
+      if (HandlerUtil.getCurrentSelection(event) instanceof final IStructuredSelection currentSelection) {
+         final var project = Projects.adapt(currentSelection.getFirstElement());
+         launchShell(project);
+         return Status.OK_STATUS;
       }
-
-      launchShell(project);
-   }
-
-   @Override
-   public void launch(final ISelection selection, final String mode) {
-      IProject project = null;
-      if (selection instanceof final StructuredSelection structuredSel) {
-         final var firstElement = structuredSel.getFirstElement();
-         if (firstElement instanceof final IResource res) {
-            project = res.getProject();
-         }
-      }
-
-      launchShell(project);
+      return Status.CANCEL_STATUS;
    }
 
    private void launchShell(@Nullable final IProject project) {
