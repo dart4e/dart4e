@@ -4,7 +4,7 @@
  */
 package org.dart4e.launch.program;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.viewers.ISelection;
@@ -65,8 +66,8 @@ public class RunDartFileShortcut implements ILaunchShortcut {
 
          // create a new launch config
          final var newLaunchConfig = ProgramLaunchConfigurations.create(dartFile);
-
-         if (Window.OK == DebugUITools.openLaunchConfigurationDialog(UI.getShell(), newLaunchConfig, Constants.LAUNCH_DART_GROUP, null)) {
+         final String groupId = "debug".equals(mode) ? IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP : Constants.LAUNCH_DART_GROUP;
+         if (Window.OK == DebugUITools.openLaunchConfigurationDialog(UI.getShell(), newLaunchConfig, groupId, null)) {
             newLaunchConfig.doSave();
          }
       } catch (final CoreException ex) {
