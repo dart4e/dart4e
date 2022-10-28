@@ -4,7 +4,7 @@
  */
 package org.dart4e.util.io;
 
-import static org.apache.commons.io.IOUtils.*;
+import static org.apache.commons.io.IOUtils.EOF;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,7 +17,7 @@ import org.apache.commons.io.output.ProxyOutputStream;
 public final class LinePrefixingTeeOutputStream extends ProxyOutputStream {
 
    private OutputStream branch;
-   private byte[] line = new byte[32 * 1024];
+   private byte[] line = new byte[64 * 1024];
    private int lineLength;
    private int prefixLength;
 
