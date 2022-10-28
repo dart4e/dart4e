@@ -49,7 +49,7 @@ public class ProgramLaunchConfigTab extends AbstractLaunchConfigurationTab {
 
    @Override
    public String getName() {
-      return Messages.Label_Dart_Configuration;
+      return Messages.Label_Dart_Program_Configuration;
    }
 
    @Override

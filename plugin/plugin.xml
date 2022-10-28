@@ -463,7 +463,7 @@
          id="org.dart4e.launch.dart_program.LaunchTabGroup"
          class="org.dart4e.launch.program.ProgramLaunchTabGroup"
          type="org.dart4e.launch.dart_program"
-         description="%DartLaunchGroup_Description" />
+         description="%DartProgramLaunchGroup_Description" />
    </extension>
 
    <extension point="org.eclipse.debug.ui.launchShortcuts">

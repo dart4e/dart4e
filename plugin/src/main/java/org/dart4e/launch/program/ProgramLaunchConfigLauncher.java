@@ -23,7 +23,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -34,7 +33,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.lsp4e.debug.DSPPlugin;
 import org.eclipse.lsp4e.debug.launcher.DSPLaunchDelegate.DSPLaunchDelegateLaunchBuilder;
-import org.eclipse.osgi.util.NLS;
 
 import de.sebthom.eclipse.commons.resources.Projects;
 import de.sebthom.eclipse.commons.ui.Dialogs;
@@ -137,28 +135,25 @@ public class ProgramLaunchConfigLauncher extends LaunchConfigurationDelegate {
             args.add("run");
             args.add(dartMainFilePath);
             args.addAll(programArgs);
-            final var job = Job.create(NLS.bind(Messages.Launch_RunningFile, dartMainFile.getProjectRelativePath()), jobMonitor -> {
-               try {
-                  final var proc = dartSDK.getDartProcessBuilder(!appendEnvVars) //
-                     .withArgs(args.toArray()) //
-                     .withEnvironment(env -> env.putAll(envVars)) //
-                     .withWorkingDirectory(workdir) //
-                     .onExit(process -> {
-                        try {
-                           RefreshUtil.refreshResources(config, jobMonitor);
-                        } catch (final CoreException e) {
-                           Dart4EPlugin.log().error(e);
-                        }
-                     }) //
-                     .start();
-                  final var processHandle = DebugPlugin.newProcess(launch, proc.getProcess(), dartSDK.getDartExecutable().toString());
-                  processHandle.setAttribute(PROCESS_ATTRIBUTE_PROJECT_NAME, project.getName());
-                  launch.addProcess(processHandle);
-               } catch (final IOException ex) {
-                  Dialogs.showStatus(Messages.Launch_CouldNotRunDart, Dart4EPlugin.status().createError(ex), true);
-               }
-            });
-            job.schedule();
+            try {
+               final var proc = dartSDK.getDartProcessBuilder(!appendEnvVars) //
+                  .withArgs(args.toArray()) //
+                  .withEnvironment(env -> env.putAll(envVars)) //
+                  .withWorkingDirectory(workdir) //
+                  .onExit(process -> {
+                     try {
+                        RefreshUtil.refreshResources(config, monitor);
+                     } catch (final CoreException e) {
+                        Dart4EPlugin.log().error(e);
+                     }
+                  }) //
+                  .start();
+               final var processHandle = DebugPlugin.newProcess(launch, proc.getProcess(), dartSDK.getDartExecutable().toString());
+               processHandle.setAttribute(PROCESS_ATTRIBUTE_PROJECT_NAME, project.getName());
+               launch.addProcess(processHandle);
+            } catch (final IOException ex) {
+               Dialogs.showStatus(Messages.Launch_CouldNotRunDart, Dart4EPlugin.status().createError(ex), true);
+            }
             return;
 
          default:
