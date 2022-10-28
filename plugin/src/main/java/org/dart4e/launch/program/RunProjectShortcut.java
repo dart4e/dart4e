@@ -57,7 +57,7 @@ public class RunProjectShortcut implements ILaunchShortcut {
 
    private void launchProject(final IProject project, final String mode) {
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
-      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_CONFIGURATION_ID);
+      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_PROGRAM_CONFIGURATION_ID);
 
       try {
          // search most recently launched configs for a matching one
@@ -80,7 +80,7 @@ public class RunProjectShortcut implements ILaunchShortcut {
          }
 
          // create a new launch config
-         final var newLaunchConfig = LaunchConfigurations.create(project);
+         final var newLaunchConfig = ProgramLaunchConfigurations.create(project);
 
          if (Window.OK == DebugUITools.openLaunchConfigurationDialog(UI.getShell(), newLaunchConfig, Constants.LAUNCH_DART_GROUP, null)) {
             newLaunchConfig.doSave();

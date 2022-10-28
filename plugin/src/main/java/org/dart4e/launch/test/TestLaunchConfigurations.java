@@ -21,7 +21,7 @@ import org.eclipse.jdt.annotation.Nullable;
 /**
  * @author Sebastian Thomschke
  */
-public abstract class LaunchTestConfigurations {
+public abstract class TestLaunchConfigurations {
 
    public static ILaunchConfigurationWorkingCopy create(final IProject project) throws CoreException {
       return create(project, null);

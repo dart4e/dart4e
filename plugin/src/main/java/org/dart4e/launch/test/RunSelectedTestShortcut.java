@@ -68,7 +68,7 @@ public class RunSelectedTestShortcut implements ILaunchShortcut {
          }
 
          // create a new launch config
-         final var newLaunchConfig = LaunchTestConfigurations.create(project, testResourceAsString);
+         final var newLaunchConfig = TestLaunchConfigurations.create(project, testResourceAsString);
 
          if (Window.OK == DebugUITools.openLaunchConfigurationDialog(UI.getShell(), newLaunchConfig, Constants.LAUNCH_DART_GROUP, null)) {
             newLaunchConfig.doSave();

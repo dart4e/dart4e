@@ -443,8 +443,8 @@
    <!-- ===================================== -->
    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-         id="org.dart4e.launch.dart"
-         delegate="org.dart4e.launch.program.LaunchConfigLauncher"
+         id="org.dart4e.launch.dart_program"
+         delegate="org.dart4e.launch.program.ProgramLaunchConfigLauncher"
          modes="run,debug"
          name="%Label_Dart_Program"
          sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
@@ -453,22 +453,22 @@
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
-         id="org.dart4e.launch.dart.image"
-         configTypeID="org.dart4e.launch.dart"
+         id="org.dart4e.launch.dart_program.image"
+         configTypeID="org.dart4e.launch.dart_program"
          icon="src/main/resources/images/logo/dart_icon.png" />
    </extension>
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-         id="org.dart4e.launch.LaunchTabGroup"
-         class="org.dart4e.launch.program.LaunchTabGroup"
-         type="org.dart4e.launch.dart"
+         id="org.dart4e.launch.dart_program.LaunchTabGroup"
+         class="org.dart4e.launch.program.ProgramLaunchTabGroup"
+         type="org.dart4e.launch.dart_program"
          description="%DartLaunchGroup_Description" />
    </extension>
 
    <extension point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-         id="org.dart4e.launch.dart.shortcut.run_project"
+         id="org.dart4e.launch.dart_program.shortcut.run_project"
          class="org.dart4e.launch.program.RunProjectShortcut"
          label="%Label_Dart_Program"
          icon="src/main/resources/images/logo/dart_icon.png"
@@ -489,7 +489,7 @@
          </contextualLaunch>
       </shortcut>
       <shortcut
-         id="org.dart4e.launch.dart.shortcut.run_file"
+         id="org.dart4e.launch.dart_program.shortcut.run_file"
          class="org.dart4e.launch.program.RunDartFileShortcut"
          label="%Label_Dart_Program"
          icon="src/main/resources/images/logo/dart_icon.png"
@@ -519,7 +519,7 @@
    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
          id="org.dart4e.launch.dart_test"
-         delegate="org.dart4e.launch.program.LaunchConfigLauncher"
+         delegate="org.dart4e.launch.program.ProgramLaunchConfigLauncher"
          modes="run,debug"
          name="%Label_Dart_Test"
          sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
@@ -528,22 +528,22 @@
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
-         id="org.dart4e.launch.dart.image"
+         id="org.dart4e.launch.dart_test.image"
          configTypeID="org.dart4e.launch.dart_test"
          icon="src/main/resources/images/logo/dart_icon_test.png" />
    </extension>
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-         id="org.dart4e.launch.LaunchTabGroup"
-         class="org.dart4e.launch.test.LaunchTestTabGroup"
+         id="org.dart4e.launch.dart_test.LaunchTabGroup"
+         class="org.dart4e.launch.test.TestLaunchTabGroup"
          type="org.dart4e.launch.dart_test"
          description="%DartTestLaunchGroup_Description" />
    </extension>
 
    <extension point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-         id="org.dart4e.launch.dart.shortcut.run_project_tests"
+         id="org.dart4e.launch.dart_test.shortcut.run_project_tests"
          class="org.dart4e.launch.test.RunProjectTestsShortcut"
          label="%Label_Dart_Test"
          icon="src/main/resources/images/logo/dart_icon_test.png"
@@ -564,7 +564,7 @@
          </contextualLaunch>
       </shortcut>
       <shortcut
-         id="org.dart4e.launch.dart.shortcut.run_selected_test"
+         id="org.dart4e.launch.dart_test.shortcut.run_selected_test"
          class="org.dart4e.launch.test.RunSelectedTestShortcut"
          label="%Label_Dart_Test"
          icon="src/main/resources/images/logo/dart_icon_test.png"

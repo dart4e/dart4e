@@ -80,7 +80,7 @@ public class RunProjectTestsShortcut implements ILaunchShortcut {
          }
 
          // create a new launch config
-         final var newLaunchConfig = LaunchTestConfigurations.create(project);
+         final var newLaunchConfig = TestLaunchConfigurations.create(project);
 
          if (Window.OK == DebugUITools.openLaunchConfigurationDialog(UI.getShell(), newLaunchConfig, Constants.LAUNCH_DART_GROUP, null)) {
             newLaunchConfig.doSave();

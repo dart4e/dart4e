@@ -37,7 +37,7 @@ public interface Constants {
    /**
     * id of <launchConfigurationType/> as specified in plugin.xml
     */
-   String LAUNCH_DART_CONFIGURATION_ID = "org.dart4e.launch.dart";
+   String LAUNCH_DART_PROGRAM_CONFIGURATION_ID = "org.dart4e.launch.dart_program";
 
    /**
     * id of <launchConfigurationType/> as specified in plugin.xml

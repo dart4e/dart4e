@@ -16,17 +16,17 @@ import org.eclipse.debug.ui.RefreshTab;
  *
  * @author Sebastian Thomschke
  */
-public class LaunchTabGroup extends AbstractLaunchConfigurationTabGroup {
+public class ProgramLaunchTabGroup extends AbstractLaunchConfigurationTabGroup {
 
    @Override
    public void createTabs(final ILaunchConfigurationDialog dialog, final String mode) {
-      setTabs(new LaunchConfigTab(), new RefreshTab(), new EnvironmentTab(), new CommonTab());
+      setTabs(new ProgramLaunchConfigTab(), new RefreshTab(), new EnvironmentTab(), new CommonTab());
    }
 
    @Override
    public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
       super.setDefaults(configuration);
 
-      LaunchConfigurations.initialize(configuration);
+      ProgramLaunchConfigurations.initialize(configuration);
    }
 }

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.editor.DartEditor;
-import org.dart4e.launch.program.LaunchConfigLauncher;
+import org.dart4e.launch.program.ProgramLaunchConfigLauncher;
 import org.dart4e.navigation.DartDependenciesUpdater;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -47,7 +47,7 @@ public final class DartConsoleLinkifier implements IPatternMatchListenerDelegate
       if (console instanceof final DartConsole dartConsole)
          return dartConsole.project;
       if (console instanceof final IConsole debugConsole) {
-         final var projectName = debugConsole.getProcess().getAttribute(LaunchConfigLauncher.PROCESS_ATTRIBUTE_PROJECT_NAME);
+         final var projectName = debugConsole.getProcess().getAttribute(ProgramLaunchConfigLauncher.PROCESS_ATTRIBUTE_PROJECT_NAME);
          if (projectName == null || projectName.isEmpty())
             return null;
          final var project = Projects.getProject(projectName);

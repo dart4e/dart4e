@@ -22,13 +22,13 @@ import org.eclipse.debug.ui.RefreshTab;
 /**
  * @author Sebastian Thomschke
  */
-public abstract class LaunchConfigurations {
+public abstract class ProgramLaunchConfigurations {
 
    public static ILaunchConfigurationWorkingCopy create(final IFile dartFile) throws CoreException {
       final var project = asNonNull(dartFile.getProject());
 
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
-      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_CONFIGURATION_ID);
+      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_PROGRAM_CONFIGURATION_ID);
       final var newLaunchConfig = launchConfigType.newInstance(null, launchMgr.generateLaunchConfigurationName(project.getName() + " ("
          + dartFile.getName() + ")"));
       initialize(newLaunchConfig, dartFile);
@@ -42,7 +42,7 @@ public abstract class LaunchConfigurations {
          return create(project.getFile(dartBuildFile.getExecutables().get(0)));
 
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
-      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_CONFIGURATION_ID);
+      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_PROGRAM_CONFIGURATION_ID);
       final var newLaunchConfig = launchConfigType.newInstance(null, launchMgr.generateLaunchConfigurationName(project.getName()));
       initialize(newLaunchConfig, project);
       return newLaunchConfig;

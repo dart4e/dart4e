@@ -47,7 +47,7 @@ import net.sf.jstuff.core.Strings;
  * @author Sebastian Thomschke
  */
 @SuppressWarnings("restriction")
-public class LaunchConfigLauncher extends LaunchConfigurationDelegate {
+public class ProgramLaunchConfigLauncher extends LaunchConfigurationDelegate {
 
    /**
     * Used to get/set the associated project name from a Debug Console's process, e.g.

@@ -49,7 +49,7 @@ public class RunDartFileShortcut implements ILaunchShortcut {
 
    private void launchDartFile(final IFile dartFile, final String mode) {
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
-      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_CONFIGURATION_ID);
+      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_PROGRAM_CONFIGURATION_ID);
 
       final var project = asNonNull(dartFile.getProject());
       try {
@@ -64,7 +64,7 @@ public class RunDartFileShortcut implements ILaunchShortcut {
          }
 
          // create a new launch config
-         final var newLaunchConfig = LaunchConfigurations.create(dartFile);
+         final var newLaunchConfig = ProgramLaunchConfigurations.create(dartFile);
 
          if (Window.OK == DebugUITools.openLaunchConfigurationDialog(UI.getShell(), newLaunchConfig, Constants.LAUNCH_DART_GROUP, null)) {
             newLaunchConfig.doSave();
