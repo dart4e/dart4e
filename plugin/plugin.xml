@@ -519,7 +519,7 @@
    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
          id="org.dart4e.launch.dart_test"
-         delegate="org.dart4e.launch.program.ProgramLaunchConfigLauncher"
+         delegate="org.dart4e.launch.test.TestLaunchConfigLauncher"
          modes="run,debug"
          name="%Label_Dart_Test"
          sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
