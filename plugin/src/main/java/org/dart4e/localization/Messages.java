@@ -22,11 +22,15 @@ public final class Messages extends NLS {
 
    // CHECKSTYLE:IGNORE .* FOR NEXT 100 LINES
 
+   public static String Label_Dart_Command_Configuration = "Dart Command Configuration";
    public static String Label_Dart_Program_Configuration = "Dart Program Configuration";
    public static String Label_Dart_Test_Configuration = "Dart Test Configuration";
    public static String Label_Dart_SDK = "Dart SDK";
    public static String Label_Dart_File = lazyNonNull();
    public static String Label_Dart_Project = lazyNonNull();
+   public static String Label_Dart_Pub_Get = lazyNonNull();
+   public static String Label_Dart_Pub_Downgrade = lazyNonNull();
+   public static String Label_Dart_Pub_Upgrade = lazyNonNull();
    public static String Label_Name = "Name";
    public static String Label_Version = "Version";
    public static String Label_Path = "Path";

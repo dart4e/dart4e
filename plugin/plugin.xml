@@ -439,6 +439,61 @@
 
 
    <!-- ===================================== -->
+   <!-- Launch Configuration - Dart Command   -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+         id="org.dart4e.launch.dart_command"
+         delegate="org.dart4e.launch.command.CommandLaunchConfigLauncher"
+         modes="run"
+         name="%Label_Dart_Command"
+         sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+         sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+         id="org.dart4e.launch.dart_command.image"
+         configTypeID="org.dart4e.launch.dart_command"
+         icon="src/main/resources/images/logo/dart_icon_command.png" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+         id="org.dart4e.launch.dart_command.LaunchTabGroup"
+         class="org.dart4e.launch.command.CommandLaunchTabGroup"
+         type="org.dart4e.launch.dart_command"
+         description="%DartCommandLaunchGroup_Description" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.dart4e.launch.command.RunCommandShortcut"
+            icon="src/main/resources/images/logo/dart_icon_command.png"
+            id="org.dart4e.launch.dart.shortcut.run_command"
+            label="%Label_Dart_Command_Menu_Item"
+            modes="run"
+            path="org.dart4e.launch.2">
+         <contextualLaunch>
+            <enablement>
+               <!-- see https://github.com/eclipse-platform/eclipse.platform.ui/blob/632e59d1bbec83dd81994befe4bfbf6a3db0de28/bundles/org.eclipse.ui.workbench/Eclipse%20UI/org/eclipse/ui/ISources.java#L297 -->
+               <with variable="selection">
+                  <count value="1" />
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+
+
+
+   <!-- ===================================== -->
    <!-- Launch Configuration - Dart Program   -->
    <!-- ===================================== -->
    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
@@ -472,7 +527,8 @@
          class="org.dart4e.launch.program.RunProjectShortcut"
          label="%Label_Dart_Program"
          icon="src/main/resources/images/logo/dart_icon.png"
-         modes="run,debug">
+         modes="run,debug"
+         path="org.dart4e.launch.1">
          <contextualLaunch>
             <enablement>
                <!-- see https://github.com/eclipse-platform/eclipse.platform.ui/blob/632e59d1bbec83dd81994befe4bfbf6a3db0de28/bundles/org.eclipse.ui.workbench/Eclipse%20UI/org/eclipse/ui/ISources.java#L297 -->
@@ -514,7 +570,7 @@
 
 
    <!-- ===================================== -->
-   <!-- Launch Configuration - Dart Test       -->
+   <!-- Launch Configuration - Dart Test      -->
    <!-- ===================================== -->
    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
@@ -547,7 +603,8 @@
          class="org.dart4e.launch.test.RunProjectTestsShortcut"
          label="%Label_Dart_Test"
          icon="src/main/resources/images/logo/dart_icon_test.png"
-         modes="run,debug">
+         modes="run,debug"
+         path="org.dart4e.launch.1">
          <contextualLaunch>
             <enablement>
                <!-- see https://github.com/eclipse-platform/eclipse.platform.ui/blob/632e59d1bbec83dd81994befe4bfbf6a3db0de28/bundles/org.eclipse.ui.workbench/Eclipse%20UI/org/eclipse/ui/ISources.java#L297 -->
@@ -590,6 +647,102 @@
             </enablement>
          </contextualLaunch>
       </shortcut>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Dart Pub Get                          -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.commands">
+      <command id="org.dart4e.commands.run_pub_get" name="%Label_Dart_Pub_Get" />
+   </extension>
+
+   <extension point="org.eclipse.ui.handlers">
+      <handler
+         class="org.dart4e.launch.command.RunPubGetHandler"
+         commandId="org.dart4e.commands.run_pub_get" />
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <!-- possible location URIs: https://blogs.itemis.com/auf-einen-blick-eclipse-actions-f%C3%BCr-project-und-package-explorer -->
+      <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu label="Dart" icon="src/main/resources/images/logo/dart_icon.png" id="org.dart4e.projectMenu">
+            <command commandId="org.dart4e.commands.run_pub_get" icon="platform:/plugin/org.eclipse.ui/icons/full/elcl16/refresh_nav.png">
+               <visibleWhen>
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Dart Pub Downgrade                    -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.commands">
+      <command id="org.dart4e.commands.run_pub_downgrade" name="%Label_Dart_Pub_Downgrade" />
+   </extension>
+
+   <extension point="org.eclipse.ui.handlers">
+      <handler
+         class="org.dart4e.launch.command.RunPubDowngradeHandler"
+         commandId="org.dart4e.commands.run_pub_downgrade" />
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <!-- possible location URIs: https://blogs.itemis.com/auf-einen-blick-eclipse-actions-f%C3%BCr-project-und-package-explorer -->
+      <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu label="Dart" icon="src/main/resources/images/logo/dart_icon.png" id="org.dart4e.projectMenu">
+            <command commandId="org.dart4e.commands.run_pub_downgrade" icon="platform:/plugin/org.eclipse.ui.ide/icons/full/etool16/next_nav.png">
+               <visibleWhen>
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Dart Pub Upgrade                      -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.commands">
+      <command id="org.dart4e.commands.run_pub_upgrade" name="%Label_Dart_Pub_Upgrade" />
+   </extension>
+
+   <extension point="org.eclipse.ui.handlers">
+      <handler
+         class="org.dart4e.launch.command.RunPubUpgradeHandler"
+         commandId="org.dart4e.commands.run_pub_upgrade" />
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <!-- possible location URIs: https://blogs.itemis.com/auf-einen-blick-eclipse-actions-f%C3%BCr-project-und-package-explorer -->
+      <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu label="Dart" icon="src/main/resources/images/logo/dart_icon.png" id="org.dart4e.projectMenu">
+            <command commandId="org.dart4e.commands.run_pub_upgrade" icon="platform:/plugin/org.eclipse.ui.ide/icons/full/etool16/prev_nav.png">
+               <visibleWhen>
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
+         </menu>
+      </menuContribution>
    </extension>
 
 
