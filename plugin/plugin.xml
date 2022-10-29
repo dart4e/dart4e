@@ -612,9 +612,9 @@
 
    <extension point="org.eclipse.ui.menus">
       <!-- possible location URIs: https://blogs.itemis.com/auf-einen-blick-eclipse-actions-f%C3%BCr-project-und-package-explorer -->
-      <menuContribution locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?after=additions">
+      <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <menu label="Dart" icon="src/main/resources/images/logo/dart_icon.png" id="org.dart4e.projectMenu">
-            <command commandId="org.dart4e.commands.run_dart_shell_embedded" icon="src/main/resources/images/logo/dart_icon_shell.png">
+            <command commandId="org.dart4e.commands.run_dart_shell_embedded" icon="platform:/plugin/org.eclipse.ui.console/icons/full/eview16/console_view.png">
                <visibleWhen>
                   <iterate>
                      <and>
@@ -624,7 +624,7 @@
                   </iterate>
                </visibleWhen>
             </command>
-            <command commandId="org.dart4e.commands.run_dart_shell_external" icon="src/main/resources/images/logo/dart_icon_shell.png">
+            <command commandId="org.dart4e.commands.run_dart_shell_external" icon="src/main/resources/images/launch/external_terminal.png">
                <visibleWhen>
                   <iterate>
                      <and>
