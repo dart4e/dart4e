@@ -46,7 +46,7 @@ public final class DartSDK implements Comparable<DartSDK> {
    public static final String ENV_PUB_CACHE = "PUB_CACHE";
 
    @JsonIgnore
-   private static final Supplier<@Nullable DartSDK> DARTSDK_FROM_PATH = Suppliers.memoize(() -> {
+   private static final Supplier<@Nullable DartSDK> SDK_FROM_PATH = Suppliers.memoize(() -> {
       final var dartHome = SystemUtils.getEnvironmentVariable(ENV_DART_HOME, "");
       if (Strings.isBlank(dartHome))
          return null;
@@ -61,7 +61,7 @@ public final class DartSDK implements Comparable<DartSDK> {
 
       sdk = new DartSDK(dartExe.getParent().getParent());
       return sdk.isValid() ? sdk : null;
-   }, dartSDK -> dartSDK == null ? 15_000 : 60_000);
+   }, sdk -> sdk == null ? 15_000 : 60_000);
 
    /**
     * Tries to locate the Dart SDK via DART_HOME and PATH environment variables
@@ -70,7 +70,7 @@ public final class DartSDK implements Comparable<DartSDK> {
     */
    @Nullable
    public static DartSDK fromPath() {
-      return DARTSDK_FROM_PATH.get();
+      return SDK_FROM_PATH.get();
    }
 
    private String name;
