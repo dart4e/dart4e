@@ -14,7 +14,7 @@ public interface Constants {
    /** see https://dart.dev/tools/pub/pubspec#name */
    Pattern VALID_PROJECT_NAME_PATTERN = Pattern.compile("^[a-z0-9_]+$");
 
-   String IMAGE_ICON = "src/main/resources/images/logo/dart_icon.png";
+   String IMAGE_DART_ICON = "src/main/resources/images/logo/dart_icon.png";
    String IMAGE_NAVIGATOR_DART_PROJECT = "src/main/resources/images/navigator/dart_project.png";
    String IMAGE_DART_DEPENDENCIES = "src/main/resources/images/navigator/classpath.png";
    String IMAGE_DART_FILE = "src/main/resources/images/navigator/dart_file.png";

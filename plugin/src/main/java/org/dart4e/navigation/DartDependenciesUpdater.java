@@ -207,5 +207,4 @@ public final class DartDependenciesUpdater implements IResourceChangeListener {
          return Dart4EPlugin.status().createError(ex, "Failed to update 'Dart Dependencies' list.");
       }
    }
-
 }

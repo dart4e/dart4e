@@ -44,7 +44,7 @@ public class ProgramLaunchConfigTab extends AbstractLaunchConfigurationTab {
 
    @Override
    public @Nullable Image getImage() {
-      return Dart4EPlugin.get().getImageRegistry().get(Constants.IMAGE_ICON);
+      return Dart4EPlugin.get().getImageRegistry().get(Constants.IMAGE_DART_ICON);
    }
 
    @Override
