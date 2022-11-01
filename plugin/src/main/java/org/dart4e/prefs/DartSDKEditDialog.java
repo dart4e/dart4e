@@ -4,14 +4,14 @@
  */
 package org.dart4e.prefs;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static org.dart4e.localization.Messages.*;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.dart4e.localization.Messages;
 import org.dart4e.model.DartSDK;
 import org.dart4e.util.ui.GridDatas;
 import org.eclipse.jdt.annotation.Nullable;
@@ -40,13 +40,13 @@ import net.sf.jstuff.core.ref.MutableObservableRef;
  * @author Sebastian Thomschke
  */
 public class DartSDKEditDialog extends TitleAreaDialog {
-   public final MutableObservableRef<@Nullable String> dartSDKName = MutableObservableRef.of(null);
-   public final MutableObservableRef<@Nullable Path> dartSDKPath = MutableObservableRef.of(null);
+   public final MutableObservableRef<@Nullable String> sdkName = MutableObservableRef.of(null);
+   public final MutableObservableRef<@Nullable Path> sdkPath = MutableObservableRef.of(null);
 
    private boolean isEditSDK;
 
-   private Text txtName = lazyNonNull();
-   private Text txtDartPath = lazyNonNull();
+   private Text txtSDKName = lazyNonNull();
+   private Text txtSDKPath = lazyNonNull();
 
    /**
     * @wbp.parser.constructor
@@ -59,8 +59,8 @@ public class DartSDKEditDialog extends TitleAreaDialog {
    public DartSDKEditDialog(final Shell parentShell, final DartSDK sdk) {
       super(parentShell);
       isEditSDK = true;
-      dartSDKName.set(sdk.getName());
-      dartSDKPath.set(sdk.getInstallRoot());
+      sdkName.set(sdk.getName());
+      sdkPath.set(sdk.getInstallRoot());
    }
 
    @Override
@@ -87,7 +87,7 @@ public class DartSDKEditDialog extends TitleAreaDialog {
 
    @Override
    protected Control createDialogArea(final Composite parent) {
-      setTitle(Messages.Label_Dart_SDK);
+      setTitle(Label_Dart_SDK);
       setMessage("Configure an installed Dart SDK.");
 
       final var area = (Composite) super.createDialogArea(parent);
@@ -100,53 +100,53 @@ public class DartSDKEditDialog extends TitleAreaDialog {
       container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
       /*
-       * Dart SDK Name
+       * SDK Name
        */
       final var lblName = new Label(container, SWT.NONE);
       lblName.setLayoutData(GridDatas.alignRight());
-      lblName.setText(Messages.Label_Name + ":");
-      txtName = new Text(container, SWT.BORDER);
-      txtName.setLayoutData(GridDatas.fillHorizontalExcessive(2));
-      Texts.bind(txtName, dartSDKName);
-      Texts.onModified(txtName, () -> setErrorMessage(null));
+      lblName.setText(Label_Name + ":");
+      txtSDKName = new Text(container, SWT.BORDER);
+      txtSDKName.setLayoutData(GridDatas.fillHorizontalExcessive(2));
+      Texts.bind(txtSDKName, sdkName);
+      Texts.onModified(txtSDKName, () -> setErrorMessage(null));
 
       /*
-       * Dart Path
+       * SDK Path
        */
       final var lblPath = new Label(container, SWT.NONE);
       lblPath.setLayoutData(GridDatas.alignRight());
-      lblPath.setText(Messages.Label_Path + " (Dart SDK):");
-      txtDartPath = new Text(container, SWT.BORDER);
-      txtDartPath.setEditable(false);
-      txtDartPath.setLayoutData(GridDatas.fillHorizontalExcessive());
-      Texts.bind(txtDartPath, dartSDKPath, Paths::get, Strings::emptyIfNull);
-      Texts.onModified(txtDartPath, () -> setErrorMessage(null));
+      lblPath.setText(Label_Path + " (" + Label_Dart_SDK + "):");
+      txtSDKPath = new Text(container, SWT.BORDER);
+      txtSDKPath.setEditable(false);
+      txtSDKPath.setLayoutData(GridDatas.fillHorizontalExcessive());
+      Texts.bind(txtSDKPath, sdkPath, Paths::get, Strings::emptyIfNull);
+      Texts.onModified(txtSDKPath, () -> setErrorMessage(null));
 
       final var btnBrowse = new Button(container, SWT.NONE);
-      btnBrowse.setText(Messages.Label_Browse);
-      Buttons.onSelected(btnBrowse, this::onBrowseForDartSDKButton);
+      btnBrowse.setText(Label_Browse);
+      Buttons.onSelected(btnBrowse, this::onBrowseForSDKButton);
 
       return area;
    }
 
    @Override
    protected void okPressed() {
-      if (Strings.isBlank(dartSDKName.get())) {
-         setErrorMessage(NLS.bind(Messages.Error_ValueMustBeSpecified, Messages.Label_Name));
-         txtName.setFocus();
+      if (Strings.isBlank(sdkName.get())) {
+         setErrorMessage(NLS.bind(Error_ValueMustBeSpecified, Label_Name));
+         txtSDKName.setFocus();
          return;
       }
 
-      final var sdkPath = dartSDKPath.get();
+      final var sdkPath = this.sdkPath.get();
       if (sdkPath == null) {
-         setErrorMessage(NLS.bind(Messages.Error_ValueMustBeSpecified, Messages.Label_Path));
-         txtDartPath.setFocus();
+         setErrorMessage(NLS.bind(Error_ValueMustBeSpecified, Label_Path));
+         txtSDKPath.setFocus();
          return;
       }
 
       if (!Files.isDirectory(sdkPath) || !new DartSDK("whatever", sdkPath).isValid()) {
-         setErrorMessage(Messages.SDKPathInvalid);
-         txtDartPath.setFocus();
+         setErrorMessage(NLS.bind(SDKPathInvalid, Label_Dart_SDK));
+         txtSDKPath.setFocus();
          return;
       }
 
@@ -154,17 +154,17 @@ public class DartSDKEditDialog extends TitleAreaDialog {
       super.okPressed();
    }
 
-   protected void onBrowseForDartSDKButton() {
+   protected void onBrowseForSDKButton() {
       final var dlg = new DirectoryDialog(getShell());
-      dlg.setText(Messages.Label_Path + ": Dart SDK");
-      dlg.setMessage("Select a directory containing a Dart SDK");
+      dlg.setText(Label_Path + ": " + Label_Dart_SDK);
+      dlg.setMessage("Select a directory containing the Dart SDK");
 
       @Nullable
-      String dir = txtDartPath.getText();
+      String dir = txtSDKPath.getText();
       if (Strings.isBlank(dir)) {
-         final var p = DartSDK.fromPath();
-         if (p != null) {
-            dir = p.getInstallRoot().toString();
+         final var sdkFromPath = DartSDK.fromPath();
+         if (sdkFromPath != null) {
+            dir = sdkFromPath.getInstallRoot().toString();
          }
       }
       while (true) {
@@ -173,17 +173,17 @@ public class DartSDKEditDialog extends TitleAreaDialog {
          if (dir == null)
             return;
 
-         final var dartSDK = new DartSDK("whatever", Paths.get(dir));
-         if (dartSDK.isValid()) {
-            txtDartPath.setText(dir);
-            if (Strings.isEmpty(txtName.getText())) {
-               txtName.setText(new File(dir).getName());
+         final var sdk = new DartSDK("whatever", Paths.get(dir));
+         if (sdk.isValid()) {
+            txtSDKPath.setText(dir);
+            if (Strings.isEmpty(txtSDKName.getText())) {
+               txtSDKName.setText(new File(dir).getName());
             }
             return;
          }
 
-         Dialogs.showError(Messages.SDKPathInvalid, NLS.bind(Messages.SDKPathInvalid_Descr, dir));
-         txtDartPath.setFocus();
+         Dialogs.showError(NLS.bind(SDKPathInvalid, Label_Dart_SDK), NLS.bind(SDKPathInvalid_Descr, dir, Label_Dart_SDK));
+         txtSDKPath.setFocus();
       }
    }
 }

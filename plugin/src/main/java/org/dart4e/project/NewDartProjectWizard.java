@@ -77,11 +77,11 @@ public final class NewDartProjectWizard extends Wizard implements INewWizard {
 
                // generate the Dart Template files
                DartConsole.runWithConsole(monitor, "Creating new project layout...", newProject, "create", "--force", "-t",
-                  newDartProjectPage.selectedTemplate.get(), ".");
+                  newDartProjectPage.template.get(), ".");
 
                DartProjectNature.addToProject(newProject);
                final var prefs = DartProjectPreference.get(newProject);
-               prefs.setAlternateDartSDK(newDartProjectPage.selectedAltSDK.get());
+               prefs.setAlternateDartSDK(newDartProjectPage.altSDK.get());
                prefs.save();
 
                newProject.open(monitor);
@@ -100,18 +100,18 @@ public final class NewDartProjectWizard extends Wizard implements INewWizard {
          final IStatus status;
          if (exUnwrapped.getCause() instanceof final CoreException exCore) {
             if (exCore.getStatus().getCode() == IResourceStatus.CASE_VARIANT_EXISTS) {
-               status = Dart4EPlugin.status().createError(exCore, Messages.NewDartProject_CaseVariantExistsError, projHandle.getName());
+               status = Dart4EPlugin.status().createError(exCore, Messages.Error_CaseVariantExistsError, projHandle.getName());
             } else {
-               status = Dart4EPlugin.status().createStatus(exCore.getStatus().getSeverity(), exCore,
-                  Messages.NewDartProject_UnexpectedError, exCore.getMessage());
+               status = Dart4EPlugin.status().createStatus(exCore.getStatus().getSeverity(), exCore, Messages.Error_UnexpectedError, exCore
+                  .getMessage());
                Dart4EPlugin.log().log(status);
             }
          } else {
-            status = Dart4EPlugin.status().createError(exUnwrapped, Messages.NewDartProject_UnexpectedError, exUnwrapped.getMessage());
+            status = Dart4EPlugin.status().createError(exUnwrapped, Messages.Error_UnexpectedError, exUnwrapped.getMessage());
             Dart4EPlugin.log().log(status);
          }
 
-         Dialogs.showStatus(Messages.NewDartProject_ErrorTitle, status, false);
+         Dialogs.showStatus(Messages.Error_ProjectCreationProblem, status, false);
          return false;
       }
 

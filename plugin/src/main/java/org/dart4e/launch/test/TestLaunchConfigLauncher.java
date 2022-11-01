@@ -17,7 +17,6 @@ import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.launch.LaunchDebugConfig;
 import org.dart4e.localization.Messages;
-import org.dart4e.model.buildsystem.BuildSystem;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.util.TreeBuilder;
 import org.eclipse.core.resources.IProject;
@@ -74,12 +73,6 @@ public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
       final var dartSDK = prefs.getEffectiveDartSDK();
       if (dartSDK == null || !dartSDK.isValid()) {
          Dialogs.showError(Messages.Prefs_NoSDKRegistered_Title, Messages.Prefs_NoSDKRegistered_Body);
-         return;
-      }
-
-      final var buildSystem = prefs.getBuildSystem();
-      if (buildSystem != BuildSystem.DART && buildSystem != BuildSystem.FLUTTER) {
-         Dialogs.showError("Unsupported Build System", "Running code via " + buildSystem + " is not yet supported.");
          return;
       }
 

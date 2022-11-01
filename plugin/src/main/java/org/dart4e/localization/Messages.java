@@ -42,10 +42,14 @@ public final class Messages extends NLS {
    public static String Label_Default = "Default";
    public static String Label_Alternative = "Alternative";
 
+   public static String Error_CaseVariantExistsError = "The file system is not case sensitive. An existing file or directory conflicts with \"{0}\".";
    public static String Error_ValueMustBeSpecified = "\"{0}\" must be specified.";
+   public static String Error_UnexpectedError = "Unexpected error: {0}";
+   public static String Error_InvalidProjectName = "Invalid project name. See https://dart.dev/tools/pub/pubspec#name for more information.";
+   public static String Error_ProjectCreationProblem = "Project creation problem";
 
-   public static String SDKPathInvalid = "Dart SDK Path invalid.";
-   public static String SDKPathInvalid_Descr = "\"{0}\" does not point to a valid Dart SDK";
+   public static String SDKPathInvalid = "{0} Path invalid.";
+   public static String SDKPathInvalid_Descr = "\"{0}\" does not point to a valid {1}";
 
    public static String Prefs_GeneralDescription = "General settings for Dart development:";
    public static String Prefs_ManageSDKsDescription = "Manage installed Dart SDKs. By default the checked SDK will be used for newly created Dart projects:";
@@ -64,9 +68,6 @@ public final class Messages extends NLS {
    public static String NewDartProject = "New Dart Project";
    public static String NewDartProject_Descr = lazyNonNull();
    public static String NewDartProject_SDKNotFound_Message = "No valid Dart SDK found! Please specify a valid SDK on the Dart preference page.";
-   public static String NewDartProject_ErrorTitle = "Project Creation Problem";
-   public static String NewDartProject_UnexpectedError = "Unexpected error: {0}";
-   public static String NewDartProject_CaseVariantExistsError = "The file system is not case sensitive. An existing file or directory conflicts with \"{0}\".";
 
    public static String Launch_NoProjectSelected = "No project selected";
    public static String Launch_NoProjectSelected_Descr = "Please select a project to launch";

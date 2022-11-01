@@ -9,6 +9,7 @@ import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 import java.util.List;
 
 import org.dart4e.Constants;
+import org.dart4e.model.buildsystem.BuildFile;
 import org.dart4e.model.buildsystem.DartBuildFile;
 import org.dart4e.prefs.DartProjectPreference;
 import org.eclipse.core.resources.IFile;
@@ -36,8 +37,7 @@ public abstract class ProgramLaunchConfigurations {
    }
 
    public static ILaunchConfigurationWorkingCopy create(final IProject project) throws CoreException {
-      final var prefs = DartProjectPreference.get(project);
-      final var buildFile = prefs.getBuildSystem().findBuildFile(project);
+      final var buildFile = BuildFile.of(project);
       if (buildFile instanceof final DartBuildFile dartBuildFile && !dartBuildFile.getExecutables().isEmpty())
          return create(project.getFile(dartBuildFile.getExecutables().get(0)));
 

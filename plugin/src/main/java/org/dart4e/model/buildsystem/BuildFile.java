@@ -4,7 +4,7 @@
  */
 package org.dart4e.model.buildsystem;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNullUnsafe;
 
 import java.util.Set;
 
@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.annotation.Nullable;
 
 import net.sf.jstuff.core.Strings;
 
@@ -20,6 +21,10 @@ import net.sf.jstuff.core.Strings;
  * @author Sebastian Thomschke
  */
 public abstract class BuildFile {
+
+   public static @Nullable BuildFile of(final IProject project) {
+      return BuildSystem.guessBuildSystemOfProject(project).findBuildFile(project);
+   }
 
    public final BuildSystem buildSystem;
    public final IFile location;

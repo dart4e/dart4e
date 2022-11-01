@@ -4,10 +4,15 @@
  */
 package org.dart4e;
 
+import java.util.regex.Pattern;
+
 /**
  * @author Sebastian Thomschke
  */
 public interface Constants {
+
+   /** see https://dart.dev/tools/pub/pubspec#name */
+   Pattern VALID_PROJECT_NAME_PATTERN = Pattern.compile("^[a-z0-9_]+$");
 
    String IMAGE_ICON = "src/main/resources/images/logo/dart_icon.png";
    String IMAGE_NAVIGATOR_DART_PROJECT = "src/main/resources/images/navigator/dart_project.png";
@@ -34,23 +39,15 @@ public interface Constants {
    String PUBSPEC_LOCK_FILENAME = "pubspec.lock";
    String PUBSPEC_YAML_FILENAME = "pubspec.yaml";
 
-   /**
-    * id of <launchConfigurationType/> as specified in plugin.xml
-    */
+   /** id of <launchConfigurationType/> as specified in plugin.xml */
    String LAUNCH_DART_COMMAND_CONFIGURATION_ID = "org.dart4e.launch.dart_command";
 
-   /**
-    * id of <launchConfigurationType/> as specified in plugin.xml
-    */
+   /** id of <launchConfigurationType/> as specified in plugin.xml */
    String LAUNCH_DART_PROGRAM_CONFIGURATION_ID = "org.dart4e.launch.dart_program";
 
-   /**
-    * id of <launchConfigurationType/> as specified in plugin.xml
-    */
+   /** id of <launchConfigurationType/> as specified in plugin.xml */
    String LAUNCH_DART_TEST_CONFIGURATION_ID = "org.dart4e.launch.dart_test";
 
-   /**
-    * id of <launchGroup/> as specified in plugin.xml
-    */
+   /** id of <launchGroup/> as specified in plugin.xml */
    String LAUNCH_DART_GROUP = "org.dart4e.launch.dart.group";
 }

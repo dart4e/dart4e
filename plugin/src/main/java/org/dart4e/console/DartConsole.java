@@ -56,7 +56,7 @@ public final class DartConsole extends MessageConsole {
    public static final String CONSOLE_TYPE = DartConsole.class.getName();
 
    /**
-    * Runs the dart command in the DartConsole.
+    * Runs the dart command in the {@link DartConsole}.
     */
    public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final DartSDK dartSDK,
       final @Nullable Path workdir, final String... args) throws CoreException {
@@ -160,7 +160,7 @@ public final class DartConsole extends MessageConsole {
    }
 
    /**
-    * Runs the dart command in the DartConsole.
+    * Runs the dart command in the {@link DartConsole}.
     */
    public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final IProject project, final String... args)
       throws CoreException {

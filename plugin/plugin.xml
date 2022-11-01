@@ -399,13 +399,14 @@
    </extension>
 
    <extension point="org.eclipse.ui.importWizards">
+      <category id="org.dart4e.wizards" name="Dart" />
+
       <wizard
          id="org.dart4e.wizards.importProject"
          category="org.dart4e.wizards"
          class="org.eclipse.ui.internal.wizards.datatransfer.SmartImportWizard"
          icon="src/main/resources/images/logo/dart_icon.png"
          name="%Label_Dart_Project" />
-      <category id="org.dart4e.wizards" name="Dart" />
    </extension>
 
 

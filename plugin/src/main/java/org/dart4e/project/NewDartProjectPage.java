@@ -4,7 +4,7 @@
  */
 package org.dart4e.project;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
@@ -31,8 +31,8 @@ import net.sf.jstuff.core.ref.ObservableRef;
  */
 public final class NewDartProjectPage extends WizardNewProjectCreationPage {
 
-   public ObservableRef<@Nullable DartSDK> selectedAltSDK = lazyNonNull();
-   public MutableObservableRef<String> selectedTemplate = MutableObservableRef.of("console");
+   public ObservableRef<@Nullable DartSDK> altSDK = lazyNonNull();
+   public MutableObservableRef<String> template = MutableObservableRef.of("console");
 
    public NewDartProjectPage(final String pageName) {
       super(pageName);
@@ -45,7 +45,7 @@ public final class NewDartProjectPage extends WizardNewProjectCreationPage {
 
       final var control = (Composite) getControl();
       final var grpDartSDKSelection = new DartSDKSelectionGroup(control, GridDataFactory.fillDefaults().create());
-      selectedAltSDK = grpDartSDKSelection.selectedAltSDK;
+      altSDK = grpDartSDKSelection.selectedAltSDK;
 
       final var grpTemplate = new Group(control, SWT.NONE);
       grpTemplate.setLayoutData(GridDatas.fillHorizontalExcessive());
@@ -60,7 +60,7 @@ public final class NewDartProjectPage extends WizardNewProjectCreationPage {
             case "web" -> "web app that uses only core Dart libraries";
             default -> item;
          }) //
-         .bind(selectedTemplate);
+         .bind(template);
    }
 
    @Override
@@ -68,7 +68,12 @@ public final class NewDartProjectPage extends WizardNewProjectCreationPage {
       if (!super.validatePage())
          return false;
 
-      if (selectedAltSDK.get() == null && DartWorkspacePreference.getDefaultDartSDK(false, true) == null) {
+      if (!Constants.VALID_PROJECT_NAME_PATTERN.matcher(getProjectName()).matches()) {
+         setMessage(Messages.Error_InvalidProjectName, IMessageProvider.ERROR);
+         return false;
+      }
+
+      if (altSDK.get() == null && DartWorkspacePreference.getDefaultDartSDK(false, true) == null) {
          setMessage(Messages.NewDartProject_SDKNotFound_Message, IMessageProvider.ERROR);
          return false;
       }

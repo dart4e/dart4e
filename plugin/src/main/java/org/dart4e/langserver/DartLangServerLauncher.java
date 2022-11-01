@@ -61,7 +61,7 @@ public final class DartLangServerLauncher extends ProcessStreamConnectionProvide
       } else {
          final var projectPrefs = DartProjectPreference.get(project);
          dartSDK = projectPrefs.getEffectiveDartSDK();
-         buildSystem = projectPrefs.getBuildSystem();
+         buildSystem = BuildSystem.guessBuildSystemOfProject(project);
       }
 
       if (dartSDK == null)

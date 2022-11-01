@@ -4,16 +4,17 @@
  */
 package org.dart4e.model.buildsystem;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.Nullable;
+
+import de.sebthom.eclipse.commons.resources.Resources;
 
 /**
  * @author Sebastian Thomschke
@@ -21,11 +22,12 @@ import org.eclipse.jdt.annotation.Nullable;
 public enum BuildSystem {
 
    DART,
-   FLUTTER;
+   FLUTTER,
+   UNKNOWN;
 
-   private static boolean contains(final IFile file, final String searchFor) throws CoreException, IOException {
-      if (file.exists()) {
-         try (var reader = new BufferedReader(new InputStreamReader(file.getContents(true)))) {
+   private static boolean contains(final Path file, final String searchFor) throws IOException {
+      if (Files.exists(file)) {
+         try (var reader = Files.newBufferedReader(file)) {
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
                if (line.contains(searchFor))
                   return true;
@@ -36,7 +38,14 @@ public enum BuildSystem {
    }
 
    public static BuildSystem guessBuildSystemOfProject(final IProject project) {
-      final var buildFile = project.getFile(Constants.PUBSPEC_YAML_FILENAME);
+      return guessBuildSystemOfProject(Resources.toAbsolutePath(project));
+   }
+
+   public static BuildSystem guessBuildSystemOfProject(final Path projectFolder) {
+      final var buildFile = projectFolder.resolve(Constants.PUBSPEC_YAML_FILENAME);
+      if (!Files.exists(buildFile))
+         return BuildSystem.UNKNOWN;
+
       try {
          if (contains(buildFile, "flutter:"))
             return FLUTTER;
@@ -48,6 +57,9 @@ public enum BuildSystem {
 
    @Nullable
    public BuildFile findBuildFile(final IProject project) {
+      if (this == UNKNOWN)
+         return null;
+
       final var buildFile = project.getFile(Constants.PUBSPEC_YAML_FILENAME);
       if (buildFile.exists())
          return toBuildFile(buildFile);

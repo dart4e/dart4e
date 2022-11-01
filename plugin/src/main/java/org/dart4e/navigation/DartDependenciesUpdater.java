@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.model.buildsystem.BuildFile;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.project.DartProjectNature;
 import org.eclipse.core.resources.IProject;
@@ -158,7 +159,7 @@ public final class DartDependenciesUpdater implements IResourceChangeListener {
           */
          final var depsFolder = project.getFolder(DEPS_MAGIC_FOLDER_NAME);
 
-         final var buildFile = prefs.getBuildSystem().findBuildFile(project);
+         final var buildFile = BuildFile.of(project);
 
          // if no build file exists remove the dependencies folder
          if (buildFile == null) {
@@ -178,7 +179,10 @@ public final class DartDependenciesUpdater implements IResourceChangeListener {
 
          final var depsToCheck = buildFile //
             .getDependencies(monitor).stream() //
-            .collect(Collectors.toMap(d -> d.name + " [" + d.version + "]", Function.identity()));
+            .collect(Collectors.toMap(d -> d.name //
+               + ("0.0.0".equals(d.version) ? "" : " [" + d.version + "]") //
+               + (d.isDevDependency ? " (dev)" : ""), //
+               Function.identity()));
 
          for (final var folder : depsFolder.members()) {
             if (depsToCheck.containsKey(folder.getName())) {

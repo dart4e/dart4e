@@ -6,10 +6,10 @@ package org.dart4e.model.buildsystem;
 
 import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.annotation.NonNull;
 import org.yaml.snakeyaml.Yaml;
 
 import de.sebthom.eclipse.commons.resources.Resources;
@@ -34,19 +35,20 @@ import de.sebthom.eclipse.commons.ui.UI;
 import de.sebthom.eclipse.commons.ui.widgets.NotificationPopup;
 import net.sf.jstuff.core.Strings;
 import net.sf.jstuff.core.io.RuntimeIOException;
+import net.sf.jstuff.core.validation.Assert;
 
 /**
  * @author Sebastian Thomschke
  */
 public class DartBuildFile extends BuildFile {
 
-   private Set<DartDependency> deps = Collections.emptySet();
+   protected Set<DartDependency> deps = Collections.emptySet();
 
-   DartBuildFile(final BuildSystem bs, final IFile location) {
+   protected DartBuildFile(final BuildSystem bs, final IFile location) {
       super(bs, location);
    }
 
-   DartBuildFile(final IFile location) {
+   public DartBuildFile(final IFile location) {
       super(BuildSystem.DART, location);
    }
 
@@ -54,16 +56,15 @@ public class DartBuildFile extends BuildFile {
    public Set<DartDependency> getDependencies(final IProgressMonitor monitor) {
       final var project = getProject();
       final var prefs = DartProjectPreference.get(project);
+
       final var dartSDK = prefs.getEffectiveDartSDK();
       if (dartSDK == null)
          throw new IllegalStateException("No Dart SDK found!");
 
-      final var lockFile = project.getFile(Constants.PUBSPEC_LOCK_FILENAME);
+      final var pubCacheDir = dartSDK.getPubCacheDir();
+      Assert.isDirectoryReadable(pubCacheDir);
 
-      /*
-       * check if pubspec.lock file exists, if not run `dart pub deps get` to create it
-       */
-      if (!lockFile.exists() || Resources.lastModified(lockFile) < Resources.lastModified(location)) {
+      if (!isLockFileUpToDate()) {
          resolveDependencies(monitor); // update needed
       } else if (!deps.isEmpty())
          return deps;
@@ -72,14 +73,44 @@ public class DartBuildFile extends BuildFile {
        * parse the pubspec.lock for the resolved dependencies
        */
       final var deps = new LinkedHashSet<DartDependency>();
-      try (var reader = Files.newBufferedReader(asNonNull(lockFile.getLocation()).toFile().toPath())) {
-         final var yaml = new Yaml().loadAs(reader, Map.class);
+      try (var reader = Files.newBufferedReader(Resources.toAbsolutePath(getLockFile()))) {
+         final var lockFileYaml = new Yaml().loadAs(reader, Map.class);
          @SuppressWarnings("unchecked")
-         final var packages = (Map<String, Map<String, Object>>) yaml.get("packages");
+         final var packages = (Map<String, Map<String, ?>>) lockFileYaml.get("packages");
          if (packages != null) {
-            for (final var pkgMeta : packages.entrySet()) {
+            for (final var entry : packages.entrySet()) {
                try {
-                  deps.add(DartDependency.from(dartSDK, pkgMeta.getKey(), pkgMeta.getValue(), monitor));
+                  final var name = entry.getKey();
+                  monitor.setTaskName("Locating Dart library " + name + "...");
+
+                  final var meta = entry.getValue();
+                  final var descr = asNonNull(meta.get("description")); // can be String or (Map<String, String>)
+                  final var source = (String) asNonNull(meta.get("source"));
+                  final var version = (String) asNonNull(meta.get("version"));
+
+                  final java.nio.file.Path libLocation = switch (source) {
+                     case "hosted" -> {
+                        final var url = new URL((String) ((Map<?, ?>) descr).get("url"));
+                        yield pubCacheDir.resolve(source).resolve(url.getHost()).resolve(name + "-" + version);
+                     }
+                     case "git" -> {
+                        final var resolvedRef = ((Map<?, ?>) descr).get("resolved-ref");
+                        yield pubCacheDir.resolve(source).resolve(name + "-" + resolvedRef);
+                     }
+                     case "path" -> {
+                        final var path = (@NonNull String) ((Map<?, ?>) descr).get("path");
+                        final var isRelative = (Boolean) ((Map<?, ?>) descr).get("relative");
+                        yield isRelative ? Resources.toAbsolutePath(project).resolve(path).normalize() : Paths.get(path);
+                     }
+                     case "sdk" -> {
+                        yield getSDKDependencyLocation((String) descr, name, version);
+                     }
+                     default -> throw new IllegalArgumentException("Unkown source " + source + " for package " + name);
+                  };
+
+                  final var dependencyType = (String) asNonNull(meta.get("dependency"));
+                  deps.add(new DartDependency(libLocation, name, version, dependencyType.contains("dev"), dependencyType.contains(
+                     "transitive")));
                } catch (final Exception ex) {
                   Dart4EPlugin.log().error(ex);
                   UI.run(() -> new NotificationPopup(ex.getMessage()).open());
@@ -91,6 +122,11 @@ public class DartBuildFile extends BuildFile {
       }
       this.deps = deps;
       return deps;
+   }
+
+   protected java.nio.file.Path getSDKDependencyLocation(final String sdkName, final String pkgName,
+      @SuppressWarnings("unused") final String pkgVersion) {
+      throw new IllegalArgumentException("Unsupported SDK [" + sdkName + "] of package [" + pkgName + "]");
    }
 
    /**
@@ -124,6 +160,10 @@ public class DartBuildFile extends BuildFile {
       return result;
    }
 
+   protected IFile getLockFile() {
+      return getProject().getFile(Constants.PUBSPEC_LOCK_FILENAME);
+   }
+
    @Override
    public Set<IPath> getSourcePaths() {
       return Set.of(//
@@ -135,19 +175,23 @@ public class DartBuildFile extends BuildFile {
    private boolean hasMainMethod(final IFile dartFile) {
       if (!dartFile.exists())
          return false;
-      try {
-         final var reader = new BufferedReader(new InputStreamReader(dartFile.getContents(true)));
-         for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-            if (line.replaceAll("\\s{2,}", " ").contains("void main()"))
-               return true;
-         }
-      } catch (final CoreException | IOException ex) {
+
+      try (var lines = Files.lines(Resources.toAbsolutePath(dartFile))) {
+         return lines.anyMatch(line -> line //
+            .replaceAll("\\s{2,}", " ") //
+            .contains("void main()"));
+      } catch (final IOException ex) {
          Dart4EPlugin.log().error(ex);
       }
       return false;
    }
 
-   private void resolveDependencies(final IProgressMonitor monitor) {
+   protected boolean isLockFileUpToDate() {
+      final var lockFile = getLockFile();
+      return lockFile.exists() && Resources.lastModified(lockFile) > Resources.lastModified(location);
+   }
+
+   protected void resolveDependencies(final IProgressMonitor monitor) {
       final var project = getProject();
       try {
          DartConsole.runWithConsole(monitor, "Resolving dependencies of [" + project.getName() + "]...", project, "pub", "get");

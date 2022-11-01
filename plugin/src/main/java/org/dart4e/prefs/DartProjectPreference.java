@@ -28,7 +28,6 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 import de.sebthom.eclipse.commons.resources.Resources;
 import de.sebthom.eclipse.commons.ui.Dialogs;
-import net.sf.jstuff.core.Strings;
 
 /**
  * @author Sebastian Thomschke
@@ -62,19 +61,6 @@ public final class DartProjectPreference {
     */
    public @Nullable DartSDK getAlternateDartSDK() {
       return DartWorkspacePreference.getDartSDK(prefs.getString(PROPERTY_ALTERNATE_DART_SDK));
-   }
-
-   public BuildSystem getBuildSystem() {
-      final var bs = prefs.getString(PROPERTY_BUILD_SYSTEM);
-      if (Strings.isNotBlank(bs)) {
-         try {
-            return BuildSystem.valueOf(bs);
-         } catch (final IllegalArgumentException ex) {
-            Dart4EPlugin.log().error(ex);
-         }
-      }
-
-      return BuildSystem.guessBuildSystemOfProject(project);
    }
 
    /**

@@ -4,16 +4,13 @@
  */
 package org.dart4e.project;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNullUnsafe;
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
 
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.prefs.DartWorkspacePreference;
 import org.dart4e.util.ui.GridDatas;
-import org.dart4e.widget.DartBuildSystemSelectionGroup;
 import org.dart4e.widget.DartSDKSelectionGroup;
 import org.dart4e.widget.FormatterSettingsGroup;
-import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -37,20 +34,15 @@ public final class DartProjectPropertyPage extends org.eclipse.ui.dialogs.Proper
       container.setLayout(new GridLayout(1, true));
       container.setLayoutData(GridDatas.fillHorizontal());
 
+      final var project = asNonNullUnsafe(Projects.adapt(getElement()));
+      prefs = DartProjectPreference.get(project);
+
       /*
        * alt SDK selection
        */
-      final var project = asNonNullUnsafe(Projects.adapt(getElement()));
-      prefs = DartProjectPreference.get(project);
-      final var grpDartSDKSelection = new DartSDKSelectionGroup(container, GridDataFactory.fillDefaults().create());
+      final var grpDartSDKSelection = new DartSDKSelectionGroup(container, GridDatas.fillHorizontalExcessive());
       grpDartSDKSelection.selectedAltSDK.set(prefs.getAlternateDartSDK());
       grpDartSDKSelection.selectedAltSDK.subscribe(prefs::setAlternateDartSDK);
-
-      /*
-       * build system selection
-       */
-      final var grpBuildSystem = new DartBuildSystemSelectionGroup(container, GridDatas.fillHorizontalExcessive());
-      grpBuildSystem.setProject(project);
 
       /*
        * formatter

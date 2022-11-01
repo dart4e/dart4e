@@ -193,8 +193,8 @@ public class DartSDKPreferencePage extends PreferencePage implements IWorkbenchP
       final var dialog = new DartSDKEditDialog(getShell());
       if (dialog.open() == Window.OK) {
          sdks.add(new DartSDK( //
-            asNonNullUnsafe(dialog.dartSDKName.get()), //
-            asNonNullUnsafe(dialog.dartSDKPath.get()) //
+            asNonNullUnsafe(dialog.sdkName.get()), //
+            asNonNullUnsafe(dialog.sdkPath.get()) //
          ));
       }
    }
@@ -209,8 +209,8 @@ public class DartSDKPreferencePage extends PreferencePage implements IWorkbenchP
       if (dialog.open() == Window.OK) {
          sdks.remove(sdk);
          sdks.add(new DartSDK( //
-            asNonNullUnsafe(dialog.dartSDKName.get()), //
-            asNonNullUnsafe(dialog.dartSDKPath.get()) //
+            asNonNullUnsafe(dialog.sdkName.get()), //
+            asNonNullUnsafe(dialog.sdkPath.get()) //
          ));
       }
    }

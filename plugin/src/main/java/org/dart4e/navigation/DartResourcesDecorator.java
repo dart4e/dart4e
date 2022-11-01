@@ -4,10 +4,11 @@
  */
 package org.dart4e.navigation;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNullUnsafe;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.model.buildsystem.BuildFile;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.project.DartProjectNature;
 import org.eclipse.core.resources.IFolder;
@@ -56,8 +57,7 @@ public class DartResourcesDecorator extends BaseLabelProvider implements ILabelD
       }
 
       if (res instanceof final IFolder folder) {
-         final var prefs = DartProjectPreference.get(project);
-         final var buildFile = prefs.getBuildSystem().findBuildFile(project); // TODO prefs.getBuildFile();
+         final var buildFile = BuildFile.of(project);
          if (buildFile == null)
             return image;
 
