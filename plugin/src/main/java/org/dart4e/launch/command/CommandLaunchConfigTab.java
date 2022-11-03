@@ -54,8 +54,8 @@ public class CommandLaunchConfigTab extends AbstractLaunchConfigurationTab {
       form.selectedAltSDK.set(LaunchConfigurations.getAlternativeDartSDK(config));
       form.selectedAltSDK.subscribe(this::updateLaunchConfigurationDialog);
 
-      form.args.set(LaunchConfigurations.getProgramArgs(config));
-      form.args.subscribe(this::updateLaunchConfigurationDialog);
+      form.dartArgs.set(LaunchConfigurations.getProgramArgs(config));
+      form.dartArgs.subscribe(this::updateLaunchConfigurationDialog);
    }
 
    @Override
@@ -78,7 +78,7 @@ public class CommandLaunchConfigTab extends AbstractLaunchConfigurationTab {
    @Override
    public void performApply(final ILaunchConfigurationWorkingCopy config) {
       LaunchConfigurations.setProject(config, form.selectedProject.get());
-      LaunchConfigurations.setProgramArgs(config, form.args.get());
+      LaunchConfigurations.setProgramArgs(config, form.dartArgs.get());
       LaunchConfigurations.setAlternativeDartSDK(config, form.selectedAltSDK.get());
    }
 

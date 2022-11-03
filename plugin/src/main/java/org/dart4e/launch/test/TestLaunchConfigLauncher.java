@@ -33,7 +33,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.lsp4e.debug.DSPPlugin;
 import org.eclipse.lsp4e.debug.launcher.DSPLaunchDelegate.DSPLaunchDelegateLaunchBuilder;
 
-import de.sebthom.eclipse.commons.ui.Consoles;
 import de.sebthom.eclipse.commons.ui.Dialogs;
 import de.sebthom.eclipse.commons.ui.UI;
 import net.sf.jstuff.core.SystemUtils;
@@ -115,9 +114,6 @@ public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
             args.add("run");
             args.add("test");
             args.add("--chain-stack-traces");
-            if (Consoles.isAnsiColorsSupported()) {
-               args.add("--color");
-            }
             args.addAll(testResources);
             args.addAll(programArgs);
             try {

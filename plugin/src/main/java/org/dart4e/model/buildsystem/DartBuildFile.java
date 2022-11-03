@@ -143,7 +143,7 @@ public class DartBuildFile extends BuildFile {
             final var filePath = "bin/" + Strings.defaultIfEmpty(exe.getValue(), exe.getKey());
             final var file = getProject().getFile(filePath);
             if (file.exists()) {
-               result.add(Path.fromOSString(filePath));
+               result.add(file.getProjectRelativePath());
             }
          }
       } catch (final CoreException ex) {

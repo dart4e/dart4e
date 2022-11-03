@@ -26,7 +26,7 @@ public class CommandLaunchConfigForm extends Composite {
 
    public final MutableObservableRef<@Nullable IProject> selectedProject;
    public final MutableObservableRef<@Nullable DartSDK> selectedAltSDK;
-   public final MutableObservableRef<String> args = MutableObservableRef.of("");
+   public final MutableObservableRef<String> dartArgs = MutableObservableRef.of("");
 
    public CommandLaunchConfigForm(final Composite parent, final int style) {
       super(parent, style);
@@ -41,7 +41,7 @@ public class CommandLaunchConfigForm extends Composite {
       grpDartArgs.setText("Dart Arguments");
       final var txtDartArgs = new Text(grpDartArgs, SWT.BORDER);
       txtDartArgs.setLayoutData(GridDatas.fillHorizontalExcessive());
-      Texts.bind(txtDartArgs, args);
+      Texts.bind(txtDartArgs, dartArgs);
 
       final var grpDartSDKSelection = new DartSDKSelectionGroup(this, GridDatas.fillHorizontalExcessive());
       selectedAltSDK = grpDartSDKSelection.selectedAltSDK;

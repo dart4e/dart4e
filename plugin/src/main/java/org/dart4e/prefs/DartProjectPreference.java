@@ -14,7 +14,6 @@ import java.util.WeakHashMap;
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.localization.Messages;
 import org.dart4e.model.DartSDK;
-import org.dart4e.model.buildsystem.BuildSystem;
 import org.dart4e.navigation.DartDependenciesUpdater;
 import org.ec4j.core.Resource;
 import org.ec4j.core.ResourcePath.ResourcePaths;
@@ -37,7 +36,6 @@ public final class DartProjectPreference {
    private static final WeakHashMap<IProject, DartProjectPreference> PREFS_BY_PROJECT = new WeakHashMap<>();
 
    private static final String PROPERTY_ALTERNATE_DART_SDK = "dart.project.alternate_sdk";
-   private static final String PROPERTY_BUILD_SYSTEM = "dart.project.build_system";
    private static final String PROPERTY_FORMATTER_MAX_LINE_LENGTH = "dart.formatter.max_line_length";
 
    public static DartProjectPreference get(final IProject project) {
@@ -141,10 +139,6 @@ public final class DartProjectPreference {
 
    public void setAlternateDartSDK(final @Nullable DartSDK sdk) {
       prefs.setValue(PROPERTY_ALTERNATE_DART_SDK, sdk == null ? "" : sdk.getName());
-   }
-
-   public void setBuildSystem(final @Nullable BuildSystem buildSystem) {
-      prefs.setValue(PROPERTY_BUILD_SYSTEM, buildSystem == null ? "" : buildSystem.name());
    }
 
    public void setFormatterMaxLineLength(final int maxLineLength) {

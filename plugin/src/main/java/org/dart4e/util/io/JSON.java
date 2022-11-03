@@ -70,7 +70,7 @@ public abstract class JSON {
    }
 
    public static <T> @Nullable T deserializeNullable(final @Nullable String json, final Class<T> type) {
-      if (json == null)
+      if (json == null || json.isEmpty())
          return null;
       try {
          return JSON_MAPPER.readerFor(type).readValue(json);

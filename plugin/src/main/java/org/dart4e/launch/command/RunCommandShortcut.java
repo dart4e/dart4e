@@ -35,7 +35,7 @@ public class RunCommandShortcut implements ILaunchShortcut {
       }
 
       if (project == null)
-         throw new IllegalArgumentException("RunProjectShortcut: No project found for editor " + editor);
+         throw new IllegalArgumentException("RunCommandShortcut: No project found for editor " + editor);
       runDart(project);
    }
 
@@ -50,7 +50,7 @@ public class RunCommandShortcut implements ILaunchShortcut {
       }
 
       if (project == null)
-         throw new IllegalArgumentException("RunProjectShortcut: No project found for selection " + selection);
+         throw new IllegalArgumentException("RunCommandShortcut: No project found for selection " + selection);
       runDart(project);
    }
 

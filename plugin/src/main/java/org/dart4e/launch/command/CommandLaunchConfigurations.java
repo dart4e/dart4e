@@ -21,8 +21,7 @@ public abstract class CommandLaunchConfigurations {
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
       final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_COMMAND_CONFIGURATION_ID);
       final var launchConfigName = project.getName();
-      final var newLaunchConfig = launchConfigType.newInstance(null, //
-         launchMgr.generateLaunchConfigurationName(launchConfigName));
+      final var newLaunchConfig = launchConfigType.newInstance(null, launchMgr.generateLaunchConfigurationName(launchConfigName));
       initialize(newLaunchConfig, project);
       return newLaunchConfig;
    }

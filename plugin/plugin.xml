@@ -668,7 +668,7 @@
       <!-- possible location URIs: https://blogs.itemis.com/auf-einen-blick-eclipse-actions-f%C3%BCr-project-und-package-explorer -->
       <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <menu label="Dart" icon="src/main/resources/images/logo/dart_icon.png" id="org.dart4e.projectMenu">
-            <command commandId="org.dart4e.commands.run_pub_get" icon="platform:/plugin/org.eclipse.ui/icons/full/elcl16/refresh_nav.png">
+            <command commandId="org.dart4e.commands.run_pub_get" icon="platform:/plugin/org.eclipse.debug.ui/icons/full/obj16/refresh_tab.png">
                <visibleWhen>
                   <iterate>
                      <and>

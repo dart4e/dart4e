@@ -23,6 +23,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import de.sebthom.eclipse.commons.ui.Consoles;
 import net.sf.jstuff.core.Strings;
 import net.sf.jstuff.core.SystemUtils;
 import net.sf.jstuff.core.functional.Suppliers;
@@ -124,6 +125,11 @@ public final class DartSDK implements Comparable<DartSDK> {
       );
       env.put(ENV_DART_HOME, installRoot);
       env.put(ENV_PUB_CACHE, getPubCacheDir());
+
+      if (Consoles.isAnsiColorsSupported()) {
+         env.put("ANSICON", "1");
+         env.put("TERM", "screen-256color");
+      }
    }
 
    @Override
@@ -145,6 +151,7 @@ public final class DartSDK implements Comparable<DartSDK> {
    @JsonIgnore
    public Processes.Builder getDartProcessBuilder(final boolean cleanEnv) {
       return Processes.builder(getDartExecutable()) //
+         .withArg("--disable-analytics") //
          .withEnvironment(env -> {
             if (cleanEnv) {
                env.clear();

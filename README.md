@@ -9,7 +9,6 @@
 
 1. [About](#about)
 1. [Installation](#installation)
-1. [Usage](#usage)
 1. [Building from Sources](#building)
 1. [Acknowledgement](#acknowledgement)
 1. [License](#license)
@@ -19,6 +18,17 @@
 
 Dart4E is an extension for the [Eclipse IDE](https://eclipse.org) to support development using the [Dart](https://dart.dev) general purpose
 programming language.
+
+### Features
+- Syntax Highlighting
+- Source Code Formatting
+- Auto Completion
+- Code Refactoring
+- Interactive Dart Shell (REPL)
+- Running and debugging of Dart programs/tests
+- Display direct and transitive dependencies in project outline
+
+![](src/site/images/screenshot_dartmenu.png)
 
 
 ## <a name="installation"></a>Installation
@@ -33,11 +43,6 @@ To install Dart4E into an existing Eclipse installation do:
 1. Eclipse will now download the necessary files in the background.
 1. When the download has finished, Eclipse will ask about installing unsigned content. You need to accept if you want to
 1. After installation you will be prompted for a restart of Eclipse, which is recommended.
-
-
-## <a name="usage"></a>Usage
-
-TODO
 
 
 ## <a id="building"></a>Building from Sources

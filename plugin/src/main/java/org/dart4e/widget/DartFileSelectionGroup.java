@@ -4,9 +4,11 @@
  */
 package org.dart4e.widget;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
 import org.dart4e.localization.Messages;
+import org.dart4e.model.buildsystem.BuildSystem;
+import org.dart4e.model.buildsystem.DartBuildFile;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.util.ui.GridDatas;
 import org.eclipse.core.resources.IFile;
@@ -90,14 +92,31 @@ public class DartFileSelectionGroup extends Composite {
          // nothing to do
          return;
 
-      selectedDartFile.set(null);
-
       if (project == null) {
          projectPrefs = null;
          btnBrowseForDartFile.setEnabled(false);
+
+         selectedDartFile.set(null);
       } else {
          projectPrefs = DartProjectPreference.get(project);
          btnBrowseForDartFile.setEnabled(true);
+
+         var dartFile = selectedDartFile.get();
+         if (dartFile == null) {
+            if (BuildSystem.guessBuildSystemOfProject(project).findBuildFile(project) instanceof final DartBuildFile buildFile) {
+               final var exes = buildFile.getExecutables();
+               if (exes.isEmpty()) {
+                  selectedDartFile.set(null);
+               } else {
+                  selectedDartFile.set(project.getFile(exes.get(0)));
+               }
+            } else {
+               selectedDartFile.set(null);
+            }
+         } else {
+            dartFile = project.getFile(dartFile.getProjectRelativePath());
+            selectedDartFile.set(dartFile.exists() ? dartFile : null);
+         }
       }
    }
 }
