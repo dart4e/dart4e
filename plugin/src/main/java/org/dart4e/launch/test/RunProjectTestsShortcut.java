@@ -6,6 +6,7 @@ package org.dart4e.launch.test;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.localization.Messages;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -65,7 +66,7 @@ public class RunProjectTestsShortcut implements ILaunchShortcut {
          for (final var launch : launchMgr.getLaunches()) {
             final var cfg = launch.getLaunchConfiguration();
             if (cfg != null && cfg.getType().equals(launchConfigType) //
-               && cfg.getAttribute(Constants.LAUNCH_ATTR_PROJECT, "").equalsIgnoreCase(project.getName()) //
+               && project.getName().equalsIgnoreCase(LaunchConfigurations.getProjectName(cfg)) //
             ) {
                DebugUITools.launch(cfg, mode);
                return;
@@ -74,7 +75,7 @@ public class RunProjectTestsShortcut implements ILaunchShortcut {
 
          // search all created launch configs for a matching one
          for (final var cfg : launchMgr.getLaunchConfigurations(launchConfigType)) {
-            if (cfg.getAttribute(Constants.LAUNCH_ATTR_PROJECT, "").equalsIgnoreCase(project.getName())) {
+            if (project.getName().equalsIgnoreCase(LaunchConfigurations.getProjectName(cfg))) {
                DebugUITools.launch(cfg, mode);
                return;
             }

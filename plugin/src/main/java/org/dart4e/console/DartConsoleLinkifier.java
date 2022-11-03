@@ -48,10 +48,7 @@ public final class DartConsoleLinkifier implements IPatternMatchListenerDelegate
          return dartConsole.project;
       if (console instanceof final IConsole debugConsole) {
          final var projectName = debugConsole.getProcess().getAttribute(ProgramLaunchConfigLauncher.PROCESS_ATTRIBUTE_PROJECT_NAME);
-         if (projectName == null || projectName.isEmpty())
-            return null;
-         final var project = Projects.getProject(projectName);
-         return project.exists() ? project : null;
+         return Projects.getProject(projectName);
       }
       return null;
    }

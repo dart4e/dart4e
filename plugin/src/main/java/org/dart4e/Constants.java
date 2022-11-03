@@ -26,13 +26,6 @@ public interface Constants {
    String IMAGE_TERMINATE_BUTTON = "src/main/resources/images/console/terminate_co.png";
    String IMAGE_TERMINATE_BUTTON_DISABLED = "src/main/resources/images/console/terminate_co_disabled.png";
 
-   String LAUNCH_ATTR_PROJECT = "launch.dart.project";
-   String LAUNCH_ATTR_DART_SDK = "launch.dart.sdk";
-   String LAUNCH_ATTR_DART_MAIN_FILE = "launch.dart.dart_main_file";
-   String LAUNCH_ATTR_DART_TEST_RESOURCES = "launch.dart.dart_test_resources";
-   String LAUNCH_ATTR_PROGRAM_ARGS = "launch.dart.program_args";
-   String LAUNCH_ATTR_VM_ARGS = "launch.dart.vm_args";
-
    String DART_FILE_EXTENSION = "dart";
 
    String TEST_FOLDER_NAME = "test";

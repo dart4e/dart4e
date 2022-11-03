@@ -15,11 +15,11 @@ import java.util.List;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.launch.LaunchDebugConfig;
 import org.dart4e.localization.Messages;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.util.TreeBuilder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
@@ -33,11 +33,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.lsp4e.debug.DSPPlugin;
 import org.eclipse.lsp4e.debug.launcher.DSPLaunchDelegate.DSPLaunchDelegateLaunchBuilder;
 
-import de.sebthom.eclipse.commons.resources.Projects;
 import de.sebthom.eclipse.commons.ui.Consoles;
 import de.sebthom.eclipse.commons.ui.Dialogs;
 import de.sebthom.eclipse.commons.ui.UI;
-import net.sf.jstuff.core.Strings;
 import net.sf.jstuff.core.SystemUtils;
 
 /**
@@ -61,9 +59,8 @@ public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
    public void launch(final ILaunchConfiguration config, final String mode, final ILaunch launch, final @Nullable IProgressMonitor monitor)
       throws CoreException {
 
-      final var projectName = config.getAttribute(Constants.LAUNCH_ATTR_PROJECT, "");
-      final @Nullable IProject project = Strings.isBlank(projectName) ? null : Projects.getProject(projectName);
-      if (project == null || !project.exists()) {
+      final var project = LaunchConfigurations.getProject(config);
+      if (project == null) {
          Dialogs.showError(Messages.Launch_NoProjectSelected, Messages.Launch_NoProjectSelected_Descr);
          return;
       }
@@ -76,14 +73,15 @@ public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
          return;
       }
 
-      final var testResources = config.getAttribute(Constants.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(Constants.TEST_FOLDER_NAME));
+      final var testResources = config.getAttribute(TestLaunchConfigurations.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(
+         Constants.TEST_FOLDER_NAME));
 
       final var workdir = Paths.get(config.getAttribute(DebugPlugin.ATTR_WORKING_DIRECTORY, projectLoc.toOSString()));
       final var envVars = config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.emptyMap());
       final var appendEnvVars = config.getAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
 
-      final var programArgs = SystemUtils.splitCommandLine(config.getAttribute(Constants.LAUNCH_ATTR_PROGRAM_ARGS, "").strip());
-      final var vmArgs = SystemUtils.splitCommandLine(config.getAttribute(Constants.LAUNCH_ATTR_VM_ARGS, "").strip());
+      final var programArgs = SystemUtils.splitCommandLine(LaunchConfigurations.getProgramArgs(config));
+      final var vmArgs = SystemUtils.splitCommandLine(LaunchConfigurations.getDartVMArgs(config));
 
       switch (mode) {
 

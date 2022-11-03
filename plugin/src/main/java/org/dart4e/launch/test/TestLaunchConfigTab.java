@@ -5,16 +5,14 @@
 package org.dart4e.launch.test;
 
 import static java.util.Collections.singletonList;
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
 
 import java.util.Objects;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.localization.Messages;
-import org.dart4e.prefs.DartWorkspacePreference;
-import org.dart4e.project.DartProjectNature;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -24,7 +22,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-import de.sebthom.eclipse.commons.resources.Projects;
 import de.sebthom.eclipse.commons.ui.Dialogs;
 
 /**
@@ -58,14 +55,14 @@ public class TestLaunchConfigTab extends AbstractLaunchConfigurationTab {
    @Override
    public void initializeFrom(final ILaunchConfiguration config) {
       try {
-         final var projectName = config.getAttribute(Constants.LAUNCH_ATTR_PROJECT, "");
-         final var project = Projects.findOpenProjectWithNature(projectName, DartProjectNature.NATURE_ID);
-         form.selectedProject.set(project);
+         form.selectedProject.set(LaunchConfigurations.getProject(config));
          form.selectedProject.subscribe(this::updateLaunchConfigurationDialog);
 
+         final var project = LaunchConfigurations.getProject(config);
          if (project != null) {
             form.selectedTestResources.set( //
-               config.getAttribute(Constants.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(Constants.TEST_FOLDER_NAME)).stream() //
+               config.getAttribute(TestLaunchConfigurations.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(Constants.TEST_FOLDER_NAME))
+                  .stream() //
                   .map(project::findMember) //
                   .filter(Objects::nonNull) //
                   .toList() //
@@ -73,13 +70,13 @@ public class TestLaunchConfigTab extends AbstractLaunchConfigurationTab {
          }
          form.selectedTestResources.subscribe(this::updateLaunchConfigurationDialog);
 
-         final var altSDK = DartWorkspacePreference.getDartSDK(config.getAttribute(Constants.LAUNCH_ATTR_DART_SDK, ""));
-         form.selectedAltSDK.set(altSDK);
+         form.selectedAltSDK.set(LaunchConfigurations.getAlternativeDartSDK(config));
          form.selectedAltSDK.subscribe(this::updateLaunchConfigurationDialog);
 
-         form.programArgs.set(config.getAttribute(Constants.LAUNCH_ATTR_PROGRAM_ARGS, ""));
+         form.programArgs.set(LaunchConfigurations.getProgramArgs(config));
          form.programArgs.subscribe(this::updateLaunchConfigurationDialog);
-         form.vmArgs.set(config.getAttribute(Constants.LAUNCH_ATTR_VM_ARGS, ""));
+
+         form.vmArgs.set(LaunchConfigurations.getDartVMArgs(config));
          form.vmArgs.subscribe(this::updateLaunchConfigurationDialog);
       } catch (final CoreException ex) {
          Dialogs.showStatus(Messages.Launch_InitializingLaunchConfigTabFailed, Dart4EPlugin.status().createError(ex), true);
@@ -105,22 +102,19 @@ public class TestLaunchConfigTab extends AbstractLaunchConfigurationTab {
 
    @Override
    public void performApply(final ILaunchConfigurationWorkingCopy config) {
-      config.setAttribute(Constants.LAUNCH_ATTR_PROJECT, form.selectedProject.get() == null ? null
-         : asNonNull(form.selectedProject.get()).getName());
+      LaunchConfigurations.setProject(config, form.selectedProject.get());
 
       final var selectedTestResources = form.selectedTestResources.get();
       if (selectedTestResources.isEmpty()) {
-         config.removeAttribute(Constants.LAUNCH_ATTR_DART_TEST_RESOURCES);
+         config.removeAttribute(TestLaunchConfigurations.LAUNCH_ATTR_DART_TEST_RESOURCES);
       } else {
-         config.setAttribute(Constants.LAUNCH_ATTR_DART_TEST_RESOURCES, //
+         config.setAttribute(TestLaunchConfigurations.LAUNCH_ATTR_DART_TEST_RESOURCES, //
             selectedTestResources.stream().map(r -> r.getProjectRelativePath().toString()).toList());
       }
 
-      final var altSDK = form.selectedAltSDK.get();
-
-      config.setAttribute(Constants.LAUNCH_ATTR_PROGRAM_ARGS, form.programArgs.get());
-      config.setAttribute(Constants.LAUNCH_ATTR_VM_ARGS, form.vmArgs.get());
-      config.setAttribute(Constants.LAUNCH_ATTR_DART_SDK, altSDK == null ? "" : altSDK.getName());
+      LaunchConfigurations.setProgramArgs(config, form.programArgs.get());
+      LaunchConfigurations.setDartVMArgs(config, form.vmArgs.get());
+      LaunchConfigurations.setAlternativeDartSDK(config, form.selectedAltSDK.get());
    }
 
    @Override

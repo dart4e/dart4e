@@ -11,11 +11,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.localization.Messages;
 import org.dart4e.prefs.DartProjectPreference;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
@@ -29,11 +28,9 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 
-import de.sebthom.eclipse.commons.resources.Projects;
 import de.sebthom.eclipse.commons.ui.Consoles;
 import de.sebthom.eclipse.commons.ui.Dialogs;
 import de.sebthom.eclipse.commons.ui.UI;
-import net.sf.jstuff.core.Strings;
 import net.sf.jstuff.core.SystemUtils;
 
 /**
@@ -56,9 +53,8 @@ public class CommandLaunchConfigLauncher extends LaunchConfigurationDelegate {
    public void launch(final ILaunchConfiguration config, final String mode, final ILaunch launch, final @Nullable IProgressMonitor monitor)
       throws CoreException {
 
-      final var projectName = config.getAttribute(Constants.LAUNCH_ATTR_PROJECT, "");
-      final @Nullable IProject project = Strings.isBlank(projectName) ? null : Projects.getProject(projectName);
-      if (project == null || !project.exists()) {
+      final var project = LaunchConfigurations.getProject(config);
+      if (project == null) {
          Dialogs.showError(Messages.Launch_NoProjectSelected, Messages.Launch_NoProjectSelected_Descr);
          return;
       }
@@ -75,8 +71,8 @@ public class CommandLaunchConfigLauncher extends LaunchConfigurationDelegate {
       final var envVars = config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.emptyMap());
       final var appendEnvVars = config.getAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
 
-      final var programArgs = SystemUtils.splitCommandLine(config.getAttribute(Constants.LAUNCH_ATTR_PROGRAM_ARGS, ""));
-      final var vmArgs = SystemUtils.splitCommandLine(config.getAttribute(Constants.LAUNCH_ATTR_VM_ARGS, "").strip());
+      final var programArgs = SystemUtils.splitCommandLine(LaunchConfigurations.getProgramArgs(config));
+      final var vmArgs = SystemUtils.splitCommandLine(LaunchConfigurations.getDartVMArgs(config));
 
       switch (mode) {
 

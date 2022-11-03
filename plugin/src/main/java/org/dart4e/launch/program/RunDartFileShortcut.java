@@ -8,6 +8,7 @@ import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.localization.Messages;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -56,8 +57,8 @@ public class RunDartFileShortcut implements ILaunchShortcut {
       try {
          // use an existing launch config if available
          for (final var cfg : launchMgr.getLaunchConfigurations(launchConfigType)) {
-            if (cfg.getAttribute(Constants.LAUNCH_ATTR_PROJECT, "").equalsIgnoreCase(project.getName()) //
-               && cfg.getAttribute(Constants.LAUNCH_ATTR_DART_MAIN_FILE, "").equals(dartFile.getProjectRelativePath().toString()) //
+            if (project.getName().equalsIgnoreCase(LaunchConfigurations.getProjectName(cfg)) //
+               && dartFile.getProjectRelativePath().toString().equals(LaunchConfigurations.getDartMainFilePath(cfg)) //
             ) {
                DebugUITools.launch(cfg, mode);
                return;

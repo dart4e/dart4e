@@ -9,6 +9,7 @@ import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.localization.Messages;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -60,9 +61,9 @@ public class RunSelectedTestShortcut implements ILaunchShortcut {
 
          // use an existing launch config if available
          for (final var cfg : launchMgr.getLaunchConfigurations(launchConfigType)) {
-            if (cfg.getAttribute(Constants.LAUNCH_ATTR_PROJECT, "").equalsIgnoreCase(project.getName()) //
-               && cfg.getAttribute(Constants.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(Constants.TEST_FOLDER_NAME)).equals(
-                  testResourceAsList)) {
+            if (project.getName().equalsIgnoreCase(LaunchConfigurations.getProjectName(cfg)) //
+               && cfg.getAttribute(TestLaunchConfigurations.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(Constants.TEST_FOLDER_NAME))
+                  .equals(testResourceAsList)) {
                DebugUITools.launch(cfg, mode);
                return;
             }

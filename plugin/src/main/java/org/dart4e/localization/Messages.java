@@ -48,14 +48,13 @@ public final class Messages extends NLS {
    public static String Error_InvalidProjectName = "Invalid project name. See https://dart.dev/tools/pub/pubspec#name for more information.";
    public static String Error_ProjectCreationProblem = "Project creation problem";
 
-   public static String SDKPathInvalid = "{0} Path invalid.";
-   public static String SDKPathInvalid_Descr = "\"{0}\" does not point to a valid {1}";
-
    public static String Prefs_GeneralDescription = "General settings for Dart development:";
    public static String Prefs_ManageSDKsDescription = "Manage installed Dart SDKs. By default the checked SDK will be used for newly created Dart projects:";
    public static String Prefs_NoSDKRegistered_Title = "Dart SDK missing";
    public static String Prefs_NoSDKRegistered_Body = "No Dart SDK configured";
    public static String Prefs_SDKPath = "Dart SDK path";
+   public static String Prefs_SDKPathInvalid = "Dart SDK path invalid.";
+   public static String Prefs_SDKPathInvalid_Descr = "\"{0}\" does not point to a valid Dart SDK";
    public static String Prefs_SDKPathInvalid_Message = "No valid Dart SDK seems to be installed on your system.\n\nPlease ensure that the Dart SDK is installed and is on your PATH.";
    public static String Prefs_SavingPreferencesFailed = "Saving preferences failed.";
 

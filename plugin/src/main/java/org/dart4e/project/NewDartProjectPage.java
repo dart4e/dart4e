@@ -60,7 +60,7 @@ public final class NewDartProjectPage extends WizardNewProjectCreationPage {
             case "web" -> "web app that uses only core Dart libraries";
             default -> item;
          }) //
-         .bind(template);
+         .bind(template, template.get());
    }
 
    @Override

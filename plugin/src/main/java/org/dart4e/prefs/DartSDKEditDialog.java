@@ -145,7 +145,7 @@ public class DartSDKEditDialog extends TitleAreaDialog {
       }
 
       if (!Files.isDirectory(sdkPath) || !new DartSDK("whatever", sdkPath).isValid()) {
-         setErrorMessage(NLS.bind(SDKPathInvalid, Label_Dart_SDK));
+         setErrorMessage(Prefs_SDKPath);
          txtSDKPath.setFocus();
          return;
       }
@@ -182,7 +182,7 @@ public class DartSDKEditDialog extends TitleAreaDialog {
             return;
          }
 
-         Dialogs.showError(NLS.bind(SDKPathInvalid, Label_Dart_SDK), NLS.bind(SDKPathInvalid_Descr, dir, Label_Dart_SDK));
+         Dialogs.showError(Prefs_SDKPathInvalid, NLS.bind(Prefs_SDKPathInvalid_Descr, dir));
          txtSDKPath.setFocus();
       }
    }

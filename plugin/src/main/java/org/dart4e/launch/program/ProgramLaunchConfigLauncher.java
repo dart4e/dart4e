@@ -12,14 +12,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.launch.LaunchDebugConfig;
 import org.dart4e.localization.Messages;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.util.TreeBuilder;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
@@ -33,10 +31,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.lsp4e.debug.DSPPlugin;
 import org.eclipse.lsp4e.debug.launcher.DSPLaunchDelegate.DSPLaunchDelegateLaunchBuilder;
 
-import de.sebthom.eclipse.commons.resources.Projects;
 import de.sebthom.eclipse.commons.ui.Dialogs;
 import de.sebthom.eclipse.commons.ui.UI;
-import net.sf.jstuff.core.Strings;
 import net.sf.jstuff.core.SystemUtils;
 
 /**
@@ -60,9 +56,8 @@ public class ProgramLaunchConfigLauncher extends LaunchConfigurationDelegate {
    public void launch(final ILaunchConfiguration config, final String mode, final ILaunch launch, final @Nullable IProgressMonitor monitor)
       throws CoreException {
 
-      final var projectName = config.getAttribute(Constants.LAUNCH_ATTR_PROJECT, "");
-      final @Nullable IProject project = Strings.isBlank(projectName) ? null : Projects.getProject(projectName);
-      if (project == null || !project.exists()) {
+      final var project = LaunchConfigurations.getProject(config);
+      if (project == null) {
          Dialogs.showError(Messages.Launch_NoProjectSelected, Messages.Launch_NoProjectSelected_Descr);
          return;
       }
@@ -75,27 +70,23 @@ public class ProgramLaunchConfigLauncher extends LaunchConfigurationDelegate {
          return;
       }
 
-      final var dartMainFileProjectRelativePath = config.getAttribute(Constants.LAUNCH_ATTR_DART_MAIN_FILE, "");
-      final IFile dartMainFile;
-      if (Strings.isBlank(dartMainFileProjectRelativePath)) {
+      final var dartMainFile = LaunchConfigurations.getDartMainFile(config);
+      if (dartMainFile == null) {
          Dialogs.showError("No Dart file specified", "The Dart file is configured for the launch configuration.");
          return;
       }
-      dartMainFile = project.getFile(dartMainFileProjectRelativePath);
       if (!dartMainFile.exists()) {
-         Dialogs.showError("Dart file  does not exist", "The configured Dart file \"" + project.getName() + "/"
-            + dartMainFileProjectRelativePath + "\" does not exist.");
+         Dialogs.showError("Dart file  does not exist", "The configured Dart file \"" + dartMainFile + "\" does not exist.");
          return;
       }
-
-      final var dartMainFilePath = asNonNull(dartMainFile.getLocation()).toFile().toPath().normalize().toAbsolutePath();
+      final var dartMainFilePath = dartMainFile.getProjectRelativePath().toFile().toPath();
 
       final var workdir = Paths.get(config.getAttribute(DebugPlugin.ATTR_WORKING_DIRECTORY, projectLoc.toOSString()));
       final var envVars = config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.emptyMap());
       final var appendEnvVars = config.getAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
 
-      final var programArgs = SystemUtils.splitCommandLine(config.getAttribute(Constants.LAUNCH_ATTR_PROGRAM_ARGS, "").strip());
-      final var vmArgs = SystemUtils.splitCommandLine(config.getAttribute(Constants.LAUNCH_ATTR_VM_ARGS, "").strip());
+      final var programArgs = SystemUtils.splitCommandLine(LaunchConfigurations.getProgramArgs(config));
+      final var vmArgs = SystemUtils.splitCommandLine(LaunchConfigurations.getDartVMArgs(config));
 
       switch (mode) {
 

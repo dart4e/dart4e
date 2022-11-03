@@ -6,22 +6,21 @@ package org.dart4e.launch.test;
 
 import static java.util.Collections.singletonList;
 
-import java.util.List;
-
 import org.dart4e.Constants;
+import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.prefs.DartProjectPreference;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.debug.ui.RefreshTab;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * @author Sebastian Thomschke
  */
 public abstract class TestLaunchConfigurations {
+
+   public static final String LAUNCH_ATTR_DART_TEST_RESOURCES = "launch.dart.dart_test_resources";
 
    public static ILaunchConfigurationWorkingCopy create(final IProject project) throws CoreException {
       return create(project, null);
@@ -40,25 +39,17 @@ public abstract class TestLaunchConfigurations {
    }
 
    public static void initialize(final ILaunchConfigurationWorkingCopy config) {
-      config.setAttribute(RefreshTab.ATTR_REFRESH_SCOPE, "${project}");
-      config.setAttribute(RefreshTab.ATTR_REFRESH_RECURSIVE, true);
-      config.setAttribute(IDebugUIConstants.ATTR_FAVORITE_GROUPS, List.of(Constants.LAUNCH_DART_GROUP));
+      LaunchConfigurations.setAutoRefreshProject(config);
+      LaunchConfigurations.setFavoriteGroups(config, Constants.LAUNCH_DART_GROUP);
    }
 
-   public static void initialize(final ILaunchConfigurationWorkingCopy config, final IProject project) {
-      initialize(config, project, null);
-   }
-
-   public static void initialize(final ILaunchConfigurationWorkingCopy config, final IProject project,
+   private static void initialize(final ILaunchConfigurationWorkingCopy config, final IProject project,
       final @Nullable String testResource) {
       initialize(config);
-      config.setAttribute(Constants.LAUNCH_ATTR_PROJECT, project.getName());
-      final var altSDK = DartProjectPreference.get(project).getAlternateDartSDK();
-      if (altSDK != null) {
-         config.setAttribute(Constants.LAUNCH_ATTR_DART_SDK, altSDK.getName());
-      }
+      LaunchConfigurations.setProject(config, project);
+      LaunchConfigurations.setAlternativeDartSDK(config, DartProjectPreference.get(project).getAlternateDartSDK());
       if (testResource != null) {
-         config.setAttribute(Constants.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(testResource));
+         config.setAttribute(LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(testResource));
       }
    }
 }
