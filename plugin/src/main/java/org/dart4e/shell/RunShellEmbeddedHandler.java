@@ -33,6 +33,7 @@ import de.sebthom.eclipse.commons.resources.Resources;
 import de.sebthom.eclipse.commons.ui.Dialogs;
 import de.sebthom.eclipse.commons.ui.UI;
 import net.sf.jstuff.core.Strings;
+import net.sf.jstuff.core.concurrent.Threads;
 import net.sf.jstuff.core.net.NetUtils;
 
 /**
@@ -66,28 +67,29 @@ public class RunShellEmbeddedHandler extends AbstractHandler {
 
          dartSDK.installInteractiveShell(jobMonitor);
 
+         // CHECKSTYLE:IGNORE .* FOR NEXT LINE
+         // see https://github.com/eclipse-cdt/cdt/blob/main/terminal/plugins/org.eclipse.tm.terminal.view.core/src/org/eclipse/tm/terminal/view/core/interfaces/constants/ITerminalsConnectorConstants.java
+         final var properties = new HashMap<String, Object>();
+         properties.put(ITerminalsConnectorConstants.PROP_ENCODING, StandardCharsets.UTF_8.name());
+         properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID, "org.eclipse.tm.terminal.connector.local.launcher.local");
+         properties.put(ITerminalsConnectorConstants.PROP_PROCESS_PATH, dartSDK.getDartExecutable().toString());
+         if (project != null) {
+            properties.put(ITerminalsConnectorConstants.PROP_TITLE, "Dart Shell (" + project.getName() + ")");
+            properties.put(ITerminalsConnectorConstants.PROP_PROCESS_WORKING_DIR, Resources.toAbsolutePath(project).toString());
+            properties.put(ITerminalsConnectorConstants.PROP_PROCESS_ARGS, "pub global run interactive --directory \"" + Strings.replace(
+               Resources.toAbsolutePath(project).toString(), '\\', '/') + "\"");
+         } else {
+            properties.put(ITerminalsConnectorConstants.PROP_TITLE, "Dart Shell");
+            properties.put(ITerminalsConnectorConstants.PROP_PROCESS_ARGS, "pub global run --enable-vm-service=" + NetUtils
+               .getAvailableLocalPort() + " interactive ");
+         }
+
          UI.run(() -> {
             try {
                final TerminalsView terminalView = asNonNull(UI.openView(IUIConstants.ID));
                terminalView.show(null);
                terminalView.setFocus();
 
-               // CHECKSTYLE:IGNORE .* FOR NEXT LINE
-               // see https://github.com/eclipse-cdt/cdt/blob/main/terminal/plugins/org.eclipse.tm.terminal.view.core/src/org/eclipse/tm/terminal/view/core/interfaces/constants/ITerminalsConnectorConstants.java
-               final var properties = new HashMap<String, Object>();
-               properties.put(ITerminalsConnectorConstants.PROP_ENCODING, StandardCharsets.UTF_8.name());
-               properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID, "org.eclipse.tm.terminal.connector.local.launcher.local");
-               properties.put(ITerminalsConnectorConstants.PROP_PROCESS_PATH, dartSDK.getDartExecutable().toString());
-               if (project != null) {
-                  properties.put(ITerminalsConnectorConstants.PROP_TITLE, "Dart Shell (" + project.getName() + ")");
-                  properties.put(ITerminalsConnectorConstants.PROP_PROCESS_WORKING_DIR, Resources.toAbsolutePath(project).toString());
-                  properties.put(ITerminalsConnectorConstants.PROP_PROCESS_ARGS, "pub global run interactive --directory \"" + Strings
-                     .replace(Resources.toAbsolutePath(project).toString(), '\\', '/') + "\"");
-               } else {
-                  properties.put(ITerminalsConnectorConstants.PROP_TITLE, "Dart Shell");
-                  properties.put(ITerminalsConnectorConstants.PROP_PROCESS_ARGS, "pub global run --enable-vm-service=" + NetUtils
-                     .getAvailableLocalPort() + " interactive ");
-               }
                final var terminal = TerminalServiceFactory.getService();
                terminal.openConsole(properties, status -> {
                   if (!status.isOK()) {
@@ -99,6 +101,14 @@ public class RunShellEmbeddedHandler extends AbstractHandler {
                Dialogs.showStatus("Cannot open Dart shell", status, true);
             }
          });
+
+         if (project != null) {
+            jobMonitor.setTaskName("Cleaning up Dart Shell");
+            Threads.sleep(5_000);
+            final var launchFile = project.getFile("lib/auto_generated.dart");
+            launchFile.refreshLocal(0, jobMonitor);
+            launchFile.delete(true, jobMonitor);
+         }
       });
       job.schedule();
    }

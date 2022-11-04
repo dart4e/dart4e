@@ -22,9 +22,14 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.sebthom.eclipse.commons.resources.Projects;
+import de.sebthom.eclipse.commons.resources.Resources;
 import de.sebthom.eclipse.commons.ui.Dialogs;
+import net.sf.jstuff.core.Strings;
 import net.sf.jstuff.core.SystemUtils;
+import net.sf.jstuff.core.collection.CollectionUtils;
+import net.sf.jstuff.core.concurrent.Threads;
 import net.sf.jstuff.core.io.Processes;
+import net.sf.jstuff.core.net.NetUtils;
 
 /**
  * @author Sebastian Thomschke
@@ -58,28 +63,46 @@ public class RunShellExternalHandler extends AbstractHandler {
 
          dartSDK.installInteractiveShell(jobMonitor);
 
+         final var args = CollectionUtils.newArrayList(dartSDK.getDartExecutable(), //
+            "pub", "global", "run", //
+            "--enable-vm-service=" + NetUtils.getAvailableLocalPort(), //
+            "interactive");
+         if (project != null) {
+            args.add("--directory");
+            args.add(Strings.replace(Resources.toAbsolutePath(project).toString(), '\\', '/'));
+         }
+
          try {
             if (SystemUtils.IS_OS_WINDOWS) {
                Processes.builder("cmd") //
-                  .withArgs("/K", "start", "Dart Interactive Shell", dartSDK.getDartExecutable(), "pub", "global", "run", "interactive") //
+                  .withArgs("/K", "start", "Dart Interactive Shell") //
+                  .withArgs(args) //
                   .start();
             } else if (SystemUtils.IS_OS_LINUX) {
                Processes.builder("cmd") //
-                  .withArgs("gnome-terminal", "--", dartSDK.getDartExecutable(), "pub", "global", "run", "interactive") //
+                  .withArgs("gnome-terminal", "--") //
+                  .withArgs(args) //
                   .start();
             } else if (SystemUtils.IS_OS_MAC) {
                Processes.builder("osascript") //
                   .withArgs( //
                      "-e", "tell application \"Terminal\" to activate", //
-                     "-e", "tell application \"Terminal\" to do script \"" + dartSDK.getDartExecutable() + " pub global run interactive") //
+                     "-e", "tell application \"Terminal\" to do script \"" + Strings.join(args, ' ') + "\"") //
                   .start();
             } else {
                Dialogs.showError("Unsupported Operating System", "Cannot launch Dart Shell. {0} is not supported", SystemUtils.OS_NAME);
             }
+
+            if (project != null) {
+               jobMonitor.setTaskName("Cleaning up Dart Shell");
+               Threads.sleep(5_000);
+               final var launchFile = project.getFile("lib/auto_generated.dart");
+               launchFile.refreshLocal(0, jobMonitor);
+               launchFile.delete(true, jobMonitor);
+            }
          } catch (final IOException ex) {
             Dart4EPlugin.log().error(ex);
          }
-
       });
       job.schedule();
    }
