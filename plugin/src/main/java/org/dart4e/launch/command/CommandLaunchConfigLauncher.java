@@ -8,7 +8,6 @@ import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collections;
 
 import org.dart4e.Dart4EPlugin;
@@ -71,28 +70,25 @@ public class CommandLaunchConfigLauncher extends LaunchConfigurationDelegate {
       final var envVars = config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.emptyMap());
       final var appendEnvVars = config.getAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
 
-      final var programArgs = SystemUtils.splitCommandLine(LaunchConfigurations.getProgramArgs(config));
-      final var vmArgs = SystemUtils.splitCommandLine(LaunchConfigurations.getDartVMArgs(config));
+      final var dartArgs = SystemUtils.splitCommandLine(LaunchConfigurations.getProgramArgs(config));
+      if (!dartArgs.isEmpty() && "pub".equals(dartArgs.get(0)) && Consoles.isAnsiColorsSupported()) {
+         dartArgs.add("--color");
+      }
 
       switch (mode) {
 
          case ILaunchManager.RUN_MODE:
-            final var args = new ArrayList<Object>(vmArgs);
-            if (Consoles.isAnsiColorsSupported()) {
-               args.add("--color");
-            }
-            args.addAll(programArgs);
             final var job = Job.create(NLS.bind("Running Dart command...", project.getName()), jobMonitor -> {
                try {
                   final var proc = dartSDK.getDartProcessBuilder(!appendEnvVars) //
-                     .withArgs(args.toArray()) //
+                     .withArgs(dartArgs) //
                      .withEnvironment(env -> env.putAll(envVars)) //
                      .withWorkingDirectory(workdir) //
                      .onExit(process -> {
                         try {
                            RefreshUtil.refreshResources(config, jobMonitor);
-                        } catch (final CoreException e) {
-                           Dart4EPlugin.log().error(e);
+                        } catch (final CoreException ex) {
+                           Dart4EPlugin.log().error(ex);
                         }
                      }) //
                      .start();

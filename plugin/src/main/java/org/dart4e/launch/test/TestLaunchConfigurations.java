@@ -6,7 +6,6 @@ package org.dart4e.launch.test;
 
 import static java.util.Collections.singletonList;
 
-import org.dart4e.Constants;
 import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.prefs.DartProjectPreference;
 import org.eclipse.core.resources.IProject;
@@ -20,6 +19,9 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public abstract class TestLaunchConfigurations {
 
+   /** id of <launchConfigurationType/> as specified in plugin.xml */
+   public static final String LAUNCH_CONFIGURATION_ID = "org.dart4e.launch.dart_test";
+
    public static final String LAUNCH_ATTR_DART_TEST_RESOURCES = "launch.dart.dart_test_resources";
 
    public static ILaunchConfigurationWorkingCopy create(final IProject project) throws CoreException {
@@ -28,7 +30,7 @@ public abstract class TestLaunchConfigurations {
 
    public static ILaunchConfigurationWorkingCopy create(final IProject project, final @Nullable String testResource) throws CoreException {
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
-      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_TEST_CONFIGURATION_ID);
+      final var launchConfigType = launchMgr.getLaunchConfigurationType(LAUNCH_CONFIGURATION_ID);
       final var launchConfigName = testResource == null //
          ? project.getName() //
          : project.getName() + " (" + testResource + ")";
@@ -40,7 +42,8 @@ public abstract class TestLaunchConfigurations {
 
    public static void initialize(final ILaunchConfigurationWorkingCopy config) {
       LaunchConfigurations.setAutoRefreshProject(config);
-      LaunchConfigurations.setFavoriteGroups(config, Constants.LAUNCH_DART_GROUP);
+      LaunchConfigurations.setFavoriteGroups(config, LaunchConfigurations.LAUNCH_DART_GROUP);
+      LaunchConfigurations.setDartVMArgs(config, "--enable-asserts");
    }
 
    private static void initialize(final ILaunchConfigurationWorkingCopy config, final IProject project,

@@ -15,7 +15,6 @@ import org.dart4e.util.ui.GridDatas;
 import org.dart4e.widget.DartSDKSelectionGroup;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -44,8 +43,7 @@ public final class NewDartProjectPage extends WizardNewProjectCreationPage {
       super.createControl(parent);
 
       final var control = (Composite) getControl();
-      final var grpDartSDKSelection = new DartSDKSelectionGroup(control, GridDataFactory.fillDefaults().create());
-      altSDK = grpDartSDKSelection.selectedAltSDK;
+      altSDK = new DartSDKSelectionGroup(control).selectedAltSDK;
 
       final var grpTemplate = new Group(control, SWT.NONE);
       grpTemplate.setLayoutData(GridDatas.fillHorizontalExcessive());

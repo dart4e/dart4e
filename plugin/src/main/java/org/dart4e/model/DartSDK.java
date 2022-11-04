@@ -191,8 +191,8 @@ public final class DartSDK implements Comparable<DartSDK> {
    @Nullable
    @JsonIgnore
    public String getVersion() {
-      try {
-         final var version = Files.lines(installRoot.resolve("version")).findFirst().orElse("");
+      try (var lines = Files.lines(installRoot.resolve("version"))) {
+         final var version = lines.findFirst().orElse("");
          return Strings.isBlank(version) ? null : version;
       } catch (final IOException ex) {
          Dart4EPlugin.log().error(ex);

@@ -30,14 +30,16 @@ public class DartProjectSelectionGroup extends Composite {
 
    public final MutableObservableRef<@Nullable IProject> selectedProject = MutableObservableRef.of(null);
 
-   public DartProjectSelectionGroup(final Composite parent, final Object layoutData) {
-      this(parent, SWT.NONE, layoutData);
+   public DartProjectSelectionGroup(final Composite parent) {
+      this(parent, SWT.NONE);
    }
 
-   public DartProjectSelectionGroup(final Composite parent, final int style, final Object layoutData) {
+   public DartProjectSelectionGroup(final Composite parent, final int style) {
       super(parent, style);
 
-      setLayoutData(layoutData);
+      if (parent.getLayout() instanceof GridLayout) {
+         setLayoutData(GridDatas.fillHorizontalExcessive());
+      }
       setLayout(GridLayoutFactory.fillDefaults().create());
 
       final var grpProject = new Group(this, SWT.NONE);

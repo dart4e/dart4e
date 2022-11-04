@@ -167,8 +167,8 @@ public class DartBuildFile extends BuildFile {
    @Override
    public Set<IPath> getSourcePaths() {
       return Set.of(//
-         Path.fromOSString("lib"), //
-         Path.fromOSString("test") //
+         Path.fromOSString(Constants.PROJECT_LIB_DIRNAME), //
+         Path.fromOSString(Constants.PROJECT_TEST_DIRNAME) //
       );
    }
 

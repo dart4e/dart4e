@@ -25,7 +25,7 @@ public class DartProjectSelectionDialog {
    private final ElementListSelectionDialog dialog;
 
    public DartProjectSelectionDialog(final Shell parent) {
-      final var dartProjectIcon = Dart4EPlugin.get().getSharedImage(Constants.IMAGE_NAVIGATOR_DART_PROJECT);
+      final var dartProjectIcon = Dart4EPlugin.get().getSharedImage(Constants.IMAGE_DART_PROJECT);
       dialog = new ElementListSelectionDialog(parent, new LabelProvider() {
          @Override
          public @Nullable Image getImage(final @Nullable Object element) {

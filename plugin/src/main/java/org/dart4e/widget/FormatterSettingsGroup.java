@@ -7,6 +7,7 @@ package org.dart4e.widget;
 import org.dart4e.util.ui.GridDatas;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -25,14 +26,16 @@ public class FormatterSettingsGroup extends Composite {
    public final MutableObservableRef<Integer> defaultMaxLineLength = MutableObservableRef.of(80);
    public final MutableObservableRef<Integer> maxLineLength = MutableObservableRef.of(80);
 
-   public FormatterSettingsGroup(final Composite parent, final Object layoutData) {
-      this(parent, SWT.NONE, layoutData);
+   public FormatterSettingsGroup(final Composite parent) {
+      this(parent, SWT.NONE);
    }
 
-   public FormatterSettingsGroup(final Composite parent, final int style, final Object layoutData) {
+   public FormatterSettingsGroup(final Composite parent, final int style) {
       super(parent, style);
 
-      setLayoutData(layoutData);
+      if (parent.getLayout() instanceof GridLayout) {
+         setLayoutData(GridDatas.fillHorizontalExcessive());
+      }
       setLayout(GridLayoutFactory.fillDefaults().create());
 
       final var grpFormatter = new Group(this, SWT.NONE);

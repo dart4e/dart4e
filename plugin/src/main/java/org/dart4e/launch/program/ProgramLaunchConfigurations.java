@@ -6,7 +6,6 @@ package org.dart4e.launch.program;
 
 import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
-import org.dart4e.Constants;
 import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.model.buildsystem.BuildFile;
 import org.dart4e.model.buildsystem.DartBuildFile;
@@ -22,11 +21,14 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
  */
 public abstract class ProgramLaunchConfigurations {
 
+   /** id of <launchConfigurationType/> as specified in plugin.xml */
+   public static final String LAUNCH_CONFIGURATION_ID = "org.dart4e.launch.dart_program";
+
    public static ILaunchConfigurationWorkingCopy create(final IFile dartFile) throws CoreException {
       final var project = asNonNull(dartFile.getProject());
 
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
-      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_PROGRAM_CONFIGURATION_ID);
+      final var launchConfigType = launchMgr.getLaunchConfigurationType(LAUNCH_CONFIGURATION_ID);
       final var newLaunchConfig = launchConfigType.newInstance(null, launchMgr.generateLaunchConfigurationName(project.getName() + " ("
          + dartFile.getName() + ")"));
       initialize(newLaunchConfig, dartFile);
@@ -39,7 +41,7 @@ public abstract class ProgramLaunchConfigurations {
          return create(project.getFile(dartBuildFile.getExecutables().get(0)));
 
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
-      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_PROGRAM_CONFIGURATION_ID);
+      final var launchConfigType = launchMgr.getLaunchConfigurationType(LAUNCH_CONFIGURATION_ID);
       final var newLaunchConfig = launchConfigType.newInstance(null, launchMgr.generateLaunchConfigurationName(project.getName()));
       initialize(newLaunchConfig, project);
       return newLaunchConfig;
@@ -47,7 +49,7 @@ public abstract class ProgramLaunchConfigurations {
 
    public static void initialize(final ILaunchConfigurationWorkingCopy config) {
       LaunchConfigurations.setAutoRefreshProject(config);
-      LaunchConfigurations.setFavoriteGroups(config, Constants.LAUNCH_DART_GROUP);
+      LaunchConfigurations.setFavoriteGroups(config, LaunchConfigurations.LAUNCH_DART_GROUP);
    }
 
    private static void initialize(final ILaunchConfigurationWorkingCopy config, final IFile dartFile) {

@@ -4,7 +4,6 @@
  */
 package org.dart4e.launch.command;
 
-import org.dart4e.Constants;
 import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.prefs.DartProjectPreference;
 import org.eclipse.core.resources.IProject;
@@ -17,9 +16,12 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
  */
 public abstract class CommandLaunchConfigurations {
 
+   /** id of <launchConfigurationType/> as specified in plugin.xml */
+   public static final String LAUNCH_CONFIGURATION_ID = "org.dart4e.launch.dart_command";
+
    public static ILaunchConfigurationWorkingCopy create(final IProject project) throws CoreException {
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
-      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_COMMAND_CONFIGURATION_ID);
+      final var launchConfigType = launchMgr.getLaunchConfigurationType(LAUNCH_CONFIGURATION_ID);
       final var launchConfigName = project.getName();
       final var newLaunchConfig = launchConfigType.newInstance(null, launchMgr.generateLaunchConfigurationName(launchConfigName));
       initialize(newLaunchConfig, project);
@@ -28,7 +30,7 @@ public abstract class CommandLaunchConfigurations {
 
    public static void initialize(final ILaunchConfigurationWorkingCopy config) {
       LaunchConfigurations.setAutoRefreshProject(config);
-      LaunchConfigurations.setFavoriteGroups(config, Constants.LAUNCH_DART_GROUP);
+      LaunchConfigurations.setFavoriteGroups(config, LaunchConfigurations.LAUNCH_DART_GROUP);
    }
 
    private static void initialize(final ILaunchConfigurationWorkingCopy config, final IProject project) {

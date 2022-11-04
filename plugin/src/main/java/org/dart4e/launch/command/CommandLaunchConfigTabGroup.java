@@ -2,7 +2,7 @@
  * Copyright 2022 by the Dart4E authors.
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.dart4e.launch.program;
+package org.dart4e.launch.command;
 
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
@@ -16,17 +16,17 @@ import org.eclipse.debug.ui.RefreshTab;
  *
  * @author Sebastian Thomschke
  */
-public class ProgramLaunchTabGroup extends AbstractLaunchConfigurationTabGroup {
+public class CommandLaunchConfigTabGroup extends AbstractLaunchConfigurationTabGroup {
 
    @Override
    public void createTabs(final ILaunchConfigurationDialog dialog, final String mode) {
-      setTabs(new ProgramLaunchConfigTab(), new RefreshTab(), new EnvironmentTab(), new CommonTab());
+      setTabs(new CommandLaunchConfigTab(), new RefreshTab(), new EnvironmentTab(), new CommonTab());
    }
 
    @Override
    public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
       super.setDefaults(configuration);
 
-      ProgramLaunchConfigurations.initialize(configuration);
+      CommandLaunchConfigurations.initialize(configuration);
    }
 }

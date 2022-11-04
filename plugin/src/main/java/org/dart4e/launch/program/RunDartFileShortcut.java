@@ -6,7 +6,6 @@ package org.dart4e.launch.program;
 
 import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
-import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.localization.Messages;
@@ -51,7 +50,7 @@ public class RunDartFileShortcut implements ILaunchShortcut {
 
    private void launchDartFile(final IFile dartFile, final String mode) {
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
-      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_PROGRAM_CONFIGURATION_ID);
+      final var launchConfigType = launchMgr.getLaunchConfigurationType(ProgramLaunchConfigurations.LAUNCH_CONFIGURATION_ID);
 
       final var project = asNonNull(dartFile.getProject());
       try {
@@ -67,7 +66,7 @@ public class RunDartFileShortcut implements ILaunchShortcut {
 
          // create a new launch config
          final var newLaunchConfig = ProgramLaunchConfigurations.create(dartFile);
-         final String groupId = "debug".equals(mode) ? IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP : Constants.LAUNCH_DART_GROUP;
+         final String groupId = "debug".equals(mode) ? IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP : LaunchConfigurations.LAUNCH_DART_GROUP;
          if (Window.OK == DebugUITools.openLaunchConfigurationDialog(UI.getShell(), newLaunchConfig, groupId, null)) {
             newLaunchConfig.doSave();
          }

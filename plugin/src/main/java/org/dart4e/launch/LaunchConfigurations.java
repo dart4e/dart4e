@@ -24,6 +24,9 @@ import de.sebthom.eclipse.commons.resources.Projects;
  */
 public abstract class LaunchConfigurations {
 
+   /** id of <launchGroup/> as specified in plugin.xml */
+   public static final String LAUNCH_DART_GROUP = "org.dart4e.launch.dart.group";
+
    private static final String LAUNCH_ATTR_PROJECT = "launch.dart.project";
    private static final String LAUNCH_ATTR_DART_MAIN_FILE = "launch.dart.dart_main_file";
    private static final String LAUNCH_ATTR_DART_SDK = "launch.dart.sdk";

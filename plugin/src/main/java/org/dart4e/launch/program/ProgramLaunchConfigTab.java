@@ -10,24 +10,50 @@ import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.localization.Messages;
+import org.dart4e.model.DartSDK;
+import org.dart4e.widget.DartFileSelectionGroup;
+import org.dart4e.widget.DartProjectSelectionGroup;
+import org.dart4e.widget.DartSDKSelectionGroup;
+import org.dart4e.widget.TextFieldGroup;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+
+import net.sf.jstuff.core.ref.MutableObservableRef;
 
 /**
  * @author Sebastian Thomschke
  */
 public class ProgramLaunchConfigTab extends AbstractLaunchConfigurationTab {
 
-   private ProgramLaunchConfigForm form = lazyNonNull();
+   private MutableObservableRef<@Nullable IProject> selectedProject = lazyNonNull();
+   private MutableObservableRef<@Nullable IFile> selectedDartFile = lazyNonNull();
+   private MutableObservableRef<@Nullable DartSDK> selectedAltSDK = lazyNonNull();
+   private MutableObservableRef<String> programArgs = lazyNonNull();
+   private MutableObservableRef<String> vmArgs = lazyNonNull();
 
    @Override
    public void createControl(final Composite parent) {
-      form = new ProgramLaunchConfigForm(parent, SWT.NONE);
+      final var form = new Composite(parent, SWT.NONE);
+      form.setLayout(new GridLayout(1, false));
+
+      selectedProject = new DartProjectSelectionGroup(form).selectedProject;
+
+      final var grpDartFile = new DartFileSelectionGroup(form);
+      selectedDartFile = grpDartFile.selectedDartFile;
+      selectedProject.subscribe(grpDartFile::setProject);
+
+      programArgs = new TextFieldGroup(form, "Program arguments").text;
+      vmArgs = new TextFieldGroup(form, "Dart VM arguments").text;
+      selectedAltSDK = new DartSDKSelectionGroup(form).selectedAltSDK;
+
       setControl(form);
    }
 
@@ -48,25 +74,25 @@ public class ProgramLaunchConfigTab extends AbstractLaunchConfigurationTab {
 
    @Override
    public void initializeFrom(final ILaunchConfiguration config) {
-      form.selectedProject.set(LaunchConfigurations.getProject(config));
-      form.selectedProject.subscribe(this::updateLaunchConfigurationDialog);
+      selectedProject.set(LaunchConfigurations.getProject(config));
+      selectedProject.subscribe(this::updateLaunchConfigurationDialog);
 
-      form.selectedDartFile.set(LaunchConfigurations.getDartMainFile(config));
-      form.selectedDartFile.subscribe(this::updateLaunchConfigurationDialog);
+      selectedDartFile.set(LaunchConfigurations.getDartMainFile(config));
+      selectedDartFile.subscribe(this::updateLaunchConfigurationDialog);
 
-      form.selectedAltSDK.set(LaunchConfigurations.getAlternativeDartSDK(config));
-      form.selectedAltSDK.subscribe(this::updateLaunchConfigurationDialog);
+      selectedAltSDK.set(LaunchConfigurations.getAlternativeDartSDK(config));
+      selectedAltSDK.subscribe(this::updateLaunchConfigurationDialog);
 
-      form.programArgs.set(LaunchConfigurations.getProgramArgs(config));
-      form.programArgs.subscribe(this::updateLaunchConfigurationDialog);
+      programArgs.set(LaunchConfigurations.getProgramArgs(config));
+      programArgs.subscribe(this::updateLaunchConfigurationDialog);
 
-      form.vmArgs.set(LaunchConfigurations.getDartVMArgs(config));
-      form.vmArgs.subscribe(this::updateLaunchConfigurationDialog);
+      vmArgs.set(LaunchConfigurations.getDartVMArgs(config));
+      vmArgs.subscribe(this::updateLaunchConfigurationDialog);
    }
 
    @Override
    public boolean isValid(final ILaunchConfiguration launchConfig) {
-      final var project = form.selectedProject.get();
+      final var project = selectedProject.get();
       if (project == null) {
          setErrorMessage("No project selected");
          return false;
@@ -76,7 +102,7 @@ public class ProgramLaunchConfigTab extends AbstractLaunchConfigurationTab {
          return false;
       }
 
-      final var dartFile = form.selectedDartFile.get();
+      final var dartFile = selectedDartFile.get();
       if (dartFile == null) {
          setErrorMessage("No Dart file selected");
          return false;
@@ -93,11 +119,11 @@ public class ProgramLaunchConfigTab extends AbstractLaunchConfigurationTab {
 
    @Override
    public void performApply(final ILaunchConfigurationWorkingCopy config) {
-      LaunchConfigurations.setProject(config, form.selectedProject.get());
-      LaunchConfigurations.setDartMainFile(config, form.selectedDartFile.get());
-      LaunchConfigurations.setProgramArgs(config, form.programArgs.get());
-      LaunchConfigurations.setDartVMArgs(config, form.vmArgs.get());
-      LaunchConfigurations.setAlternativeDartSDK(config, form.selectedAltSDK.get());
+      LaunchConfigurations.setProject(config, selectedProject.get());
+      LaunchConfigurations.setDartMainFile(config, selectedDartFile.get());
+      LaunchConfigurations.setProgramArgs(config, programArgs.get());
+      LaunchConfigurations.setDartVMArgs(config, vmArgs.get());
+      LaunchConfigurations.setAlternativeDartSDK(config, selectedAltSDK.get());
    }
 
    @Override

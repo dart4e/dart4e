@@ -7,7 +7,6 @@ package org.dart4e.prefs;
 import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
 
 import org.dart4e.localization.Messages;
-import org.dart4e.util.ui.GridDatas;
 import org.dart4e.widget.FormatterSettingsGroup;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
@@ -35,7 +34,7 @@ public class DartPreferencePage extends PreferencePage implements IWorkbenchPref
       final var container = new Composite(parent, SWT.NULL);
       container.setLayout(new GridLayout(1, true));
 
-      final var formatterSettings = new FormatterSettingsGroup(container, GridDatas.fillHorizontalExcessive());
+      final var formatterSettings = new FormatterSettingsGroup(container);
       formatterSettings.defaultMaxLineLength.set(80);
       formatterMaxLineLength = formatterSettings.maxLineLength;
       formatterMaxLineLength.set(DartWorkspacePreference.getFormatterMaxLineLength());

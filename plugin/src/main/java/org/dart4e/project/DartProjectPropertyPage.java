@@ -40,14 +40,14 @@ public final class DartProjectPropertyPage extends org.eclipse.ui.dialogs.Proper
       /*
        * alt SDK selection
        */
-      final var grpDartSDKSelection = new DartSDKSelectionGroup(container, GridDatas.fillHorizontalExcessive());
-      grpDartSDKSelection.selectedAltSDK.set(prefs.getAlternateDartSDK());
-      grpDartSDKSelection.selectedAltSDK.subscribe(prefs::setAlternateDartSDK);
+      final var selectedAltSDK = new DartSDKSelectionGroup(container).selectedAltSDK;
+      selectedAltSDK.set(prefs.getAlternateDartSDK());
+      selectedAltSDK.subscribe(prefs::setAlternateDartSDK);
 
       /*
        * formatter
        */
-      final var formatterSettings = new FormatterSettingsGroup(container, GridDatas.fillHorizontalExcessive());
+      final var formatterSettings = new FormatterSettingsGroup(container);
       formatterSettings.defaultMaxLineLength.set(DartWorkspacePreference.getFormatterMaxLineLength());
       formatterSettings.maxLineLength.set(prefs.getFormatterMaxLineLength());
       formatterSettings.maxLineLength.subscribe(newValue -> prefs.setFormatterMaxLineLength(newValue));

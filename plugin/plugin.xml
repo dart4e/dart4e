@@ -462,7 +462,7 @@
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
          id="org.dart4e.launch.dart_command.LaunchTabGroup"
-         class="org.dart4e.launch.command.CommandLaunchTabGroup"
+         class="org.dart4e.launch.command.CommandLaunchConfigTabGroup"
          type="org.dart4e.launch.dart_command"
          description="%DartCommandLaunchGroup_Description" />
    </extension>
@@ -517,7 +517,7 @@
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
          id="org.dart4e.launch.dart_program.LaunchTabGroup"
-         class="org.dart4e.launch.program.ProgramLaunchTabGroup"
+         class="org.dart4e.launch.program.ProgramLaunchConfigTabGroup"
          type="org.dart4e.launch.dart_program"
          description="%DartProgramLaunchGroup_Description" />
    </extension>
@@ -593,7 +593,7 @@
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
          id="org.dart4e.launch.dart_test.LaunchTabGroup"
-         class="org.dart4e.launch.test.TestLaunchTabGroup"
+         class="org.dart4e.launch.test.TestLaunchConfigTabGroup"
          type="org.dart4e.launch.dart_test"
          description="%DartTestLaunchGroup_Description" />
    </extension>

@@ -4,8 +4,8 @@
  */
 package org.dart4e.launch.command;
 
-import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.localization.Messages;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -58,7 +58,8 @@ public class RunCommandShortcut implements ILaunchShortcut {
       try {
          // create a new launch config
          final var newLaunchConfig = CommandLaunchConfigurations.create(project);
-         if (Window.OK == DebugUITools.openLaunchConfigurationDialog(UI.getShell(), newLaunchConfig, Constants.LAUNCH_DART_GROUP, null)) {
+         if (Window.OK == DebugUITools.openLaunchConfigurationDialog(UI.getShell(), newLaunchConfig, LaunchConfigurations.LAUNCH_DART_GROUP,
+            null)) {
             newLaunchConfig.doSave();
          }
       } catch (final CoreException ex) {

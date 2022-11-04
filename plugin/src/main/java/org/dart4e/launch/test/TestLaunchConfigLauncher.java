@@ -73,7 +73,7 @@ public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
       }
 
       final var testResources = config.getAttribute(TestLaunchConfigurations.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(
-         Constants.TEST_FOLDER_NAME));
+         Constants.PROJECT_TEST_DIRNAME));
 
       final var workdir = Paths.get(config.getAttribute(DebugPlugin.ATTR_WORKING_DIRECTORY, projectLoc.toOSString()));
       final var envVars = config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.emptyMap());
@@ -124,8 +124,8 @@ public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
                   .onExit(process -> {
                      try {
                         RefreshUtil.refreshResources(config, monitor);
-                     } catch (final CoreException e) {
-                        Dart4EPlugin.log().error(e);
+                     } catch (final CoreException ex) {
+                        Dart4EPlugin.log().error(ex);
                      }
                   }) //
                   .start();

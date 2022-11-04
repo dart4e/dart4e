@@ -127,8 +127,8 @@ public class ProgramLaunchConfigLauncher extends LaunchConfigurationDelegate {
                   .onExit(process -> {
                      try {
                         RefreshUtil.refreshResources(config, monitor);
-                     } catch (final CoreException e) {
-                        Dart4EPlugin.log().error(e);
+                     } catch (final CoreException ex) {
+                        Dart4EPlugin.log().error(ex);
                      }
                   }) //
                   .start();

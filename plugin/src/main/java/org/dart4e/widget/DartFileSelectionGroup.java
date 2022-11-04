@@ -37,10 +37,16 @@ public class DartFileSelectionGroup extends Composite {
    private Button btnBrowseForDartFile;
    public final MutableObservableRef<@Nullable IFile> selectedDartFile = MutableObservableRef.of(null);
 
-   public DartFileSelectionGroup(final Composite parent, final int style, final Object layoutData) {
+   public DartFileSelectionGroup(final Composite parent) {
+      this(parent, SWT.NONE);
+   }
+
+   public DartFileSelectionGroup(final Composite parent, final int style) {
       super(parent, style);
 
-      setLayoutData(layoutData);
+      if (parent.getLayout() instanceof GridLayout) {
+         setLayoutData(GridDatas.fillHorizontalExcessive());
+      }
       setLayout(GridLayoutFactory.fillDefaults().create());
 
       final var grpDartFile = new Group(this, SWT.NONE);
@@ -58,10 +64,6 @@ public class DartFileSelectionGroup extends Composite {
       btnBrowseForDartFile.setText(Messages.Label_Browse);
       btnBrowseForDartFile.setEnabled(false);
       Buttons.onSelected(btnBrowseForDartFile, this::onBrowseForDartFile);
-   }
-
-   public DartFileSelectionGroup(final Composite parent, final Object layoutData) {
-      this(parent, SWT.NONE, layoutData);
    }
 
    private @Nullable IFile getDartFile(final String path) {

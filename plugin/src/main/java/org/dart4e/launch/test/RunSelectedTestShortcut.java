@@ -52,7 +52,7 @@ public class RunSelectedTestShortcut implements ILaunchShortcut {
 
    private void launchDartTest(final IResource testResource, final String mode) {
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
-      final var launchConfigType = launchMgr.getLaunchConfigurationType(Constants.LAUNCH_DART_TEST_CONFIGURATION_ID);
+      final var launchConfigType = launchMgr.getLaunchConfigurationType(TestLaunchConfigurations.LAUNCH_CONFIGURATION_ID);
 
       final var project = asNonNull(testResource.getProject());
       try {
@@ -62,7 +62,7 @@ public class RunSelectedTestShortcut implements ILaunchShortcut {
          // use an existing launch config if available
          for (final var cfg : launchMgr.getLaunchConfigurations(launchConfigType)) {
             if (project.getName().equalsIgnoreCase(LaunchConfigurations.getProjectName(cfg)) //
-               && cfg.getAttribute(TestLaunchConfigurations.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(Constants.TEST_FOLDER_NAME))
+               && cfg.getAttribute(TestLaunchConfigurations.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(Constants.PROJECT_TEST_DIRNAME))
                   .equals(testResourceAsList)) {
                DebugUITools.launch(cfg, mode);
                return;
@@ -71,7 +71,7 @@ public class RunSelectedTestShortcut implements ILaunchShortcut {
 
          // create a new launch config
          final var newLaunchConfig = TestLaunchConfigurations.create(project, testResourceAsString);
-         final String groupId = "debug".equals(mode) ? IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP : Constants.LAUNCH_DART_GROUP;
+         final String groupId = "debug".equals(mode) ? IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP : LaunchConfigurations.LAUNCH_DART_GROUP;
          if (Window.OK == DebugUITools.openLaunchConfigurationDialog(UI.getShell(), newLaunchConfig, groupId, null)) {
             newLaunchConfig.doSave();
          }
