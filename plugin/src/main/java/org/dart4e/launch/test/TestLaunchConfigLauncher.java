@@ -5,12 +5,9 @@
 package org.dart4e.launch.test;
 
 import static java.util.Collections.singletonList;
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.dart4e.Constants;
@@ -30,7 +27,6 @@ import org.eclipse.debug.core.RefreshUtil;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.lsp4e.debug.DSPPlugin;
 import org.eclipse.lsp4e.debug.launcher.DSPLaunchDelegate.DSPLaunchDelegateLaunchBuilder;
 
 import de.sebthom.eclipse.commons.ui.Dialogs;
@@ -42,17 +38,7 @@ import net.sf.jstuff.core.SystemUtils;
  *
  * @author Sebastian Thomschke
  */
-@SuppressWarnings("restriction")
 public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
-
-   /**
-    * Used to get/set the associated project name from a Debug Console's process, e.g.
-    *
-    * <pre>
-    * debugConsole.getProcess().getAttribute(LaunchConfigLauncher.PROCESS_ATTRIBUTE_PROJECT_NAME);
-    * </pre>
-    */
-   public static final String PROCESS_ATTRIBUTE_PROJECT_NAME = "project_name";
 
    @Override
    public void launch(final ILaunchConfiguration config, final String mode, final ILaunch launch, final @Nullable IProgressMonitor monitor)
@@ -63,7 +49,6 @@ public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
          Dialogs.showError(Messages.Launch_NoProjectSelected, Messages.Launch_NoProjectSelected_Descr);
          return;
       }
-      final var projectLoc = asNonNull(project.getLocation());
 
       final var prefs = DartProjectPreference.get(project);
       final var dartSDK = prefs.getEffectiveDartSDK();
@@ -75,9 +60,9 @@ public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
       final var testResources = config.getAttribute(TestLaunchConfigurations.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(
          Constants.PROJECT_TEST_DIRNAME));
 
-      final var workdir = Paths.get(config.getAttribute(DebugPlugin.ATTR_WORKING_DIRECTORY, projectLoc.toOSString()));
-      final var envVars = config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.emptyMap());
-      final var appendEnvVars = config.getAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
+      final var workdir = LaunchConfigurations.getWorkingDirectory(config);
+      final var envVars = LaunchConfigurations.getEnvVars(config);
+      final var appendEnvVars = LaunchConfigurations.isAppendEnvVars(config);
 
       final var programArgs = SystemUtils.splitCommandLine(LaunchConfigurations.getProgramArgs(config));
       final var vmArgs = SystemUtils.splitCommandLine(LaunchConfigurations.getDartVMArgs(config));
@@ -101,7 +86,7 @@ public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
                builder.setLaunchDebugAdapter( //
                   dartSDK.getDartExecutable().toString(), //
                   List.of("debug_adapter", "--test"));
-               builder.setMonitorDebugAdapter(config.getAttribute(DSPPlugin.ATTR_DSP_MONITOR_DEBUG_ADAPTER, true));
+               builder.setMonitorDebugAdapter(LaunchConfigurations.isMonitorDebugAdapter(config));
                builder.setDspParameters(debuggerOpts);
                new LaunchDebugConfig().launch(builder);
             } catch (final CoreException ex) {
@@ -130,7 +115,7 @@ public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
                   }) //
                   .start();
                final var processHandle = DebugPlugin.newProcess(launch, proc.getProcess(), dartSDK.getDartExecutable().toString());
-               processHandle.setAttribute(PROCESS_ATTRIBUTE_PROJECT_NAME, project.getName());
+               processHandle.setAttribute(LaunchConfigurations.PROCESS_ATTRIBUTE_PROJECT_NAME, project.getName());
                launch.addProcess(processHandle);
             } catch (final IOException ex) {
                Dialogs.showStatus(Messages.Launch_CouldNotRunDart, Dart4EPlugin.status().createError(ex), true);

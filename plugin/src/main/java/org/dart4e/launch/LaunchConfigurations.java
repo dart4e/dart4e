@@ -4,24 +4,35 @@
  */
 package org.dart4e.launch;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.model.DartSDK;
 import org.dart4e.prefs.DartWorkspacePreference;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.RefreshTab;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.lsp4e.debug.DSPPlugin;
 
 import de.sebthom.eclipse.commons.resources.Projects;
+import de.sebthom.eclipse.commons.resources.Resources;
+import net.sf.jstuff.core.io.MoreFiles;
 
 /**
  * @author Sebastian Thomschke
  */
+@SuppressWarnings("restriction")
 public abstract class LaunchConfigurations {
 
    /** id of <launchGroup/> as specified in plugin.xml */
@@ -32,6 +43,19 @@ public abstract class LaunchConfigurations {
    private static final String LAUNCH_ATTR_DART_SDK = "launch.dart.sdk";
    private static final String LAUNCH_ATTR_PROGRAM_ARGS = "launch.dart.program_args";
    private static final String LAUNCH_ATTR_VM_ARGS = "launch.dart.vm_args";
+
+   /**
+    * Used to get/set the associated project name from a Debug Console's process, e.g.
+    *
+    * <pre>
+    * debugConsole.getProcess().getAttribute(LaunchConfigurations.PROCESS_ATTRIBUTE_PROJECT_NAME);
+    * </pre>
+    */
+   public static final String PROCESS_ATTRIBUTE_PROJECT_NAME = "project_name";
+
+   public static boolean isAppendEnvVars(final ILaunchConfiguration config) throws CoreException {
+      return config.getAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
+   }
 
    public static void setAttribute(final ILaunchConfigurationWorkingCopy config, final String attrName, @Nullable final String value) {
       if (value == null) {
@@ -57,6 +81,10 @@ public abstract class LaunchConfigurations {
 
    public static void setAlternativeDartSDK(final ILaunchConfigurationWorkingCopy config, @Nullable final DartSDK altSDK) {
       setAttribute(config, LAUNCH_ATTR_DART_SDK, altSDK == null ? null : altSDK.getName());
+   }
+
+   public static Map<String, String> getEnvVars(final ILaunchConfiguration config) throws CoreException {
+      return config.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, Collections.emptyMap());
    }
 
    public static void setFavoriteGroups(final ILaunchConfigurationWorkingCopy config, final String... groupIDs) {
@@ -101,6 +129,10 @@ public abstract class LaunchConfigurations {
       setAttribute(config, LAUNCH_ATTR_DART_MAIN_FILE, dartFile == null ? null : dartFile.getProjectRelativePath().toString());
    }
 
+   public static boolean isMonitorDebugAdapter(final ILaunchConfiguration config) throws CoreException {
+      return config.getAttribute(DSPPlugin.ATTR_DSP_MONITOR_DEBUG_ADAPTER, true);
+   }
+
    public static String getProgramArgs(final ILaunchConfiguration config) {
       try {
          return config.getAttribute(LAUNCH_ATTR_PROGRAM_ARGS, "");
@@ -130,5 +162,16 @@ public abstract class LaunchConfigurations {
 
    public static void setProject(final ILaunchConfigurationWorkingCopy config, @Nullable final IProject project) {
       setAttribute(config, LAUNCH_ATTR_PROJECT, project == null ? null : project.getName());
+   }
+
+   public static Path getWorkingDirectory(final ILaunchConfiguration config) throws CoreException {
+      final var workdir = config.getAttribute(DebugPlugin.ATTR_WORKING_DIRECTORY, "");
+      if (!workdir.isEmpty())
+         return Paths.get(workdir);
+
+      final var project = getProject(config);
+      return project == null //
+         ? MoreFiles.getWorkingDirectory()
+         : Resources.toAbsolutePath(project);
    }
 }
