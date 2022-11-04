@@ -255,17 +255,35 @@
 
    <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
       <consolePatternMatchListener
-         id="org.dart4e.console.DartConsoleLinkifier"
-         class="org.dart4e.console.DartConsoleLinkifier"
+         id="org.dart4e.console.DartConsoleDartFileLinkifier"
+         class="org.dart4e.console.DartConsoleDartFileLinkifier"
          regex="\((package:|dart:|file:\/\/\/)(\w|[-:\/])+\.dart\:\d+\:\d+\)">
          <enablement>
-         <or>
-            <test property="org.eclipse.ui.console.consoleTypeTest" value="org.dart4e.console.DartConsole">
-               <!-- see org.dart4e.console.DartConsole.CONSOLE_TYPE -->
-            </test>
-            <test property="org.eclipse.ui.console.consoleTypeTest" value="org.eclipse.debug.ui.ProcessConsoleType">
-               <!-- see org.eclipse.debug.ui.IDebugUIConstants.ID_PROCESS_CONSOLE_TYPE -->
-            </test>
+            <or>
+               <test property="org.eclipse.ui.console.consoleTypeTest" value="org.dart4e.console.DartConsole">
+                  <!-- see org.dart4e.console.DartConsole.CONSOLE_TYPE -->
+               </test>
+               <test property="org.eclipse.ui.console.consoleTypeTest" value="org.eclipse.debug.ui.ProcessConsoleType">
+                  <!-- see org.eclipse.debug.ui.IDebugUIConstants.ID_PROCESS_CONSOLE_TYPE -->
+               </test>
+            </or>
+         </enablement>
+      </consolePatternMatchListener>
+   </extension>
+
+   <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
+      <consolePatternMatchListener
+         id="org.dart4e.console.DartConsoleUrlLinkifier"
+         class="org.dart4e.console.DartConsoleUrlLinkifier"
+         regex="https?:\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])">
+         <enablement>
+            <or>
+               <test property="org.eclipse.ui.console.consoleTypeTest" value="org.dart4e.console.DartConsole">
+                  <!-- see org.dart4e.console.DartConsole.CONSOLE_TYPE -->
+               </test>
+               <test property="org.eclipse.ui.console.consoleTypeTest" value="org.eclipse.debug.ui.ProcessConsoleType">
+                  <!-- see org.eclipse.debug.ui.IDebugUIConstants.ID_PROCESS_CONSOLE_TYPE -->
+               </test>
             </or>
          </enablement>
       </consolePatternMatchListener>

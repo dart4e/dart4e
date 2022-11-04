@@ -27,7 +27,7 @@ import net.sf.jstuff.core.Strings;
 /**
  * @author Sebastian Thomschke
  */
-public final class DartConsoleLinkifier implements IPatternMatchListenerDelegate {
+public final class DartConsoleDartFileLinkifier implements IPatternMatchListenerDelegate {
 
    private @Nullable TextConsole console;
    private static final Pattern SOURCE_LOCATION_PATTERN = Pattern.compile(
@@ -83,7 +83,7 @@ public final class DartConsoleLinkifier implements IPatternMatchListenerDelegate
             case "package:":
                sourceFile = project.getFolder(DartDependenciesUpdater.DEPS_MAGIC_FOLDER_NAME).getFile(sourceFilePath);
                if (!sourceFile.exists()) {
-                  sourceFile = project.getFile("lib/" + Strings.substringAfter(sourceFilePath, "/"));
+                  sourceFile = project.getFile("lib/" + Strings.substringAfter(sourceFilePath, '/'));
                }
                break;
             case "file:///":
