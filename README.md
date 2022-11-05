@@ -17,18 +17,22 @@
 ## <a name="about"></a>About
 
 Dart4E is an extension for the [Eclipse IDE](https://eclipse.org) to support development using the [Dart](https://dart.dev) general purpose
-programming language.
+programming language and the [Flutter](https://flutter.dev/) application framework.
 
 ### Features
 - Syntax Highlighting
 - Source Code Formatting
 - Auto Completion
 - Code Refactoring
-- Interactive Dart Shell (REPL)
-- Running and debugging of Dart programs/tests
+- [Interactive Dart Shell](https://github.com/fzyzcjy/dart_interactive) (REPL)
+- Running and debugging of Dart programs/tests and Flutter applications
 - Display direct and transitive dependencies in project outline
 
+![](src/site/images/screenshot_editor.png)
+
 ![](src/site/images/screenshot_dartmenu.png)
+
+![](src/site/images/screenshot_debugger.png)
 
 
 ## <a name="installation"></a>Installation

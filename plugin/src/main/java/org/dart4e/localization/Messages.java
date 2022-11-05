@@ -75,6 +75,33 @@ public final class Messages extends NLS {
    public static String Launch_InitializingLaunchConfigTabFailed = "Initializing LaunchConfigTab failed";
    public static String Launch_CreatingLaunchConfigFailed = "Creating new launch configuration failed";
 
+   /*
+    * Flutter specific
+    */
+   public static String Label_Flutter_SDK = "Flutter SDK";
+   public static String Label_Flutter_Project = lazyNonNull();
+   public static String Label_Flutter_App_Configuration = "Flutter App Configuration";
+   public static String Label_Flutter_Command_Configuration = "Flutter Command Configuration";
+   public static String Label_Flutter_Test_Configuration = "Flutter Test Configuration";
+   public static String Label_Flutter_Pub_Get = lazyNonNull();
+   public static String Label_Flutter_Pub_Downgrade = lazyNonNull();
+   public static String Label_Flutter_Pub_Upgrade = lazyNonNull();
+
+   public static String Flutter_Launch_CouldNotRunFlutter = "Could not run Flutter";
+
+   public static String Flutter_Prefs_GeneralDescription = Prefs_GeneralDescription.replace("Dart", "Flutter");
+   public static String Flutter_Prefs_ManageSDKsDescription = Prefs_ManageSDKsDescription.replace("Dart", "Flutter");
+   public static String Flutter_Prefs_NoSDKRegistered_Title = Prefs_NoSDKRegistered_Title.replace("Dart", "Flutter");
+   public static String Flutter_Prefs_NoSDKRegistered_Body = Prefs_NoSDKRegistered_Body.replace("Dart", "Flutter");
+   public static String Flutter_Prefs_SDKPath = Prefs_SDKPath.replace("Dart", "Flutter");
+   public static String Flutter_Prefs_SDKPathInvalid = Prefs_SDKPathInvalid.replace("Dart", "Flutter");
+   public static String Flutter_Prefs_SDKPathInvalid_Descr = Prefs_SDKPathInvalid_Descr.replace("Dart", "Flutter");
+   public static String Flutter_Prefs_SDKPathInvalid_Message = Prefs_SDKPathInvalid_Message.replace("Dart", "Flutter");
+
+   public static String Flutter_NewProject = "New Flutter Project";
+   public static String Flutter_NewProject_Descr = lazyNonNull();
+   public static String Flutter_NewProject_SDKNotFound_Message = "No valid Flutter SDK found! Please specify a valid SDK on the Flutter preference page.";
+
    static {
       MessagesInitializer.initializeMessages(BUNDLE_NAME, Messages.class);
    }

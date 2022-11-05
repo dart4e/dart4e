@@ -6,6 +6,7 @@ package org.dart4e.project;
 
 import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
 
+import org.dart4e.flutter.project.FlutterProjectNature;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.prefs.DartWorkspacePreference;
 import org.dart4e.util.ui.GridDatas;
@@ -40,9 +41,11 @@ public final class DartProjectPropertyPage extends org.eclipse.ui.dialogs.Proper
       /*
        * alt SDK selection
        */
-      final var selectedAltSDK = new DartSDKSelectionGroup(container).selectedAltSDK;
-      selectedAltSDK.set(prefs.getAlternateDartSDK());
-      selectedAltSDK.subscribe(prefs::setAlternateDartSDK);
+      if (!FlutterProjectNature.hasNature(project)) {
+         final var selectedAltSDK = new DartSDKSelectionGroup(container).selectedAltSDK;
+         selectedAltSDK.set(prefs.getAlternateDartSDK());
+         selectedAltSDK.subscribe(prefs::setAlternateDartSDK);
+      }
 
       /*
        * formatter

@@ -5,6 +5,8 @@
 package org.dart4e.launch.command;
 
 import org.dart4e.console.DartConsole;
+import org.dart4e.flutter.launch.command.RunFlutterPubGetHandler;
+import org.dart4e.flutter.project.FlutterProjectNature;
 import org.dart4e.localization.Messages;
 import org.dart4e.prefs.DartProjectPreference;
 import org.eclipse.core.commands.AbstractHandler;
@@ -33,6 +35,10 @@ public class RunPubGetHandler extends AbstractHandler {
             Dialogs.showError(Messages.Launch_NoProjectSelected, Messages.Launch_NoProjectSelected_Descr);
             return Status.CANCEL_STATUS;
          }
+
+         if (Projects.hasNature(project, FlutterProjectNature.NATURE_ID))
+            return new RunFlutterPubGetHandler().execute(event);
+
          runPubGet(project);
          return Status.OK_STATUS;
       }

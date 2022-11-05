@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.editor.DartEditor;
+import org.dart4e.flutter.console.FlutterConsole;
 import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.navigation.DartDependenciesUpdater;
 import org.eclipse.core.resources.IFile;
@@ -46,6 +47,8 @@ public final class DartConsoleDartFileLinkifier implements IPatternMatchListener
    private @Nullable IProject getProject() {
       if (console instanceof final DartConsole dartConsole)
          return dartConsole.project;
+      if (console instanceof final FlutterConsole flutterConsole)
+         return flutterConsole.project;
       if (console instanceof final IConsole debugConsole) {
          final var projectName = debugConsole.getProcess().getAttribute(LaunchConfigurations.PROCESS_ATTRIBUTE_PROJECT_NAME);
          return Projects.getProject(projectName);

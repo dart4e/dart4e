@@ -2,7 +2,7 @@
  * Copyright 2022 by the Dart4E authors.
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.dart4e.project;
+package org.dart4e.flutter.project;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,6 @@ import java.util.Set;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
-import org.dart4e.flutter.project.FlutterProjectNature;
 import org.dart4e.model.buildsystem.BuildSystem;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFolder;
@@ -32,11 +31,11 @@ import org.eclipse.ui.wizards.datatransfer.ProjectConfigurator;
 /**
  * @author Sebastian Thomschke
  */
-public final class DartProjectImportConfigurator implements ProjectConfigurator {
+public final class FlutterProjectImportConfigurator implements ProjectConfigurator {
 
    @Override
    public Set<File> findConfigurableLocations(final File root, final @Nullable IProgressMonitor monitor) {
-      final var dartProjects = new HashSet<File>();
+      final var flutterProjects = new HashSet<File>();
 
       try {
          Files.walkFileTree(root.toPath(), Collections.emptySet(), 2, new SimpleFileVisitor<Path>() {
@@ -53,8 +52,9 @@ public final class DartProjectImportConfigurator implements ProjectConfigurator 
             @Override
             public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
                final var fileName = file.getFileName().toString();
-               if (Constants.PUBSPEC_YAML_FILENAME.equals(fileName)) {
-                  dartProjects.add(file.getParent().toFile());
+               if (Constants.PUBSPEC_YAML_FILENAME.equals(fileName) //
+                  && BuildSystem.guessBuildSystemOfProject(file.getParent()) == BuildSystem.FLUTTER) {
+                  flutterProjects.add(file.getParent().toFile());
                }
                return FileVisitResult.CONTINUE;
             }
@@ -62,7 +62,7 @@ public final class DartProjectImportConfigurator implements ProjectConfigurator 
       } catch (final IOException ex) {
          Dart4EPlugin.log().error(ex, "Cannot traverse directory tree");
       }
-      return dartProjects;
+      return flutterProjects;
    }
 
    @Override
@@ -98,15 +98,7 @@ public final class DartProjectImportConfigurator implements ProjectConfigurator 
    @Override
    public void configure(final IProject project, final Set<IPath> ignoredPaths, final @Nullable IProgressMonitor monitor) {
       try {
-         switch (BuildSystem.guessBuildSystemOfProject(project)) {
-            case FLUTTER:
-               FlutterProjectNature.addToProject(project);
-               break;
-
-            case DART:
-            default:
-               DartProjectNature.addToProject(project);
-         }
+         FlutterProjectNature.addToProject(project);
       } catch (final CoreException ex) {
          Dart4EPlugin.log().error(ex);
       }

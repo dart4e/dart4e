@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.WeakHashMap;
 
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.flutter.prefs.FlutterProjectPreference;
+import org.dart4e.flutter.project.FlutterProjectNature;
 import org.dart4e.localization.Messages;
 import org.dart4e.model.DartSDK;
 import org.dart4e.navigation.DartDependenciesUpdater;
@@ -65,10 +67,18 @@ public final class DartProjectPreference {
     * @return null if none found
     */
    public @Nullable DartSDK getEffectiveDartSDK() {
+      if (FlutterProjectNature.hasNature(project)) {
+         final var flutterPrefs = FlutterProjectPreference.get(project);
+         final var flutterSDK = flutterPrefs.getEffectiveFlutterSDK();
+         if (flutterSDK != null)
+            return flutterSDK.getDartSDK();
+      }
+
       final var sdk = getAlternateDartSDK();
-      if (sdk == null)
-         return DartWorkspacePreference.getDefaultDartSDK(false, true);
-      return sdk;
+      if (sdk != null)
+         return sdk;
+
+      return DartWorkspacePreference.getDefaultDartSDK(false, true);
    }
 
    public int getFormatterMaxLineLength() {

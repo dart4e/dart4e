@@ -2,13 +2,11 @@
  * Copyright 2022 by the Dart4E authors.
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.dart4e.launch.command;
+package org.dart4e.flutter.launch.command;
 
-import org.dart4e.console.DartConsole;
-import org.dart4e.flutter.launch.command.RunFlutterPubUpgradeHandler;
-import org.dart4e.flutter.project.FlutterProjectNature;
+import org.dart4e.flutter.console.FlutterConsole;
+import org.dart4e.flutter.prefs.FlutterProjectPreference;
 import org.dart4e.localization.Messages;
-import org.dart4e.prefs.DartProjectPreference;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -25,7 +23,7 @@ import de.sebthom.eclipse.commons.ui.Dialogs;
 /**
  * @author Sebastian Thomschke
  */
-public class RunPubUpgradeHandler extends AbstractHandler {
+public class RunFlutterPubGetHandler extends AbstractHandler {
 
    @Override
    public @Nullable Object execute(final ExecutionEvent event) throws ExecutionException {
@@ -35,27 +33,23 @@ public class RunPubUpgradeHandler extends AbstractHandler {
             Dialogs.showError(Messages.Launch_NoProjectSelected, Messages.Launch_NoProjectSelected_Descr);
             return Status.CANCEL_STATUS;
          }
-
-         if (Projects.hasNature(project, FlutterProjectNature.NATURE_ID))
-            return new RunFlutterPubUpgradeHandler().execute(event);
-
-         runPubUpgrade(project);
+         runPubGet(project);
          return Status.OK_STATUS;
       }
       return Status.CANCEL_STATUS;
    }
 
-   private void runPubUpgrade(final IProject project) {
-      final var job = Job.create(Messages.Label_Dart_Pub_Upgrade, jobMonitor -> {
-         final var prefs = DartProjectPreference.get(project);
-         final var dartSDK = prefs.getEffectiveDartSDK();
+   private void runPubGet(final IProject project) {
+      final var job = Job.create(Messages.Label_Flutter_Pub_Get, jobMonitor -> {
+         final var prefs = FlutterProjectPreference.get(project);
+         final var flutterSDK = prefs.getEffectiveFlutterSDK();
 
-         if (dartSDK == null || !dartSDK.isValid()) {
-            Dialogs.showError(Messages.Prefs_NoSDKRegistered_Title, Messages.Prefs_NoSDKRegistered_Body);
+         if (flutterSDK == null || !flutterSDK.isValid()) {
+            Dialogs.showError(Messages.Flutter_Prefs_NoSDKRegistered_Title, Messages.Flutter_Prefs_NoSDKRegistered_Body);
             return;
          }
 
-         DartConsole.runWithConsole(jobMonitor, Messages.Label_Dart_Pub_Upgrade, project, "pub", "upgrade");
+         FlutterConsole.runWithConsole(jobMonitor, Messages.Label_Flutter_Pub_Get, project, "pub", "get");
          project.refreshLocal(1, jobMonitor);
       });
       job.schedule();

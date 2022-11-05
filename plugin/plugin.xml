@@ -38,6 +38,7 @@
    <!-- ===================================== -->
    <extension point="org.eclipse.ui.keywords">
       <keyword id="org.dart4e.prefs.keyword.dart" label="dart" />
+      <keyword id="org.dart4e.prefs.keyword.flutter" label="flutter" />
    </extension>
 
 
@@ -55,6 +56,20 @@
          category="org.dart4e.prefs.DartPreferencePage"
          name="SDKs">
          <keywordReference id="org.dart4e.prefs.keyword.dart" />
+      </page>
+
+      <page id="org.dart4e.flutter.prefs.FlutterPreferencePage"
+         class="org.dart4e.flutter.prefs.FlutterPreferencePage"
+         name="Flutter">
+         <keywordReference id="org.dart4e.prefs.keyword.dart" />
+         <keywordReference id="org.dart4e.prefs.keyword.flutter" />
+      </page>
+      <page id="org.dart4e.flutter.prefs.FlutterSDKPreferencePage"
+         class="org.dart4e.flutter.prefs.FlutterSDKPreferencePage"
+         category="org.dart4e.flutter.prefs.FlutterPreferencePage"
+         name="SDKs">
+         <keywordReference id="org.dart4e.prefs.keyword.dart" />
+         <keywordReference id="org.dart4e.prefs.keyword.flutter" />
       </page>
    </extension>
 
@@ -197,6 +212,8 @@
    <!-- https://www.vogella.com/tutorials/EclipseWizards/article.html -->
    <extension point="org.eclipse.ui.newWizards">
       <category id="org.dart4e.wizards" name="Dart" />
+      <category id="org.dart4e.flutter.wizards" name="Flutter" />
+
       <wizard
          id="org.dart4e.project.NewDartFileWizard"
          category="org.dart4e.wizards"
@@ -220,6 +237,18 @@
          <keywordReference id="org.dart4e.prefs.keyword.dart" />
       </wizard>
       <!--<primaryWizard id="org.dart4e.project.NewDartFileWizard" />-->
+
+      <wizard
+         id="org.dart4e.flutter.project.NewFlutterProjectWizard"
+         category="org.dart4e.flutter.wizards"
+         class="org.dart4e.flutter.project.NewFlutterProjectWizard"
+         icon="src/main/resources/flutter/images/navigator/flutter_project.png"
+         name="%Label_Flutter_Project"
+         project="true">
+         <description>%Flutter_NewProject_Descr</description>
+         <selection class="org.eclipse.core.resources.IResource" />
+         <keywordReference id="org.dart4e.prefs.keyword.flutter" />
+      </wizard>
    </extension>
 
    <extension point="org.eclipse.ui.perspectiveExtensions">
@@ -227,6 +256,8 @@
          <!-- register Wizard directly under main menu "File -> New" -->
          <newWizardShortcut id="org.dart4e.project.NewDartFileWizard" />
          <newWizardShortcut id="org.dart4e.project.NewDartProjectWizard" />
+
+         <newWizardShortcut id="org.dart4e.flutter.project.NewFlutterProjectWizard" />
       </perspectiveExtension>
    </extension>
 
@@ -244,13 +275,20 @@
 
 
    <!-- ===================================== -->
-   <!-- Dart Console                          -->
+   <!-- Dart/Flutter Console                  -->
    <!-- ===================================== -->
    <extension point="org.eclipse.ui.console.consoleFactories">
       <consoleFactory
          class="org.dart4e.console.DartConsole$Factory"
          icon="src/main/resources/images/logo/dart_icon.png"
          label="Dart" />
+    </extension>
+
+   <extension point="org.eclipse.ui.console.consoleFactories">
+      <consoleFactory
+         class="org.dart4e.flutter.console.FlutterConsole$Factory"
+         icon="src/main/resources/flutter/images/logo/flutter_icon.png"
+         label="Flutter" />
     </extension>
 
    <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
@@ -262,6 +300,9 @@
             <or>
                <test property="org.eclipse.ui.console.consoleTypeTest" value="org.dart4e.console.DartConsole">
                   <!-- see org.dart4e.console.DartConsole.CONSOLE_TYPE -->
+               </test>
+               <test property="org.eclipse.ui.console.consoleTypeTest" value="org.dart4e.flutter.console.FlutterConsole">
+                  <!-- see org.dart4e.console.FlutterConsole.CONSOLE_TYPE -->
                </test>
                <test property="org.eclipse.ui.console.consoleTypeTest" value="org.eclipse.debug.ui.ProcessConsoleType">
                   <!-- see org.eclipse.debug.ui.IDebugUIConstants.ID_PROCESS_CONSOLE_TYPE -->
@@ -281,6 +322,9 @@
                <test property="org.eclipse.ui.console.consoleTypeTest" value="org.dart4e.console.DartConsole">
                   <!-- see org.dart4e.console.DartConsole.CONSOLE_TYPE -->
                </test>
+               <test property="org.eclipse.ui.console.consoleTypeTest" value="org.dart4e.flutter.console.FlutterConsole">
+                  <!-- see org.dart4e.console.FlutterConsole.CONSOLE_TYPE -->
+               </test>
                <test property="org.eclipse.ui.console.consoleTypeTest" value="org.eclipse.debug.ui.ProcessConsoleType">
                   <!-- see org.eclipse.debug.ui.IDebugUIConstants.ID_PROCESS_CONSOLE_TYPE -->
                </test>
@@ -299,6 +343,16 @@
       </consolePageParticipant>
    </extension>
 
+   <extension point="org.eclipse.ui.console.consolePageParticipants">
+      <consolePageParticipant
+         id="org.dart4e.flutter.console.FlutterConsoleActions"
+         class="org.dart4e.flutter.console.FlutterConsoleActions">
+         <enablement>
+            <instanceof value="org.dart4e.flutter.console.FlutterConsole" />
+         </enablement>
+      </consolePageParticipant>
+   </extension>
+
 
    <!-- ===================================== -->
    <!-- Project Nature                        -->
@@ -312,10 +366,19 @@
          <run class="org.dart4e.project.DartProjectNature" />
       </runtime>
    </extension>
+   <extension point="org.eclipse.core.resources.natures"
+      id="org.dart4e.flutter.project.nature"
+      name="Flutter Project Nature">
+      <runtime>
+         <run class="org.dart4e.flutter.project.FlutterProjectNature" />
+      </runtime>
+   </extension>
 
    <extension point="org.eclipse.ui.commands">
       <command id="org.dart4e.commands.project_nature_add"    name="Convert to Dart Project" />
       <command id="org.dart4e.commands.project_nature_remove" name="Remove Dart Project Nature" />
+      <command id="org.dart4e.flutter.commands.project_nature_add"    name="Convert to Flutter Project" />
+      <command id="org.dart4e.flutter.commands.project_nature_remove" name="Remove Flutter Project Nature" />
    </extension>
 
    <extension point="org.eclipse.ui.handlers">
@@ -325,6 +388,13 @@
       <handler
          class="org.dart4e.project.DartProjectNature$RemoveNatureHandler"
          commandId="org.dart4e.commands.project_nature_remove" />
+
+      <handler
+         class="org.dart4e.flutter.project.FlutterProjectNature$AddNatureHandler"
+         commandId="org.dart4e.flutter.commands.project_nature_add" />
+      <handler
+         class="org.dart4e.flutter.project.FlutterProjectNature$RemoveNatureHandler"
+         commandId="org.dart4e.flutter.commands.project_nature_remove" />
    </extension>
 
    <extension point="org.eclipse.ui.ide.projectNatureImages">
@@ -332,6 +402,10 @@
          id="org.dart4e.project.nature.icon"
          icon="src/main/resources/images/navigator/dart_project_overlay.png"
          natureId="org.dart4e.project.nature" />
+      <image
+         id="org.dart4e.flutter.project.nature.icon"
+         icon="src/main/resources/flutter/images/navigator/flutter_project_overlay.png"
+         natureId="org.dart4e.flutter.project.nature" />
    </extension>
 
    <extension point="org.eclipse.core.expressions.definitions">
@@ -339,6 +413,12 @@
          <!-- expression to check if a project or project resource has the Dart project nature -->
          <adapt type="org.eclipse.core.resources.IResource">
             <test property="org.eclipse.core.resources.projectNature" value="org.dart4e.project.nature" />
+         </adapt>
+      </definition>
+      <definition id="org.dart4e.flutter.project.nature.isConfigured">
+         <!-- expression to check if a project or project resource has the Dart project nature -->
+         <adapt type="org.eclipse.core.resources.IResource">
+            <test property="org.eclipse.core.resources.projectNature" value="org.dart4e.flutter.project.nature" />
          </adapt>
       </definition>
    </extension>
@@ -362,7 +442,32 @@
             icon="src/main/resources/images/logo/dart_icon_gray.png">
             <visibleWhen>
                <iterate>
-                  <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                  <and>
+                     <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                     <not>
+                        <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                     </not>
+                  </and>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+            commandId="org.dart4e.flutter.commands.project_nature_add"
+            icon="src/main/resources/flutter/images/logo/flutter_icon.png">
+            <visibleWhen>
+               <iterate>
+                  <not>
+                     <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                  </not>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+            commandId="org.dart4e.flutter.commands.project_nature_remove"
+            icon="src/main/resources/flutter/images/logo/flutter_icon_gray.png">
+            <visibleWhen>
+               <iterate>
+                  <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
                </iterate>
             </visibleWhen>
          </command>
@@ -408,16 +513,35 @@
          </enabledWhen>
          <keywordReference id="org.dart4e.prefs.keyword.dart" />
       </page>
+
+      <page
+         id="org.dart4e.flutter.project.FlutterProjectPropertyPage"
+         class="org.dart4e.flutter.project.FlutterProjectPropertyPage"
+         name="Flutter">
+         <filter name="open" value="true" />
+         <enabledWhen>
+            <and>
+               <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+               <adapt type="org.eclipse.core.resources.IProject" />
+            </and>
+         </enabledWhen>
+         <keywordReference id="org.dart4e.prefs.keyword.flutter" />
+      </page>
    </extension>
 
    <extension point="org.eclipse.ui.ide.projectConfigurators">
       <projectConfigurator
          class="org.dart4e.project.DartProjectImportConfigurator"
          label="%Label_Dart_Project" />
+
+      <projectConfigurator
+         class="org.dart4e.project.DartProjectImportConfigurator"
+         label="%Label_Flutter_Project" />
    </extension>
 
    <extension point="org.eclipse.ui.importWizards">
       <category id="org.dart4e.wizards" name="Dart" />
+      <category id="org.dart4e.flutter.wizards" name="Flutter" />
 
       <wizard
          id="org.dart4e.wizards.importProject"
@@ -425,6 +549,13 @@
          class="org.eclipse.ui.internal.wizards.datatransfer.SmartImportWizard"
          icon="src/main/resources/images/logo/dart_icon.png"
          name="%Label_Dart_Project" />
+
+      <wizard
+         id="org.dart4e.flutter.wizards.importProject"
+         category="org.dart4e.flutter.wizards"
+         class="org.eclipse.ui.internal.wizards.datatransfer.SmartImportWizard"
+         icon="src/main/resources/flutter/images/logo/flutter_icon.png"
+         name="%Label_Flutter_Project" />
    </extension>
 
 
@@ -453,6 +584,13 @@
          label="%Label_Dart_LaunchGroup"
          bannerImage="src/main/resources/images/logo/dart_wizard_banner.png"
          image="src/main/resources/images/logo/dart_icon.png"
+         mode="run" />
+
+      <launchGroup
+         id="org.dart4e.launch.flutter.group"
+         label="%Label_Flutter_LaunchGroup"
+         bannerImage="src/main/resources/flutter/images/logo/flutter_wizard_banner.png"
+         image="src/main/resources/flutter/images/logo/flutter_icon.png"
          mode="run" />
    </extension>
 
@@ -501,6 +639,9 @@
                   <iterate>
                      <and>
                         <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <not>
+                           <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        </not>
                         <adapt type="org.eclipse.core.resources.IProject" />
                      </and>
                   </iterate>
@@ -509,7 +650,6 @@
          </contextualLaunch>
       </shortcut>
    </extension>
-
 
 
    <!-- ===================================== -->
@@ -556,6 +696,9 @@
                   <iterate>
                      <and>
                         <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <not>
+                           <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        </not>
                         <adapt type="org.eclipse.core.resources.IProject" />
                      </and>
                   </iterate>
@@ -577,6 +720,9 @@
                   <iterate>
                      <and>
                         <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <not>
+                           <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        </not>
                         <adapt type="org.eclipse.core.resources.IFile" />
                         <test property="org.eclipse.debug.ui.matchesPattern" value="*.dart" />
                      </and>
@@ -632,6 +778,9 @@
                   <iterate>
                      <and>
                         <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <not>
+                           <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        </not>
                         <adapt type="org.eclipse.core.resources.IProject" />
                      </and>
                   </iterate>
@@ -653,6 +802,9 @@
                   <iterate>
                      <and>
                         <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <not>
+                           <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        </not>
                         <or>
                            <and>
                               <adapt type="org.eclipse.core.resources.IFile" />
@@ -666,6 +818,143 @@
             </enablement>
          </contextualLaunch>
       </shortcut>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Launch Configuration - Flutter App    -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+         id="org.dart4e.flutter.launch.flutter_app"
+         delegate="org.dart4e.flutter.launch.app.FlutterAppLaunchConfigLauncher"
+         modes="run,debug"
+         name="%Label_Flutter_App"
+         sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+         sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+         id="org.dart4e.flutter.launch.flutter_app.image"
+         configTypeID="org.dart4e.flutter.launch.flutter_app"
+         icon="src/main/resources/flutter/images/logo/flutter_icon.png" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+         id="org.dart4e.flutter.launch.flutter_app.LaunchTabGroup"
+         class="org.dart4e.flutter.launch.app.FlutterAppLaunchTabGroup"
+         type="org.dart4e.flutter.launch.flutter_app"
+         description="%FlutterAppLaunchGroup_Description" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+         id="org.dart4e.flutter.launch.flutter_app.shortcut.run_project"
+         class="org.dart4e.flutter.launch.app.RunFlutterAppShortcut"
+         label="%Label_Flutter_App"
+         icon="src/main/resources/flutter/images/logo/flutter_icon.png"
+         modes="run,debug"
+         path="org.dart4e.launch.1">
+         <contextualLaunch>
+            <enablement>
+               <!-- see https://github.com/eclipse-platform/eclipse.platform.ui/blob/632e59d1bbec83dd81994befe4bfbf6a3db0de28/bundles/org.eclipse.ui.workbench/Eclipse%20UI/org/eclipse/ui/ISources.java#L297 -->
+               <with variable="selection">
+                  <count value="1" />
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+
+
+   <!-- ====================================== -->
+   <!-- Launch Configuration - Flutter Command -->
+   <!-- ====================================== -->
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+         id="org.dart4e.flutter.launch.flutter_command"
+         delegate="org.dart4e.flutter.launch.command.FlutterCommandLaunchConfigLauncher"
+         modes="run"
+         name="%Label_Flutter_Command"
+         sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+         sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+         id="org.dart4e.launch.flutter_command.image"
+         configTypeID="org.dart4e.flutter.launch.flutter_command"
+         icon="src/main/resources/flutter/images/logo/flutter_icon_command.png" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+         id="org.dart4e.launch.flutter_command.LaunchTabGroup"
+         class="org.dart4e.flutter.launch.command.FlutterCommandLaunchConfigTabGroup"
+         type="org.dart4e.flutter.launch.flutter_command"
+         description="%FlutterCommandLaunchGroup_Description" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.dart4e.flutter.launch.command.RunFlutterCommandShortcut"
+            icon="src/main/resources/flutter/images/logo/flutter_icon_command.png"
+            id="org.dart4e.flutter.launch.shortcut.run_flutter_command"
+            label="%Label_Flutter_Command_Menu_Item"
+            modes="run"
+            path="org.dart4e.launch.2">
+         <contextualLaunch>
+            <enablement>
+               <!-- see https://github.com/eclipse-platform/eclipse.platform.ui/blob/632e59d1bbec83dd81994befe4bfbf6a3db0de28/bundles/org.eclipse.ui.workbench/Eclipse%20UI/org/eclipse/ui/ISources.java#L297 -->
+               <with variable="selection">
+                  <count value="1" />
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Launch Configuration - Flutter Test   -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+         id="org.dart4e.flutter.launch.flutter_test"
+         delegate="org.dart4e.flutter.launch.test.FlutterTestLaunchConfigLauncher"
+         modes="run,debug"
+         name="%Label_Flutter_Test"
+         sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+         sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+         id="org.dart4e.flutter.launch.flutter_test.image"
+         configTypeID="org.dart4e.flutter.launch.flutter_test"
+         icon="src/main/resources/flutter/images/logo/flutter_icon_test.png" />
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+         id="org.dart4e.flutter.launch.flutter_test.LaunchTabGroup"
+         class="org.dart4e.flutter.launch.test.FlutterTestLaunchTabGroup"
+         type="org.dart4e.flutter.launch.flutter_test"
+         description="%FlutterTestLaunchGroup_Description" />
    </extension>
 
 
@@ -691,6 +980,9 @@
                   <iterate>
                      <and>
                         <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <not>
+                           <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        </not>
                         <adapt type="org.eclipse.core.resources.IProject" />
                      </and>
                   </iterate>
@@ -723,6 +1015,9 @@
                   <iterate>
                      <and>
                         <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <not>
+                           <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        </not>
                         <adapt type="org.eclipse.core.resources.IProject" />
                      </and>
                   </iterate>
@@ -755,6 +1050,105 @@
                   <iterate>
                      <and>
                         <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <not>
+                           <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        </not>
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Flutter Pub Get                       -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.commands">
+      <command id="org.dart4e.flutter.commands.run_pub_get" name="%Label_Flutter_Pub_Get" />
+   </extension>
+
+   <extension point="org.eclipse.ui.handlers">
+      <handler
+         class="org.dart4e.flutter.launch.command.RunFlutterPubGetHandler"
+         commandId="org.dart4e.flutter.commands.run_pub_get" />
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <!-- possible location URIs: https://blogs.itemis.com/auf-einen-blick-eclipse-actions-f%C3%BCr-project-und-package-explorer -->
+      <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu label="Flutter" icon="src/main/resources/flutter/images/logo/flutter_icon.png" id="org.dart4e.flutter.projectMenu">
+            <command commandId="org.dart4e.flutter.commands.run_pub_get" icon="platform:/plugin/org.eclipse.debug.ui/icons/full/obj16/refresh_tab.png">
+               <visibleWhen>
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Flutter Pub Downgrade                 -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.commands">
+      <command id="org.dart4e.flutter.commands.run_pub_downgrade" name="%Label_Flutter_Pub_Downgrade" />
+   </extension>
+
+   <extension point="org.eclipse.ui.handlers">
+      <handler
+         class="org.dart4e.flutter.launch.command.RunFlutterPubDowngradeHandler"
+         commandId="org.dart4e.flutter.commands.run_pub_downgrade" />
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <!-- possible location URIs: https://blogs.itemis.com/auf-einen-blick-eclipse-actions-f%C3%BCr-project-und-package-explorer -->
+      <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu label="Flutter" icon="src/main/resources/flutter/images/logo/flutter_icon.png" id="org.dart4e.flutter.projectMenu">
+            <command commandId="org.dart4e.flutter.commands.run_pub_downgrade" icon="platform:/plugin/org.eclipse.ui.ide/icons/full/etool16/next_nav.png">
+               <visibleWhen>
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        <adapt type="org.eclipse.core.resources.IProject" />
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+
+
+   <!-- ===================================== -->
+   <!-- Flutter Pub Upgrade                   -->
+   <!-- ===================================== -->
+   <extension point="org.eclipse.ui.commands">
+      <command id="org.dart4e.flutter.commands.run_pub_upgrade" name="%Label_Flutter_Pub_Upgrade" />
+   </extension>
+
+   <extension point="org.eclipse.ui.handlers">
+      <handler
+         class="org.dart4e.flutter.launch.command.RunFlutterPubUpgradeHandler"
+         commandId="org.dart4e.flutter.commands.run_pub_upgrade" />
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <!-- possible location URIs: https://blogs.itemis.com/auf-einen-blick-eclipse-actions-f%C3%BCr-project-und-package-explorer -->
+      <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu label="Flutter" icon="src/main/resources/flutter/images/logo/flutter_icon.png" id="org.dart4e.flutter.projectMenu">
+            <command commandId="org.dart4e.flutter.commands.run_pub_upgrade" icon="platform:/plugin/org.eclipse.ui.ide/icons/full/etool16/prev_nav.png">
+               <visibleWhen>
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
                         <adapt type="org.eclipse.core.resources.IProject" />
                      </and>
                   </iterate>

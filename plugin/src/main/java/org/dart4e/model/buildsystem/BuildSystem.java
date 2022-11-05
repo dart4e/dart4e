@@ -10,6 +10,7 @@ import java.nio.file.Path;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.flutter.model.buildsystem.FlutterBuildFile;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.annotation.Nullable;
@@ -68,7 +69,8 @@ public enum BuildSystem {
 
    public BuildFile toBuildFile(final IFile buildFilePath) {
       return switch (this) {
-         case DART, FLUTTER -> new DartBuildFile(buildFilePath);
+         case DART -> new DartBuildFile(buildFilePath);
+         case FLUTTER -> new FlutterBuildFile(buildFilePath);
          default -> throw new UnsupportedOperationException("Unsupported build-system: " + this);
       };
    }
