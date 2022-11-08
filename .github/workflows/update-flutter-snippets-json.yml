@@ -21,6 +21,15 @@ jobs:
 
     steps:
 
+    - name: Generate GitHub Access Token
+      uses: tibdex/github-app-token@v1 # https://github.com/tibdex/github-app-token
+      id: generate_token
+      # see https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#authenticating-with-github-app-generated-tokens
+      with:
+        # see https://github.com/organizations/dart4e/settings/apps/dart4e-tu
+        app_id: ${{ secrets.DART4E_TU_APP_ID }}
+        private_key: ${{ secrets.DART4E_TU_PRIVATE_KEY }}
+
     - name: Git Checkout
       uses: actions/checkout@v3 # https://github.com/actions/checkout
 
@@ -29,7 +38,7 @@ jobs:
       run: |
         set -euo pipefail
 
-        curl -fsSL --retry 3 --retry-delay 5 -o plugin/src/main/resources/flutter/snippets.json
+        curl -fsSL --retry 3 --retry-delay 5 https://api.flutter.dev/snippets/index.json -o plugin/src/main/resources/flutter/snippets.json
 
         updates=$(git status --porcelain plugin/src/main/resources/flutter/snippets.json)
         if [[ -z $updates ]]; then
@@ -56,4 +65,4 @@ jobs:
         add-paths: plugin/src/main/resources/flutter/snippets.json
         branch: dependencies/flutter_snippets
         delete-branch: true
-        token: ${{ secrets.GH_TOKEN }}
+        token: ${{ steps.generate_token.outputs.token }}
