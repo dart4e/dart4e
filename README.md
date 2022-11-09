@@ -1,4 +1,4 @@
-# Dart4E <a href="https://github.com/dart4e/dart4e/" title="GitHub Repo"><img height="30" src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/github.svg?sanitize=true"></a>
+# Dart4E - Dart/Flutter support for the Eclipse IDE
 
 [![Build Status](https://github.com/dart4e/dart4e/actions/workflows/build.yml/badge.svg)](https://github.com/dart4e/dart4e/actions/workflows/build.yml)
 [![License](https://img.shields.io/github/license/dart4e/dart4e.svg?color=blue)](LICENSE.txt)
@@ -36,6 +36,8 @@ programming language and the [Flutter](https://flutter.dev/) application framewo
 
 
 ## <a name="installation"></a>Installation
+
+If you don't have Eclipse installed you can install [Dart4E Studio](https://github.com/dart4e/dart-studio) - a custom Eclipse distribution - which has this plugin preinstalled.
 
 To install Dart4E into an existing Eclipse installation do:
 1. Within Eclipse go to: Help -> Install New Software...
@@ -103,11 +105,12 @@ Dart4E was created by [Sebastian Thomschke](https://github.com/sebthom) and is s
 Dart4E would not have been possible without the following technologies and learning resources:
 
 **Technologies/Libraries**
+- [dart_interactive](https://github.com/fzyzcjy/dart_interactive) - Interactive Shell (REPL) for Dart
+- [Eclipse Platform](https://github.com/eclipse-platform)
 - [Eclipse LSP4E](https://projects.eclipse.org/projects/technology.lsp4e) - Language Server Protocol for Eclipse
 - [Eclipse TM4E](https://projects.eclipse.org/projects/technology.tm4e) - TextMate support for Eclipse
 - [Eclipse Tycho](https://projects.eclipse.org/projects/technology.tycho) - tools to build Eclipse plug-ins with Maven
 - [Eclipse RedDeer](https://projects.eclipse.org/projects/technology.reddeer) - UI testing framework
-- [dart_interactive](https://github.com/fzyzcjy/dart_interactive) - Interactive Shell (REPL) for Dart
 
 **Tutorials**
 - https://eclipse.org/articles
