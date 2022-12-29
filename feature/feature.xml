@@ -61,8 +61,8 @@
       <import plugin="org.eclipse.wildwebdeveloper.embedder.node"/>
       <import plugin="org.apache.commons.commons-io" version="2.11.0" match="compatible"/>
       <import plugin="org.apache.commons.lang3" version="3.12.0" match="compatible"/>
-      <import plugin="net.sf.jstuff.core" version="7.4.0" match="compatible"/>
-      <import plugin="net.sf.jstuff.xml" version="7.4.0" match="compatible"/>
+      <import plugin="net.sf.jstuff.core" version="7.5.0" match="compatible"/>
+      <import plugin="net.sf.jstuff.xml" version="7.5.0" match="compatible"/>
       <import plugin="de.sebthom.eclipse.commons" version="1.0.0.20221105-1144" match="compatible"/>
       <import plugin="org.yaml.snakeyaml" version="1.27.0" match="compatible"/>
       <import plugin="org.ec4j.core" version="0.3.0" match="greaterOrEqual"/>
