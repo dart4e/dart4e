@@ -95,7 +95,14 @@ public class DartBuildFile extends BuildFile {
                      }
                      case "git" -> {
                         final var resolvedRef = ((Map<?, ?>) descr).get("resolved-ref");
-                        yield pubCacheDir.resolve(source).resolve(name + "-" + resolvedRef);
+                        var resolvedLocalPath = pubCacheDir.resolve(source).resolve(name + "-" + resolvedRef);
+                        if (!Files.exists(resolvedLocalPath)) {
+                           final var gitUrl = (String) asNonNull(((Map<?, ?>) descr).get("url"));
+                           var repoName = Strings.substringAfterLast(gitUrl, "/");
+                           repoName = Strings.removeEnd(repoName, ".git");
+                           resolvedLocalPath = pubCacheDir.resolve(source).resolve(repoName + "-" + resolvedRef);
+                        }
+                        yield resolvedLocalPath;
                      }
                      case "path" -> {
                         final var path = (@NonNull String) ((Map<?, ?>) descr).get("path");
