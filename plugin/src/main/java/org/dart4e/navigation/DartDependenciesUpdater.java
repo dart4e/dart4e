@@ -66,14 +66,11 @@ public final class DartDependenciesUpdater implements IResourceChangeListener {
    }
 
    public void removeDependenciesFolder(final IProject project, final @Nullable IProgressMonitor monitor) throws CoreException {
-      final var stdLibFolder = project.getFolder(STDLIB_MAGIC_FOLDER_NAME);
-      if (stdLibFolder.exists() && (stdLibFolder.isVirtual() || stdLibFolder.isLinked())) {
-         stdLibFolder.delete(false, monitor);
-      }
-
-      final var depsFolder = project.getFolder(DEPS_MAGIC_FOLDER_NAME);
-      if (depsFolder.exists() && (depsFolder.isVirtual() || depsFolder.isLinked())) {
-         depsFolder.delete(false, monitor);
+      for (final var folderName : new String[] {STDLIB_MAGIC_FOLDER_NAME, DEPS_MAGIC_FOLDER_NAME}) {
+         final var folder = project.getFolder(folderName);
+         if (folder.exists() && (folder.isVirtual() || folder.isLinked())) {
+            folder.delete(false, monitor);
+         }
       }
    }
 
