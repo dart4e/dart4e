@@ -37,7 +37,7 @@ programming language and the [Flutter](https://flutter.dev/) application framewo
 
 ## <a name="installation"></a>Installation
 
-If you don't have Eclipse installed you can install [Dart4E Studio](https://github.com/dart4e/dart-studio) - a custom Eclipse distribution - which has this plugin preinstalled.
+If you don't have Eclipse installed you can download [Dart4E Studio](https://github.com/dart4e/dart4e-studio) - a custom Eclipse distribution - which has this plugin preinstalled.
 
 To install Dart4E into an existing Eclipse installation do:
 1. Within Eclipse go to: Help -> Install New Software...
