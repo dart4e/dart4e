@@ -65,7 +65,7 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
 
       sdk = new FlutterSDK(flutterExe.getParent().getParent());
       return sdk.isValid() ? sdk : null;
-   }, sdk -> sdk == null ? 15_000 : 60_000);
+   }, (sdk, ageMS) -> ageMS > (sdk == null ? 15_000 : 60_000));
 
    /**
     * Tries to locate the Flutter SDK via FLUTTER_ROOT and PATH environment variables
@@ -97,7 +97,7 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
          // ignore
       }
       return false;
-   }, valid -> valid ? 60_000 : 15_000);
+   }, (exeIsValid, ageMS) -> ageMS > (exeIsValid ? 60_000 : 15_000));
 
    @SuppressWarnings("unused")
    private FlutterSDK() {

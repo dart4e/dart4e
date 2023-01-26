@@ -62,7 +62,7 @@ public final class DartSDK implements Comparable<DartSDK> {
 
       sdk = new DartSDK(dartExe.getParent().getParent());
       return sdk.isValid() ? sdk : null;
-   }, sdk -> sdk == null ? 15_000 : 60_000);
+   }, (sdk, ageMS) -> ageMS > (sdk == null ? 15_000 : 60_000));
 
    /**
     * Tries to locate the Dart SDK via DART_HOME and PATH environment variables
@@ -91,7 +91,7 @@ public final class DartSDK implements Comparable<DartSDK> {
          // ignore
       }
       return false;
-   }, valid -> valid ? 60_000 : 15_000);
+   }, (exeIsValid, ageMS) -> ageMS > (exeIsValid ? 60_000 : 15_000));
 
    @SuppressWarnings("unused")
    private DartSDK() {
