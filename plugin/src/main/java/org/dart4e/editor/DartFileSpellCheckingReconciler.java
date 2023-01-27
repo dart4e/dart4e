@@ -160,23 +160,25 @@ public final class DartFileSpellCheckingReconciler extends TMPresentationReconci
       if (textFileBuffer == null)
          return;
 
+      var spellcheckJob = this.spellcheckJob;
       if (spellcheckJob != null) {
          spellcheckJob.cancel();
       }
 
       final var loc = textFileBuffer.getLocation();
-      final var spellcheckJob = this.spellcheckJob = new Job("Spellchecking" + (loc == null ? "" : " [" + loc + "]") + "...") {
+      spellcheckJob = this.spellcheckJob = new Job("Spellchecking" + (loc == null ? "" : " [" + loc + "]") + "...") {
          @Override
          protected IStatus run(final IProgressMonitor monitor) {
-            final var regionsToSpellcheck = collectRegionsToSpellcheck(docModel, event.ranges);
             final var annotationModel = textFileBuffer.getAnnotationModel();
-
-            spellcheck(doc, regionsToSpellcheck, annotationModel, monitor);
+            if (annotationModel != null) {
+               final var regionsToSpellcheck = collectRegionsToSpellcheck(docModel, event.ranges);
+               spellcheck(doc, regionsToSpellcheck, annotationModel, monitor);
+            }
             return Status.OK_STATUS;
          }
       };
       spellcheckJob.setPriority(Job.DECORATE);
-      spellcheckJob.schedule();
+      spellcheckJob.schedule(2_000);
    }
 
    private void spellcheck(final IDocument doc, final List<Region> regionsToCheck, final IAnnotationModel annotationModel,
