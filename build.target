@@ -9,8 +9,8 @@
         </location>
 
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-            <!-- Eclipse 2021-12 aka 4.22 is the required minimum of latest TM4E release -->
-            <repository location="https://download.eclipse.org/releases/2021-12/"/>
+            <!-- Eclipse 2022-09 aka 4.25 is the required minimum of latest TM4E release -->
+            <repository location="https://download.eclipse.org/releases/2022-09/"/>
             <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
             <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
             <unit id="org.eclipse.mylyn.wikitext.editors_feature.feature.group" version="0.0.0"/>
@@ -64,7 +64,7 @@
                 <dependency>
                     <groupId>org.assertj</groupId>
                     <artifactId>assertj-core</artifactId>
-                    <version>3.23.1</version>
+                    <version>3.24.2</version>
                     <type>jar</type>
                 </dependency>
                 <dependency>
