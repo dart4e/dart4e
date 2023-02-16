@@ -62,12 +62,6 @@
                     <type>jar</type>
                 </dependency>
                 <dependency>
-                    <groupId>org.assertj</groupId>
-                    <artifactId>assertj-core</artifactId>
-                    <version>3.24.2</version>
-                    <type>jar</type>
-                </dependency>
-                <dependency>
                     <groupId>net.sf.jstuff</groupId>
                     <artifactId>jstuff-core</artifactId>
                     <version>7.6.0</version>
@@ -77,6 +71,12 @@
                     <groupId>net.sf.jstuff</groupId>
                     <artifactId>jstuff-xml</artifactId>
                     <version>7.6.0</version>
+                    <type>jar</type>
+                </dependency>
+                <dependency>
+                    <groupId>org.assertj</groupId>
+                    <artifactId>assertj-core</artifactId>
+                    <version>3.24.2</version>
                     <type>jar</type>
                 </dependency>
             </dependencies>
