@@ -5,6 +5,11 @@
       <startup class="org.dart4e.Dart4EStartupListener" />
    </extension>
 
+   <!-- useful references
+      common menu ids: https://blogs.itemis.com/auf-einen-blick-eclipse-actions-für-project-und-package-explorer
+      availabe variables: https://wiki.eclipse.org/Command_Core_Expressions
+   -->
+
    <!-- ===================================== -->
    <!-- Content Type                          -->
    <!-- ===================================== -->
@@ -45,6 +50,9 @@
    <!-- ===================================== -->
    <!-- Preferences                           -->
    <!-- ===================================== -->
+   <extension point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.dart4e.prefs.DartWorkspacePreferenceInitializer"/>
+   </extension>
    <extension point="org.eclipse.ui.preferencePages">
       <page id="org.dart4e.prefs.DartPreferencePage"
          class="org.dart4e.prefs.DartPreferencePage"

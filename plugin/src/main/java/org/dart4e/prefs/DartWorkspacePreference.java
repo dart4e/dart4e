@@ -29,12 +29,12 @@ import net.sf.jstuff.core.Strings;
  */
 public final class DartWorkspacePreference {
 
-   private static final String PROPERTY_DEFAULT_DART_SDK = "dart.default_sdk";
-   private static final String PROPERTY_DART_SDKS = "dart.sdks";
-   private static final String PROPERTY_WARNED_NO_SDK_REGISTERED = "dart.warned_no_sdk_registered";
-   private static final String PROPERTY_FORMATTER_MAX_LINE_LENGTH = "dart.formatter.max_line_length";
+   static final String PREFKEY_DEFAULT_DART_SDK = "dart.default_sdk";
+   static final String PREFKEY_DART_SDKS = "dart.sdks";
+   static final String PREFKEY_FORMATTER_MAX_LINE_LENGTH = "dart.formatter.max_line_length";
+   static final String PREFKEY_WARNED_NO_SDK_REGISTERED = "dart.warned_no_sdk_registered";
 
-   static final IPersistentPreferenceStore PREFS = new ScopedPreferenceStore(InstanceScope.INSTANCE, Dart4EPlugin.PLUGIN_ID);
+   static final IPersistentPreferenceStore STORE = new ScopedPreferenceStore(InstanceScope.INSTANCE, Dart4EPlugin.PLUGIN_ID);
 
    // CHECKSTYLE:IGNORE .* FOR NEXT 3 LINES
    private static final SortedSet<DartSDK> dartSDKs = new TreeSet<>();
@@ -45,7 +45,7 @@ public final class DartWorkspacePreference {
          if (!isDartSDKsInitialized) {
             isDartSDKsInitialized = true;
 
-            final var dartSDKsSerialized = PREFS.getString(PROPERTY_DART_SDKS);
+            final var dartSDKsSerialized = STORE.getString(PREFKEY_DART_SDKS);
             if (Strings.isNotBlank(dartSDKsSerialized)) {
                try {
                   dartSDKs.addAll(JSON.deserializeList(dartSDKsSerialized, DartSDK.class));
@@ -65,7 +65,7 @@ public final class DartWorkspacePreference {
             }
          }
 
-         if (dartSDKs.isEmpty() && !PREFS.getBoolean(PROPERTY_WARNED_NO_SDK_REGISTERED)) {
+         if (dartSDKs.isEmpty() && !STORE.getBoolean(PREFKEY_WARNED_NO_SDK_REGISTERED)) {
             for (final var ste : new Throwable().getStackTrace()) {
                final var prefPage = DartSDKPreferencePage.class.getName();
                // don't show warning on empty workspace if we directly go to Dart Prefs
@@ -73,7 +73,7 @@ public final class DartWorkspacePreference {
                   return;
             }
 
-            PREFS.setValue(PROPERTY_WARNED_NO_SDK_REGISTERED, true);
+            STORE.setValue(PREFKEY_WARNED_NO_SDK_REGISTERED, true);
             save();
 
             UI.run(() -> {
@@ -119,7 +119,7 @@ public final class DartWorkspacePreference {
     * @return null if not found
     */
    public static @Nullable DartSDK getDefaultDartSDK(final boolean verify, final boolean searchPATH) {
-      final var defaultSDK = getDartSDK(PREFS.getString(PROPERTY_DEFAULT_DART_SDK));
+      final var defaultSDK = getDartSDK(STORE.getString(PREFKEY_DEFAULT_DART_SDK));
 
       if (defaultSDK != null) {
          if (!verify || defaultSDK.isValid())
@@ -146,13 +146,13 @@ public final class DartWorkspacePreference {
    }
 
    public static int getFormatterMaxLineLength() {
-      final var maxLineLength = PREFS.getInt(PROPERTY_FORMATTER_MAX_LINE_LENGTH);
+      final var maxLineLength = STORE.getInt(PREFKEY_FORMATTER_MAX_LINE_LENGTH);
       return maxLineLength > 0 ? maxLineLength : 80;
    }
 
    public static boolean save() {
       try {
-         PREFS.save();
+         STORE.save();
          return true;
       } catch (final IOException ex) {
          Dialogs.showStatus(Messages.Prefs_SavingPreferencesFailed, Dart4EPlugin.status().createError(ex), true);
@@ -168,16 +168,16 @@ public final class DartWorkspacePreference {
          if (newSDKs != null) {
             dartSDKs.addAll(newSDKs);
          }
-         PREFS.setValue(PROPERTY_DART_SDKS, JSON.serialize(dartSDKs));
+         STORE.setValue(PREFKEY_DART_SDKS, JSON.serialize(dartSDKs));
       }
    }
 
    public static void setDefaultDartSDK(final String name) {
-      PREFS.setValue(PROPERTY_DEFAULT_DART_SDK, name);
+      STORE.setValue(PREFKEY_DEFAULT_DART_SDK, name);
    }
 
    public static void setFormatterMaxLineLength(final int maxLineLength) {
-      PREFS.setValue(PROPERTY_FORMATTER_MAX_LINE_LENGTH, maxLineLength);
+      STORE.setValue(PREFKEY_FORMATTER_MAX_LINE_LENGTH, maxLineLength);
    }
 
    private DartWorkspacePreference() {

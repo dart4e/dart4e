@@ -180,7 +180,7 @@ public class DartSDKPreferencePage extends PreferencePage implements IWorkbenchP
 
    @Override
    public void init(final IWorkbench workbench) {
-      setPreferenceStore(DartWorkspacePreference.PREFS);
+      setPreferenceStore(DartWorkspacePreference.STORE);
       sdks.addAll(DartWorkspacePreference.getDartSDKs());
       defaultSDK.set(DartWorkspacePreference.getDefaultDartSDK(false, false));
    }

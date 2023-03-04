@@ -43,7 +43,7 @@ public class DartPreferencePage extends PreferencePage implements IWorkbenchPref
 
    @Override
    public void init(final IWorkbench workbench) {
-      setPreferenceStore(DartWorkspacePreference.PREFS);
+      setPreferenceStore(DartWorkspacePreference.STORE);
    }
 
    @Override
