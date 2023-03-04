@@ -7,6 +7,6 @@
  * @author Sebastian Thomschke
  */
 @NonNullByDefault
-package org.dart4e.util.ui;
+package org.dart4e.flutter.launch;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;

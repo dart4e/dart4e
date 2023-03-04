@@ -1,10 +1,12 @@
 /*
- * Copyright 2022 by the Dart4E authors.
+ * SPDX-FileCopyrightText: © The Dart4E authors
+ * SPDX-FileContributor: Sebastian Thomschke
  * SPDX-License-Identifier: EPL-2.0
+ * SPDX-ArtifactOfProjectHomePage: https://github.com/dart4e/dart4e
  */
 package org.dart4e.util.io;
 
-import static org.apache.commons.io.IOUtils.*;
+import static org.apache.commons.io.IOUtils.EOF;
 
 import java.io.IOException;
 import java.io.InputStream;

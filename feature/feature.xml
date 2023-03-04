@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Copyright 2022 by the Dart4E authors.
+   SPDX-FileCopyrightText: © The Dart4E authors
+   SPDX-FileContributor: Sebastian Thomschke
    SPDX-License-Identifier: EPL-2.0
-
-   @author Sebastian Thomschke
+   SPDX-ArtifactOfProjectHomePage: https://github.com/dart4e/dart4e
 -->
 <feature
       id="org.dart4e.feature"
