@@ -69,14 +69,10 @@ public final class FileTypePropertyTester extends PropertyTester {
          file = d.file;
       } else if (candidate instanceof DocumentSymbol) {
          file = Editors.getActiveFile();
-         if (file == null)
-            return false;
       } else {
          file = Adapters.adapt(candidate, IFile.class);
-         if (file == null)
-            return false;
       }
 
-      return matchesPropertyValue(property, file.getName(), expectedPropertyValue);
+      return file != null && matchesPropertyValue(property, file.getName(), expectedPropertyValue);
    }
 }
