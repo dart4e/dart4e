@@ -153,7 +153,7 @@
    <!-- ===================================== -->
    <extension point="org.eclipse.ui.navigator.navigatorContent">
       <!-- https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Fguide%2Fcnf_config.htm -->
-      <!-- https://git.eclipse.org/r/plugins/gitiles/lsp4e/lsp4e/+/refs/heads/master/org.eclipse.lsp4e/src/org/eclipse/lsp4e/outline/SymbolInformationPropertyTester.java -->
+      <!-- https://github.com/eclipse/lsp4e/blob/master/org.eclipse.lsp4e/src/org/eclipse/lsp4e/outline/SymbolInformationPropertyTester.java -->
       <navigatorContent
          id="org.dart4e.content.dart.outline"
          contentProvider="org.eclipse.lsp4e.outline.LSSymbolsContentProvider"
