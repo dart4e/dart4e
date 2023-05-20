@@ -10,7 +10,6 @@ import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 
 import org.dart4e.localization.Messages;
@@ -86,12 +85,6 @@ public class DartSDKPreferencePage extends PreferencePage implements IWorkbenchP
       table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 4));
       table.setHeaderVisible(true);
       table.setLinesVisible(true);
-
-      sdkTable.setContentProvider((IStructuredContentProvider) input -> {
-         @SuppressWarnings("unchecked")
-         final var items = (List<DartSDK>) input;
-         return items.toArray(new DartSDK[items.size()]);
-      });
 
       sdkTable.setContentProvider(new IStructuredContentProvider() {
          @Override
