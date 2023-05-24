@@ -77,7 +77,7 @@ public final class FlutterWorkspacePreference {
             PREFS.setValue(PROPERTY_WARNED_NO_SDK_REGISTERED, true);
             save();
 
-            UI.run(() -> {
+            UI.runAsync(() -> {
                Dialogs.showError(Messages.Flutter_Prefs_NoSDKRegistered_Title, Messages.Flutter_Prefs_NoSDKRegistered_Body);
                final var dialog = PreferencesUtil.createPreferenceDialogOn( //
                   UI.getShell(), //
