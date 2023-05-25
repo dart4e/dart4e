@@ -11,6 +11,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.lsp4e.LSPEclipseUtils;
 import org.eclipse.lsp4e.outline.SymbolsModel.DocumentSymbolWithFile;
 import org.eclipse.lsp4j.DocumentSymbol;
 import org.eclipse.lsp4j.SymbolInformation;
@@ -66,7 +67,7 @@ public final class FileTypePropertyTester extends PropertyTester {
       if (candidate instanceof final IFile f) {
          file = f;
       } else if (candidate instanceof final DocumentSymbolWithFile d) {
-         file = d.file;
+         file = LSPEclipseUtils.getFileHandle(d.uri);
       } else if (candidate instanceof DocumentSymbol) {
          file = Editors.getActiveFile();
       } else {

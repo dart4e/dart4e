@@ -21,13 +21,7 @@ import org.eclipse.jface.text.source.ISourceViewerExtension4;
 import org.eclipse.jface.text.source.IVerticalRulerColumn;
 import org.eclipse.jface.text.source.IVerticalRulerInfo;
 import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.lsp4e.LSPEclipseUtils;
-import org.eclipse.lsp4e.LanguageServiceAccessor;
 import org.eclipse.lsp4e.debug.DSPPlugin;
-import org.eclipse.lsp4j.DocumentHighlightParams;
-import org.eclipse.lsp4j.Position;
-import org.eclipse.lsp4j.TextDocumentIdentifier;
-import org.eclipse.swt.custom.CaretListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.tm4e.ui.TMUIPlugin;
 import org.eclipse.ui.internal.genericeditor.ExtensionBasedTextEditor;
@@ -41,19 +35,6 @@ import net.sf.jstuff.core.reflection.Fields;
 public final class DartEditor extends ExtensionBasedTextEditor {
 
    public static final String ID = DartEditor.class.getName();
-
-   private volatile @Nullable Position caretPosition;
-
-   private final CaretListener caretListener = event -> {
-      try {
-         final var document = getDocument();
-         caretPosition = LSPEclipseUtils.toPosition(event.caretOffset, document);
-
-         // highlightMatchingOccurrences(caretPosition);
-      } catch (final Exception ex) {
-         Dart4EPlugin.log().error(ex);
-      }
-   };
 
    @Override
    protected IVerticalRulerColumn createAnnotationRulerColumn(final CompositeRuler ruler) {
@@ -73,19 +54,6 @@ public final class DartEditor extends ExtensionBasedTextEditor {
       if (contentAssistant != null) {
          contentAssistant.setAutoActivationDelay(500);
       }
-
-      final var textWidget = getSourceViewer().getTextWidget();
-      textWidget.addCaretListener(caretListener);
-   }
-
-   @Override
-   public void dispose() {
-      try {
-         getSourceViewer().getTextWidget().removeCaretListener(caretListener);
-      } catch (final NullPointerException ex) {
-         // ignore
-      }
-      super.dispose();
    }
 
    private @Nullable ContentAssistant getContentAssistant() {
@@ -107,24 +75,6 @@ public final class DartEditor extends ExtensionBasedTextEditor {
 
    private @Nullable IDocument getDocument() {
       return getDocumentProvider().getDocument(getEditorInput());
-   }
-
-   @SuppressWarnings("unused")
-   private void highlightMatchingOccurrences() {
-      final var doc = getDocument();
-      if (doc == null)
-         return;
-
-      final var infos = LanguageServiceAccessor.getLSPDocumentInfosFor(doc, capabilities -> {
-         final var docHighlight = capabilities.getDocumentHighlightProvider();
-         return docHighlight != null && (docHighlight.getLeft() == Boolean.TRUE || docHighlight.isRight());
-      });
-
-      infos.forEach(info -> {
-         final var identifier = new TextDocumentIdentifier(info.getFileUri().toString());
-         final var params = new DocumentHighlightParams(identifier, caretPosition);
-         info.getInitializedLanguageClient().whenComplete((client, ex) -> client.getTextDocumentService().documentHighlight(params));
-      });
    }
 
    @Override
