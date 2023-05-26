@@ -39,7 +39,7 @@
         </location>
 
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-            <repository location="https://download.eclipse.org/tm4e/releases/0.7.0/"/>
+            <repository location="https://download.eclipse.org/tm4e/releases/0.7.1/"/>
             <!--repository location="https://download.eclipse.org/tm4e/snapshots/" />-->
             <unit id="org.eclipse.tm4e.feature.feature.group" version="0.0.0"/>
         </location>
@@ -60,7 +60,7 @@
                 <dependency>
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-databind</artifactId>
-                    <version>2.14.2</version>
+                    <version>2.15.1</version>
                     <type>jar</type>
                 </dependency>
                 <dependency>

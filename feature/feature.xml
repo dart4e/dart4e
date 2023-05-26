@@ -31,7 +31,7 @@
    </url>
 
    <requires>
-      <import plugin="org.eclipse.platform" version="4.25.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.platform" version="4.27.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.expressions"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.core.runtime"/>
@@ -66,9 +66,9 @@
       <import plugin="de.sebthom.eclipse.commons" version="1.0.0.20221105-1144" match="compatible"/>
       <import plugin="org.yaml.snakeyaml" version="1.27.0" match="compatible"/>
       <import plugin="org.ec4j.core" version="0.3.0" match="greaterOrEqual"/>
-      <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.14.2" match="compatible"/>
-      <import plugin="com.fasterxml.jackson.core.jackson-core" version="2.14.2" match="compatible"/>
-      <import plugin="com.fasterxml.jackson.core.jackson-databind" version="2.14.2" match="compatible"/>
+      <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.15.1" match="compatible"/>
+      <import plugin="com.fasterxml.jackson.core.jackson-core" version="2.15.1" match="compatible"/>
+      <import plugin="com.fasterxml.jackson.core.jackson-databind" version="2.15.1" match="compatible"/>
    </requires>
 
    <plugin
