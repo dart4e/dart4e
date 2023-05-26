@@ -32,7 +32,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.sf.jstuff.core.Strings;
 import net.sf.jstuff.core.SystemUtils;
@@ -44,6 +46,13 @@ import net.sf.jstuff.core.validation.Args;
 /**
  * @author Sebastian Thomschke
  */
+@JsonAutoDetect( //
+   fieldVisibility = JsonAutoDetect.Visibility.NONE, //
+   setterVisibility = JsonAutoDetect.Visibility.NONE, //
+   getterVisibility = JsonAutoDetect.Visibility.NONE, //
+   isGetterVisibility = JsonAutoDetect.Visibility.NONE //
+)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public final class FlutterSDK implements Comparable<FlutterSDK> {
 
    /**
@@ -51,7 +60,6 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
     */
    public static final String ENV_FLUTTER_ROOT = "FLUTTER_ROOT";
 
-   @JsonIgnore
    private static final Supplier<@Nullable FlutterSDK> SDK_FROM_PATH = Suppliers.memoize(() -> {
       final var flutterRoot = SystemUtils.getEnvironmentVariable(ENV_FLUTTER_ROOT, "");
       if (Strings.isBlank(flutterRoot))
@@ -79,13 +87,11 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
       return SDK_FROM_PATH.get();
    }
 
-   private String name;
-   private Path installRoot;
+   private @JsonProperty String name;
+   private @JsonProperty Path installRoot;
 
-   @JsonIgnore
    private @Nullable DartSDK dartSDK;
 
-   @JsonIgnore
    private final Supplier<Boolean> isValidCached = Suppliers.memoize(() -> {
       final var flutterExe = getFlutterExecutable();
       if (!Files.isExecutable(flutterExe))
@@ -198,12 +204,10 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
       return future;
    }
 
-   @JsonIgnore
    public Path getFlutterExecutable() {
       return installRoot.resolve(SystemUtils.IS_OS_WINDOWS ? "bin\\flutter.bat" : "bin/flutter");
    }
 
-   @JsonIgnore
    public Processes.Builder getFlutterProcessBuilder(final boolean cleanEnv) {
       return Processes.builder(getFlutterExecutable()) //
          .withArg("--suppress-analytics") //
@@ -223,13 +227,11 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
       return name;
    }
 
-   @JsonIgnore
    public Path getStandardLibDir() {
       return installRoot.resolve("lib");
    }
 
    @Nullable
-   @JsonIgnore
    public String getVersion() {
       try (var lines = Files.lines(installRoot.resolve("version"))) {
          final var version = lines.findFirst().orElse("");
@@ -248,7 +250,6 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
    /**
     * If <code>installRoot</code> actually points to a valid location containing the Dart compiler
     */
-   @JsonIgnore
    public boolean isValid() {
       return isValidCached.get();
    }

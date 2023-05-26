@@ -13,7 +13,8 @@ import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.sf.jstuff.core.Strings;
@@ -24,6 +25,7 @@ import net.sf.jstuff.core.Strings;
  *
  * @author Sebastian Thomschke
  */
+@JsonAutoDetect(getterVisibility = Visibility.NONE)
 public class Device {
 
    public enum Category {
@@ -42,10 +44,8 @@ public class Device {
    /** e.g. "Android 12 (API 31)", "Android 5.0.2 (API 21)", "Microsoft Windows [Version 10.0.19045.2130]", "Microsoft Edge 106.0.1370.52" */
    public final String sdk;
 
-   @JsonProperty("emulator")
-   public final boolean isEmulator;
-
-   public final boolean isSupported;
+   public final @JsonProperty("emulator") boolean isEmulator;
+   public final @JsonProperty("supported") boolean isSupported;
 
    /** e.g. "android-arm64", "android-x64", "windows-x64", "web-javascript" */
    public final String targetPlatform;
@@ -74,7 +74,6 @@ public class Device {
       return Objects.equals(id, other.id);
    }
 
-   @JsonIgnore
    public Category getCategory() {
       return switch (getTargetPlatformType()) {
          case "android" -> Category.MOBILE;
@@ -91,7 +90,6 @@ public class Device {
    /**
     * e.g. "android", "custom", "fuchsia", "ios", "linux", "macos", "web", "windows"
     */
-   @JsonIgnore
    public String getTargetPlatformType() {
       return Strings.substringBefore(targetPlatform, "-");
    }

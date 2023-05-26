@@ -23,7 +23,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import de.sebthom.eclipse.commons.ui.Consoles;
 import net.sf.jstuff.core.Strings;
@@ -36,6 +38,13 @@ import net.sf.jstuff.core.validation.Args;
 /**
  * @author Sebastian Thomschke
  */
+@JsonAutoDetect( //
+   fieldVisibility = JsonAutoDetect.Visibility.NONE, //
+   setterVisibility = JsonAutoDetect.Visibility.NONE, //
+   getterVisibility = JsonAutoDetect.Visibility.NONE, //
+   isGetterVisibility = JsonAutoDetect.Visibility.NONE //
+)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public final class DartSDK implements Comparable<DartSDK> {
 
    /**
@@ -48,7 +57,6 @@ public final class DartSDK implements Comparable<DartSDK> {
     */
    public static final String ENV_PUB_CACHE = "PUB_CACHE";
 
-   @JsonIgnore
    private static final Supplier<@Nullable DartSDK> SDK_FROM_PATH = Suppliers.memoize(() -> {
       final var dartHome = SystemUtils.getEnvironmentVariable(ENV_DART_HOME, "");
       if (Strings.isBlank(dartHome))
@@ -76,10 +84,9 @@ public final class DartSDK implements Comparable<DartSDK> {
       return SDK_FROM_PATH.get();
    }
 
-   private String name;
-   private Path installRoot;
+   private @JsonProperty String name;
+   private @JsonProperty Path installRoot;
 
-   @JsonIgnore
    private final Supplier<Boolean> isValidCached = Suppliers.memoize(() -> {
       final var dartExe = getDartExecutable();
       if (!Files.isExecutable(dartExe))
@@ -145,12 +152,10 @@ public final class DartSDK implements Comparable<DartSDK> {
          && Objects.equals(installRoot, other.installRoot);
    }
 
-   @JsonIgnore
    public Path getDartExecutable() {
       return installRoot.resolve(SystemUtils.IS_OS_WINDOWS ? "bin\\dart.exe" : "bin/dart");
    }
 
-   @JsonIgnore
    public Processes.Builder getDartProcessBuilder(final boolean cleanEnv) {
       return Processes.builder(getDartExecutable()) //
          .withArg("--disable-analytics") //
@@ -162,7 +167,6 @@ public final class DartSDK implements Comparable<DartSDK> {
          });
    }
 
-   @JsonIgnore
    public Path getPubCacheDir() {
       final var pathFromEnv = System.getenv(ENV_PUB_CACHE);
       if (pathFromEnv != null) {
@@ -185,13 +189,11 @@ public final class DartSDK implements Comparable<DartSDK> {
       return name;
    }
 
-   @JsonIgnore
    public Path getStandardLibDir() {
       return installRoot.resolve("lib");
    }
 
    @Nullable
-   @JsonIgnore
    public String getVersion() {
       try (var lines = Files.lines(installRoot.resolve("version"))) {
          final var version = lines.findFirst().orElse("");
@@ -230,7 +232,6 @@ public final class DartSDK implements Comparable<DartSDK> {
    /**
     * If <code>installRoot</code> actually points to a valid location containing the Dart compiler
     */
-   @JsonIgnore
    public boolean isValid() {
       return isValidCached.get();
    }
