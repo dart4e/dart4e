@@ -15,6 +15,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.sf.jstuff.core.Strings;
@@ -26,6 +27,7 @@ import net.sf.jstuff.core.Strings;
  * @author Sebastian Thomschke
  */
 @JsonAutoDetect(getterVisibility = Visibility.NONE)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Device {
 
    public enum Category {
