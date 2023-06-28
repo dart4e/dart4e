@@ -39,7 +39,7 @@
         </location>
 
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-            <repository location="https://download.eclipse.org/tm4e/releases/0.7.1/"/>
+            <repository location="https://download.eclipse.org/tm4e/releases/0.8.0/"/>
             <!--repository location="https://download.eclipse.org/tm4e/snapshots/" />-->
             <unit id="org.eclipse.tm4e.feature.feature.group" version="0.0.0"/>
         </location>

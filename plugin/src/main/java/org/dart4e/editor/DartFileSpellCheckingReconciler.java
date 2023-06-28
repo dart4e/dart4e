@@ -30,11 +30,10 @@ import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.IAnnotationModelExtension;
-import org.eclipse.tm4e.core.model.IModelTokensChangedListener;
 import org.eclipse.tm4e.core.model.ModelTokensChangedEvent;
 import org.eclipse.tm4e.core.model.Range;
 import org.eclipse.tm4e.ui.TMUIPlugin;
-import org.eclipse.tm4e.ui.internal.model.TMDocumentModel;
+import org.eclipse.tm4e.ui.model.ITMDocumentModel;
 import org.eclipse.tm4e.ui.text.TMPresentationReconciler;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.spelling.ISpellingProblemCollector;
@@ -43,13 +42,14 @@ import org.eclipse.ui.texteditor.spelling.SpellingContext;
 import org.eclipse.ui.texteditor.spelling.SpellingProblem;
 import org.eclipse.ui.texteditor.spelling.SpellingService;
 
+import net.sf.jstuff.core.types.Disposable;
+
 /**
  * {@link PresentationReconciler} that performs incremental spell checking of comments
  *
  * @author Sebastian Thomschke
  */
-@SuppressWarnings("restriction")
-public final class DartFileSpellCheckingReconciler extends TMPresentationReconciler implements IModelTokensChangedListener,
+public final class DartFileSpellCheckingReconciler extends TMPresentationReconciler implements ModelTokensChangedEvent.Listener,
    ITextInputListener {
 
    private static final boolean TRACE_SPELLCHECK_REGIONS = Platform.getDebugBoolean("org.dart4e/trace/spellcheck/regions");
@@ -60,6 +60,8 @@ public final class DartFileSpellCheckingReconciler extends TMPresentationReconci
    private @Nullable Job spellcheckJob;
    private @Nullable ITextViewer viewer;
 
+   private Disposable onModelTokensChangedSubscription = () -> { /* nothing to do yet */ };
+
    private void addSpellcheckRegion(final List<Region> regionsToSpellcheck, final IDocument doc, final int offset, final int length)
       throws BadLocationException {
       if (TRACE_SPELLCHECK_REGIONS) {
@@ -68,7 +70,7 @@ public final class DartFileSpellCheckingReconciler extends TMPresentationReconci
       regionsToSpellcheck.add(new Region(offset, length));
    }
 
-   private List<Region> collectRegionsToSpellcheck(final TMDocumentModel docModel, final List<Range> changedRanges) {
+   private List<Region> collectRegionsToSpellcheck(final ITMDocumentModel docModel, final List<Range> changedRanges) {
       if (TRACE_SPELLCHECK_REGIONS || TRACE_SPELLCHECK_TOKENS) {
          System.out.println("----------collectRegionsToSpellcheck----------");
       }
@@ -138,8 +140,10 @@ public final class DartFileSpellCheckingReconciler extends TMPresentationReconci
       if (document == null)
          return;
 
+      onModelTokensChangedSubscription.dispose();
       final var model = TMUIPlugin.getTMModelManager().connect(document);
       model.addModelTokensChangedListener(this);
+      onModelTokensChangedSubscription = () -> model.removeModelTokensChangedListener(this);
    }
 
    @Override
@@ -152,8 +156,8 @@ public final class DartFileSpellCheckingReconciler extends TMPresentationReconci
    }
 
    @Override
-   public void modelTokensChanged(final ModelTokensChangedEvent event) {
-      if (!(event.model instanceof final TMDocumentModel docModel))
+   public void onModelTokensChanged(final ModelTokensChangedEvent event) {
+      if (!(event.model instanceof final ITMDocumentModel docModel))
          return;
 
       final var doc = docModel.getDocument();
@@ -238,5 +242,6 @@ public final class DartFileSpellCheckingReconciler extends TMPresentationReconci
          viewer.removeTextInputListener(this);
          viewer = null;
       }
+      onModelTokensChangedSubscription.dispose();
    }
 }
