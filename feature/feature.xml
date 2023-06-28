@@ -67,7 +67,7 @@
       <import plugin="net.sf.jstuff.core" version="7.6.0" match="compatible"/>
       <import plugin="net.sf.jstuff.xml" version="7.6.0" match="compatible"/>
       <import plugin="de.sebthom.eclipse.commons" version="1.0.0.20221105-1144" match="compatible"/>
-      <import plugin="org.yaml.snakeyaml" version="1.27.0" match="compatible"/>
+      <import plugin="org.yaml.snakeyaml" version="2.0.0" match="compatible"/>
       <import plugin="org.ec4j.core" version="0.3.0" match="greaterOrEqual"/>
    </requires>
 
