@@ -178,8 +178,7 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
                getFlutterProcessBuilder(false).withArgs("devices", "--machine") //
                   .withRedirectOutput(sb) //
                   .start() //
-                  .waitForExit(5, TimeUnit.SECONDS);
-
+                  .waitForExit(10, TimeUnit.SECONDS);
                try (var in = new CharSequenceInputStream(sb, StandardCharsets.UTF_8)) {
                   future.complete( //
                      JSON.deserializeList(in, Device.class) //
