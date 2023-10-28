@@ -13,10 +13,10 @@ import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import net.sf.jstuff.core.Strings;
 
@@ -46,8 +46,8 @@ public class Device {
    /** e.g. "Android 12 (API 31)", "Android 5.0.2 (API 21)", "Microsoft Windows [Version 10.0.19045.2130]", "Microsoft Edge 106.0.1370.52" */
    public final String sdk;
 
-   public final @JsonProperty("emulator") boolean isEmulator;
-   public final @JsonProperty("supported") boolean isSupported;
+   public final @JsonAlias("emulator") boolean isEmulator;
+   public final @JsonAlias("supported") boolean isSupported;
 
    /** e.g. "android-arm64", "android-x64", "windows-x64", "web-javascript" */
    public final String targetPlatform;
@@ -103,6 +103,13 @@ public class Device {
 
    @Override
    public String toString() {
-      return super.toString();
+      return Strings.toString(this, //
+         "id", id, //
+         "name", name, //
+         "isEmulator", isEmulator, //
+         "isSupported", isSupported, //
+         "sdk", sdk, //
+         "targetPlatform", targetPlatform //
+      );
    }
 }
