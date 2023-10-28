@@ -98,7 +98,6 @@ public class TestLaunchConfigLauncher extends LaunchConfigurationDelegate {
 
          case ILaunchManager.RUN_MODE:
             final var args = new ArrayList<Object>(vmArgs);
-            args.add("run");
             args.add("test");
             args.add("--chain-stack-traces");
             args.addAll(testResources);
