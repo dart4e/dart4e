@@ -1,112 +1,110 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 <target includeMode="feature" name="Dart4E Plugin Build Target">
-    <locations>
+   <locations>
 
-        <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-            <repository location="https://download.eclipse.org/cbi/updates/license"/>
-            <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
-        </location>
+      <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <repository location="https://download.eclipse.org/cbi/updates/license" />
+         <unit id="org.eclipse.license.feature.group" version="0.0.0" />
+      </location>
 
-        <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-            <!-- Eclipse 2023-03 aka 4.27 is the required minimum of latest LSP4E release -->
-            <repository location="https://download.eclipse.org/releases/2023-03/"/>
-            <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
-            <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
-            <unit id="org.eclipse.mylyn.wikitext.editors_feature.feature.group" version="0.0.0"/>
-            <unit id="org.eclipse.tm.terminal.feature.feature.group" version="0.0.0"/>
-            <unit id="org.eclipse.wildwebdeveloper.embedder.node.feature.feature.group" version="0.0.0"/>
-            <unit id="org.eclipse.reddeer.go" version="0.0.0"/>
-        </location>
+      <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <repository location="https://download.eclipse.org/releases/2023-09/" />
+         <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0" />
+         <unit id="org.eclipse.sdk.ide" version="0.0.0" />
+         <unit id="org.eclipse.mylyn.wikitext.editors_feature.feature.group" version="0.0.0" />
+         <unit id="org.eclipse.tm.terminal.feature.feature.group" version="0.0.0" />
+         <unit id="org.eclipse.wildwebdeveloper.embedder.node.feature.feature.group" version="0.0.0" />
+         <unit id="org.eclipse.reddeer.go" version="0.0.0" />
+      </location>
 
-        <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-            <repository location="https://download.eclipse.org/eclipse/updates/4.27/"/>
-            <unit id="org.eclipse.jface.text.tests" version="0.0.0"/>
-            <unit id="org.eclipse.test.feature.group" version="0.0.0"/>
-        </location>
+      <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <repository location="https://download.eclipse.org/eclipse/updates/4.29/" />
+         <unit id="org.eclipse.jface.text.tests" version="0.0.0" />
+         <unit id="org.eclipse.test.feature.group" version="0.0.0" />
+      </location>
 
-        <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-            <repository location="https://download.eclipse.org/lsp4e/releases/0.23.0/"/>
-            <!--repository location="https://download.eclipse.org/lsp4e/snapshots/" />-->
-            <unit id="org.eclipse.lsp4e" version="0.0.0"/>
-            <unit id="org.eclipse.lsp4e.source" version="0.0.0"/>
-            <unit id="org.eclipse.lsp4e.debug" version="0.0.0"/>
-            <unit id="org.eclipse.lsp4e.debug.source" version="0.0.0"/>
-            <unit id="org.eclipse.lsp4j" version="0.0.0"/>
-            <unit id="org.eclipse.lsp4j.debug" version="0.0.0"/>
-            <unit id="org.eclipse.lsp4j.jsonrpc" version="0.0.0"/>
-            <unit id="org.eclipse.lsp4j.jsonrpc.debug" version="0.0.0"/>
-        </location>
+      <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <repository location="https://download.eclipse.org/lsp4e/releases/0.24.5/" />
+         <!--repository location="https://download.eclipse.org/lsp4e/snapshots/" />-->
+         <unit id="org.eclipse.lsp4e" version="0.0.0" />
+         <unit id="org.eclipse.lsp4e.source" version="0.0.0" />
+         <unit id="org.eclipse.lsp4e.debug" version="0.0.0" />
+         <unit id="org.eclipse.lsp4e.debug.source" version="0.0.0" />
+         <unit id="org.eclipse.lsp4j" version="0.0.0" />
+         <unit id="org.eclipse.lsp4j.debug" version="0.0.0" />
+         <unit id="org.eclipse.lsp4j.jsonrpc" version="0.0.0" />
+         <unit id="org.eclipse.lsp4j.jsonrpc.debug" version="0.0.0" />
+      </location>
 
-        <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-            <repository location="https://download.eclipse.org/tm4e/releases/0.8.0/"/>
-            <!--repository location="https://download.eclipse.org/tm4e/snapshots/" />-->
-            <unit id="org.eclipse.tm4e.feature.feature.group" version="0.0.0"/>
-        </location>
+      <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <repository location="https://download.eclipse.org/tm4e/releases/0.8.1/" />
+         <!--repository location="https://download.eclipse.org/tm4e/snapshots/" />-->
+         <unit id="org.eclipse.tm4e.feature.feature.group" version="0.0.0" />
+      </location>
 
-        <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-            <repository location="https://raw.githubusercontent.com/sebthom/eclipse-commons/updatesite/"/>
-            <unit id="de.sebthom.eclipse.commons.feature.feature.group" version="0.0.0"/>
-        </location>
+      <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <repository location="https://raw.githubusercontent.com/sebthom/eclipse-commons/updatesite/" />
+         <unit id="de.sebthom.eclipse.commons.feature.feature.group" version="0.0.0" />
+      </location>
 
-        <location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-            <dependencies>
-                <dependency>
-                    <groupId>org.ec4j.core</groupId>
-                    <artifactId>ec4j-core</artifactId>
-                    <version>0.3.0</version>
-                    <type>jar</type>
-                </dependency>
-                <dependency>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-databind</artifactId>
-                    <version>2.15.2</version>
-                    <type>jar</type>
-                </dependency>
-                <dependency>
-                    <groupId>net.sf.jstuff</groupId>
-                    <artifactId>jstuff-core</artifactId>
-                    <version>7.6.0</version>
-                    <type>jar</type>
-                </dependency>
-                <dependency>
-                    <groupId>net.sf.jstuff</groupId>
-                    <artifactId>jstuff-xml</artifactId>
-                    <version>7.6.0</version>
-                    <type>jar</type>
-                </dependency>
-                <dependency>
-                    <groupId>org.assertj</groupId>
-                    <artifactId>assertj-core</artifactId>
-                    <version>3.24.2</version>
-                    <type>jar</type>
-                </dependency>
-                <dependency>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                    <version>2.0</version>
-                    <type>jar</type>
-                 </dependency>
-             </dependencies>
-        </location>
+      <location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+         <dependencies>
+            <dependency>
+               <groupId>com.fasterxml.jackson.core</groupId>
+               <artifactId>jackson-databind</artifactId>
+               <version>2.16.0</version>
+               <type>jar</type>
+            </dependency>
+            <dependency>
+               <groupId>net.sf.jstuff</groupId>
+               <artifactId>jstuff-core</artifactId>
+               <version>7.6.0</version>
+               <type>jar</type>
+            </dependency>
+            <dependency>
+               <groupId>net.sf.jstuff</groupId>
+               <artifactId>jstuff-xml</artifactId>
+               <version>7.6.0</version>
+               <type>jar</type>
+            </dependency>
+            <dependency>
+               <groupId>org.assertj</groupId>
+               <artifactId>assertj-core</artifactId>
+               <version>3.24.2</version>
+               <type>jar</type>
+            </dependency>
+            <dependency>
+               <groupId>org.ec4j.core</groupId>
+               <artifactId>ec4j-core</artifactId>
+               <version>0.3.0</version>
+               <type>jar</type>
+            </dependency>
+            <dependency>
+               <groupId>org.yaml</groupId>
+               <artifactId>snakeyaml</artifactId>
+               <version>2.2</version>
+               <type>jar</type>
+            </dependency>
+         </dependencies>
+      </location>
+      <location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
+         <dependencies>
+            <dependency>
+               <groupId>com.vegardit.no-npe</groupId>
+               <artifactId>no-npe-eea-all</artifactId>
+               <version>1.0.0-SNAPSHOT</version>
+               <type>jar</type>
+            </dependency>
+         </dependencies>
+         <repositories>
+            <repository>
+               <id>no-npe-snapshots</id>
+               <url>https://raw.githubusercontent.com/vegardit/no-npe/mvn-snapshots-repo/</url>
+            </repository>
+         </repositories>
+      </location>
+   </locations>
 
-        <location includeDependencyDepth="infinite" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven">
-            <dependencies>
-                <dependency>
-                    <groupId>com.vegardit.no-npe</groupId>
-                    <artifactId>no-npe-eea-all</artifactId>
-                    <version>1.0.0-SNAPSHOT</version>
-                    <type>jar</type>
-                </dependency>
-            </dependencies>
-            <repositories>
-                <repository>
-                    <id>no-npe-snapshots</id>
-                    <url>https://raw.githubusercontent.com/vegardit/no-npe/mvn-snapshots-repo/</url>
-                </repository>
-            </repositories>
-        </location>
-    </locations>
-
-    <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
+   <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17" />
 </target>
