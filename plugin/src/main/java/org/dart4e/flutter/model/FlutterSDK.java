@@ -98,8 +98,15 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
          return false;
 
       final var processBuilder = Processes.builder(flutterExe).withArg("--version");
+      /* outputs something like:
+       *   Flutter 3.16.5 • channel stable • https://github.com/flutter/flutter.git
+       *   Framework • revision 78666c8dc5 (5 weeks ago) • 2023-12-19 16:14:14 -0800
+       *   Engine • revision 3f3e560236
+       *   Tools • Dart 3.2.3 • DevTools 2.28.4
+       */
       try (var reader = new BufferedReader(new InputStreamReader(processBuilder.start().getStdOut()))) {
-         if (reader.readLine().contains("Flutter"))
+         final String line = reader.readLine();
+         if (line != null && line.contains("Flutter"))
             return true;
       } catch (final IOException ex) {
          // ignore

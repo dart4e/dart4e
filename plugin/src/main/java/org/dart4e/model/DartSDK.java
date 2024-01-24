@@ -92,9 +92,13 @@ public final class DartSDK implements Comparable<DartSDK> {
       if (!Files.isExecutable(dartExe))
          return false;
 
-      final var processBuilder = Processes.builder(dartExe);
+      final var processBuilder = Processes.builder(dartExe).withArg("--version");
+      /* outputs something like:
+       *   Dart SDK version: 3.2.3 (stable) (Tue Dec 5 17:58:33 2023 +0000) on "windows_x64"
+       */
       try (var reader = new BufferedReader(new InputStreamReader(processBuilder.start().getStdOut()))) {
-         if (reader.readLine().contains("Dart"))
+         final String line = reader.readLine();
+         if (line != null && line.contains("Dart"))
             return true;
       } catch (final IOException ex) {
          // ignore
