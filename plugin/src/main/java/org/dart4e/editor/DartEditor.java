@@ -90,9 +90,9 @@ public final class DartEditor extends ExtensionBasedTextEditor {
       final var rulerInfo = getAdapter(IVerticalRulerInfo.class);
       if (rulerInfo == null)
          return;
-      final var lineNumber = rulerInfo.getLineOfLastMouseButtonActivity();
+      final var lineIndex = rulerInfo.getLineOfLastMouseButtonActivity();
 
-      final var tokens = parsedDoc.getLineTokens(lineNumber);
+      final var tokens = parsedDoc.getLineTokens(lineIndex);
       if (tokens == null || tokens.isEmpty())
          return;
 
@@ -123,7 +123,7 @@ public final class DartEditor extends ExtensionBasedTextEditor {
             try {
                if (breakpoint instanceof final ILineBreakpoint lineBreakpoint //
                   && resource.equals(breakpoint.getMarker().getResource()) //
-                  && lineBreakpoint.getLineNumber() == lineNumber + 1) {
+                  && lineBreakpoint.getLineNumber() == lineIndex + 1) {
                   breakpoint.delete();
                }
             } catch (final CoreException ex) {
