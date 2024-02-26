@@ -625,7 +625,7 @@
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-         id="org.dart4e.launch.dart_command.LaunchTabGroup"
+         id="org.dart4e.launch.dart_command.LaunchConfigTabGroup"
          class="org.dart4e.launch.command.CommandLaunchConfigTabGroup"
          type="org.dart4e.launch.dart_command"
          description="%DartCommandLaunchGroup_Description" />
@@ -682,7 +682,7 @@
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-         id="org.dart4e.launch.dart_program.LaunchTabGroup"
+         id="org.dart4e.launch.dart_program.LaunchConfigTabGroup"
          class="org.dart4e.launch.program.ProgramLaunchConfigTabGroup"
          type="org.dart4e.launch.dart_program"
          description="%DartProgramLaunchGroup_Description" />
@@ -764,7 +764,7 @@
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-         id="org.dart4e.launch.dart_test.LaunchTabGroup"
+         id="org.dart4e.launch.dart_test.LaunchConfigTabGroup"
          class="org.dart4e.launch.test.TestLaunchConfigTabGroup"
          type="org.dart4e.launch.dart_test"
          description="%DartTestLaunchGroup_Description" />
@@ -851,8 +851,8 @@
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-         id="org.dart4e.flutter.launch.flutter_app.LaunchTabGroup"
-         class="org.dart4e.flutter.launch.app.FlutterAppLaunchTabGroup"
+         id="org.dart4e.flutter.launch.flutter_app.LaunchConfigTabGroup"
+         class="org.dart4e.flutter.launch.app.FlutterAppLaunchConfigTabGroup"
          type="org.dart4e.flutter.launch.flutter_app"
          description="%FlutterAppLaunchGroup_Description" />
    </extension>
@@ -905,7 +905,7 @@
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-         id="org.dart4e.launch.flutter_command.LaunchTabGroup"
+         id="org.dart4e.launch.flutter_command.LaunchConfigTabGroup"
          class="org.dart4e.flutter.launch.command.FlutterCommandLaunchConfigTabGroup"
          type="org.dart4e.flutter.launch.flutter_command"
          description="%FlutterCommandLaunchGroup_Description" />
@@ -959,7 +959,7 @@
 
    <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-         id="org.dart4e.flutter.launch.flutter_test.LaunchTabGroup"
+         id="org.dart4e.flutter.launch.flutter_test.LaunchConfigTabGroup"
          class="org.dart4e.flutter.launch.test.FlutterTestLaunchTabGroup"
          type="org.dart4e.flutter.launch.flutter_test"
          description="%FlutterTestLaunchGroup_Description" />
