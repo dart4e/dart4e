@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.dart4e.Dart4EPlugin;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -41,14 +42,15 @@ public abstract class JSON {
       // which results in freezes because on first usage all drive letters are iterated
       // which will hang for mapped but currently not reachable network drives
       final var m = new SimpleModule("CustomNioPathSerialization");
-      @SuppressWarnings("null")
-      final JsonSerializer<@Nullable Object> serializer = new ToStringSerializer();
+
+      final JsonSerializer<Object> serializer = new ToStringSerializer();
       m.addSerializer(Path.class, serializer);
       m.addDeserializer(Path.class, new FromStringDeserializer<Path>(Path.class) {
          private static final long serialVersionUID = 1L;
 
          @Override
-         protected Path _deserialize(final String value, final DeserializationContext ctxt) {
+         @NonNullByDefault({})
+         protected Path _deserialize(final String value, final DeserializationContext ctx) {
             return Paths.get(value);
          }
       });
