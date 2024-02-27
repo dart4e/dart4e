@@ -186,7 +186,8 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
                   .withRedirectOutput(sb) //
                   .start() //
                   .waitForExit(10, TimeUnit.SECONDS);
-               try (var in = new CharSequenceInputStream(sb, StandardCharsets.UTF_8)) {
+
+               try (var in = CharSequenceInputStream.builder().setCharSequence(sb).setCharset(StandardCharsets.UTF_8).get()) {
                   future.complete( //
                      JSON.deserializeList(in, Device.class) //
                         .stream() //
