@@ -88,12 +88,12 @@ public class ProgramLaunchConfigLauncher extends LaunchConfigurationDelegate {
                .getMap();
 
             try {
-               final var builder = new DSPLaunchDelegateLaunchBuilder(config, ILaunchManager.DEBUG_MODE, launch, monitor);
-               builder.setLaunchDebugAdapter( //
-                  dartSDK.getDartExecutable().toString(), //
-                  List.of("debug_adapter"));
-               builder.setMonitorDebugAdapter(LaunchConfigurations.isMonitorDebugAdapter(config));
-               builder.setDspParameters(debuggerOpts);
+               final var builder = new DSPLaunchDelegateLaunchBuilder(config, ILaunchManager.DEBUG_MODE, launch, monitor) //
+                  .setLaunchDebugAdapter( //
+                     dartSDK.getDartExecutable().toString(), //
+                     List.of("debug_adapter")) //
+                  .setMonitorDebugAdapter(LaunchConfigurations.isMonitorDebugAdapter(config)) //
+                  .setDspParameters(debuggerOpts);
                new LaunchDebugConfig().launch(builder);
             } catch (final CoreException ex) {
                Dialogs.showStatus("Failed to start debug session", Dart4EPlugin.status().createError(ex), true);
