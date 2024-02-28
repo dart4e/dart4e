@@ -24,6 +24,7 @@ import org.dart4e.prefs.DartProjectPreference;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.internal.ui.preferences.IDebugPreferenceConstants;
 import org.eclipse.jdt.annotation.Nullable;
@@ -37,6 +38,8 @@ import net.sf.jstuff.core.Strings;
 import net.sf.jstuff.core.concurrent.Threads;
 
 /**
+ * Executes an arbitrary Dart command in a console window without a {@link ILaunchConfiguration}
+ *
  * @author Sebastian Thomschke
  */
 @SuppressWarnings("restriction")
@@ -58,8 +61,9 @@ public final class DartConsole extends MessageConsole {
    public static final String CONSOLE_TYPE = DartConsole.class.getName();
 
    private static void runWithConsole(final IProgressMonitor monitor, final String headLine, final DartSDK dartSDK,
-      final @Nullable IProject project, final @Nullable Path workdir, final String... args) throws CoreException {
-      final var processBuilder = dartSDK.getDartProcessBuilder(false).withArgs(args);
+      final @Nullable IProject project, final @Nullable Path workdir, final String... dartArgs) throws CoreException {
+
+      final var processBuilder = dartSDK.getDartProcessBuilder(false).withArgs(dartArgs);
 
       final var onTerminated = new CompletableFuture<@Nullable Void>();
       final var console = new DartConsole(project, onTerminated, monitor);
@@ -153,18 +157,18 @@ public final class DartConsole extends MessageConsole {
    }
 
    /**
-    * Runs the dart command in the {@link DartConsole}.
+    * Runs the Dart command in the {@link DartConsole}.
     */
    public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final DartSDK dartSDK,
-      final @Nullable Path workdir, final String... args) throws CoreException {
-      runWithConsole(monitor, headLine, dartSDK, null, workdir, args);
+      final @Nullable Path workdir, final String... dartArgs) throws CoreException {
+      runWithConsole(monitor, headLine, dartSDK, null, workdir, dartArgs);
    }
 
    /**
-    * Runs the dart command in the {@link DartConsole}.
+    * Runs the Dart command in the {@link DartConsole}.
     */
-   public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final IProject project, final String... args)
-      throws CoreException {
+   public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final IProject project,
+      final String... dartArgs) throws CoreException {
       final var prefs = DartProjectPreference.get(project);
       final var dartSDK = prefs.getEffectiveDartSDK();
       if (dartSDK == null)
@@ -175,7 +179,7 @@ public final class DartConsole extends MessageConsole {
          workdir = workdir.getParent();
       }
 
-      runWithConsole(monitor, headLine, dartSDK, project, workdir, args);
+      runWithConsole(monitor, headLine, dartSDK, project, workdir, dartArgs);
    }
 
    public final @Nullable IProject project;

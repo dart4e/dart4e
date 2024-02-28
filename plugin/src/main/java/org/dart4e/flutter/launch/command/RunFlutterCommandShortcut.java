@@ -24,6 +24,8 @@ import de.sebthom.eclipse.commons.ui.Dialogs;
 import de.sebthom.eclipse.commons.ui.UI;
 
 /**
+ * This class is registered via the plugin.xml
+ *
  * @author Sebastian Thomschke
  */
 public class RunFlutterCommandShortcut implements ILaunchShortcut {

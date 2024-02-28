@@ -14,6 +14,8 @@ import org.eclipse.core.resources.IProject;
 import de.sebthom.eclipse.commons.resources.Projects;
 
 /**
+ * This class is registered via the plugin.xml
+ *
  * @author Sebastian Thomschke
  */
 public class RunPubDowngradeHandler extends AbstractDartCommandHandler {

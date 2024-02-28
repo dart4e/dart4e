@@ -9,6 +9,8 @@ package org.dart4e.flutter.launch.command;
 import org.dart4e.localization.Messages;
 
 /**
+ * This class is registered via the plugin.xml
+ *
  * @author Sebastian Thomschke
  */
 public class RunFlutterPubGetHandler extends AbstractFlutterCommandHandler {

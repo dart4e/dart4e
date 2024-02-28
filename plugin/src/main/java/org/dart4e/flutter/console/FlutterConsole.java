@@ -24,6 +24,7 @@ import org.dart4e.flutter.prefs.FlutterProjectPreference;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.debug.internal.ui.preferences.IDebugPreferenceConstants;
 import org.eclipse.jdt.annotation.Nullable;
@@ -37,6 +38,8 @@ import net.sf.jstuff.core.Strings;
 import net.sf.jstuff.core.concurrent.Threads;
 
 /**
+ * Executes an arbitrary Flutter command in a console window without a {@link ILaunchConfiguration}
+ *
  * @author Sebastian Thomschke
  */
 @SuppressWarnings("restriction")
@@ -57,10 +60,10 @@ public final class FlutterConsole extends MessageConsole {
     */
    public static final String CONSOLE_TYPE = FlutterConsole.class.getName();
 
-   public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final FlutterSDK flutterSDK,
-      final @Nullable IProject project, final @Nullable Path workdir, final String... args) throws CoreException {
+   private static void runWithConsole(final IProgressMonitor monitor, final String headLine, final FlutterSDK flutterSDK,
+      final @Nullable IProject project, final @Nullable Path workdir, final String... flutterArgs) throws CoreException {
 
-      final var processBuilder = flutterSDK.getFlutterProcessBuilder(false).withArgs(args);
+      final var processBuilder = flutterSDK.getFlutterProcessBuilder(false).withArgs(flutterArgs);
 
       final var onTerminated = new CompletableFuture<@Nullable Void>();
       final var console = new FlutterConsole(project, onTerminated, monitor);
@@ -154,18 +157,18 @@ public final class FlutterConsole extends MessageConsole {
    }
 
    /**
-    * Runs the flutter command in the {@link FlutterConsole}.
+    * Runs the Flutter command in the {@link FlutterConsole}.
     */
    public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final FlutterSDK flutterSDK,
-      final @Nullable Path workdir, final String... args) throws CoreException {
-      runWithConsole(monitor, headLine, flutterSDK, null, workdir, args);
+      final @Nullable Path workdir, final String... flutterArgs) throws CoreException {
+      runWithConsole(monitor, headLine, flutterSDK, null, workdir, flutterArgs);
    }
 
    /**
-    * Runs the flutter command in the {@link FlutterConsole}.
+    * Runs the Flutter command in the {@link FlutterConsole}.
     */
-   public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final IProject project, final String... args)
-      throws CoreException {
+   public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final IProject project,
+      final String... flutterArgs) throws CoreException {
       final var prefs = FlutterProjectPreference.get(project);
       final var flutterSDK = prefs.getEffectiveFlutterSDK();
       if (flutterSDK == null)
@@ -176,7 +179,7 @@ public final class FlutterConsole extends MessageConsole {
          workdir = workdir.getParent();
       }
 
-      runWithConsole(monitor, headLine, flutterSDK, workdir, args);
+      runWithConsole(monitor, headLine, flutterSDK, project, workdir, flutterArgs);
    }
 
    public final @Nullable IProject project;
