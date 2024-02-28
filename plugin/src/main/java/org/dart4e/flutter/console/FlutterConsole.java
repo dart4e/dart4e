@@ -17,6 +17,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.flutter.model.FlutterSDK;
@@ -61,7 +62,13 @@ public final class FlutterConsole extends MessageConsole {
    public static final String CONSOLE_TYPE = FlutterConsole.class.getName();
 
    private static void runWithConsole(final IProgressMonitor monitor, final String headLine, final FlutterSDK flutterSDK,
-      final @Nullable IProject project, final @Nullable Path workdir, final String... flutterArgs) throws CoreException {
+      final @Nullable IProject project, final @Nullable Path workdir, String... flutterArgs) throws CoreException {
+
+      if (flutterArgs.length > 0 && "pub".equals(flutterArgs) //
+         && Consoles.isAnsiColorsSupported() //
+         && !ArrayUtils.contains(flutterArgs, "--color")) {
+         flutterArgs = ArrayUtils.add(flutterArgs, "--color");
+      }
 
       final var processBuilder = flutterSDK.getFlutterProcessBuilder(false).withArgs(flutterArgs);
 
