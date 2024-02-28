@@ -35,15 +35,6 @@ import net.sf.jstuff.core.SystemUtils;
  */
 public class FlutterCommandLaunchConfigLauncher extends LaunchConfigurationDelegate {
 
-   /**
-    * Used to get/set the associated project name from a Debug Console's process, e.g.
-    *
-    * <pre>
-    * debugConsole.getProcess().getAttribute(LaunchConfigLauncher.PROCESS_ATTRIBUTE_PROJECT_NAME);
-    * </pre>
-    */
-   public static final String PROCESS_ATTRIBUTE_PROJECT_NAME = "project_name";
-
    @Override
    public void launch(final ILaunchConfiguration config, final String mode, final ILaunch launch, final @Nullable IProgressMonitor monitor)
       throws CoreException {
@@ -87,7 +78,7 @@ public class FlutterCommandLaunchConfigLauncher extends LaunchConfigurationDeleg
                   }) //
                   .start();
                final var processHandle = DebugPlugin.newProcess(launch, proc.getProcess(), flutterSDK.getFlutterExecutable().toString());
-               processHandle.setAttribute(PROCESS_ATTRIBUTE_PROJECT_NAME, project.getName());
+               processHandle.setAttribute(LaunchConfigurations.PROCESS_ATTRIBUTE_PROJECT_NAME, project.getName());
                launch.addProcess(processHandle);
             } catch (final IOException ex) {
                Dialogs.showStatus(Messages.Flutter_Launch_CouldNotRunFlutter, Dart4EPlugin.status().createError(ex), true);
