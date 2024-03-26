@@ -23,8 +23,8 @@
 
    <name>dart4e-parent</name>
    <description>Dart programming language support for the Eclipse IDE</description>
-   <inceptionYear>2022</inceptionYear>
    <url>https://github.com/dart4e/dart4e/</url>
+   <inceptionYear>2022</inceptionYear>
    <organization>
       <name>The Dart4E Project</name>
       <url>https://github.com/dart4e</url>
@@ -47,9 +47,11 @@
 
 
    <scm>
+      <!-- https://maven.apache.org/scm/git.html -->
       <url>https://github.com/dart4e/dart4e</url>
       <connection>scm:git:https://github.com/dart4e/dart4e.git</connection>
       <developerConnection>scm:git:https://github.com/dart4e/dart4e.git</developerConnection>
+      <tag>HEAD</tag>
    </scm>
 
 

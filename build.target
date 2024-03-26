@@ -26,7 +26,6 @@
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
          <repository location="https://download.eclipse.org/lsp4e/releases/0.24.5/" />
-         <!--repository location="https://download.eclipse.org/lsp4e/snapshots/" />-->
          <unit id="org.eclipse.lsp4e" version="0.0.0" />
          <unit id="org.eclipse.lsp4e.source" version="0.0.0" />
          <unit id="org.eclipse.lsp4e.debug" version="0.0.0" />
@@ -38,8 +37,7 @@
       </location>
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <repository location="https://download.eclipse.org/tm4e/releases/0.9.0/" />
-         <!--repository location="https://download.eclipse.org/tm4e/snapshots/" />-->
+         <repository location="https://download.eclipse.org/tm4e/releases/0.11.0/" />
          <unit id="org.eclipse.tm4e.feature.feature.group" version="0.0.0" />
       </location>
 

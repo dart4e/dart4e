@@ -26,9 +26,6 @@
          file-extensions="dart"
          name="%Label_Dart_File"
          priority="high" />
-      <file-association
-         content-type="org.dart4e.content.dart"
-         file-extensions="dart" />
    </extension>
 
    <extension point="org.eclipse.core.expressions.definitions">
