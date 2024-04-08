@@ -18,10 +18,10 @@ import org.dart4e.Dart4EPlugin;
 import org.dart4e.model.buildsystem.BuildFile;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.project.DartProjectNature;
+import org.dart4e.util.AbstractResourcesChangedListener;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
@@ -36,7 +36,7 @@ import de.sebthom.eclipse.commons.resources.Projects;
 /**
  * @author Sebastian Thomschke
  */
-public final class DartDependenciesUpdater implements IResourceChangeListener {
+public final class DartDependenciesUpdater extends AbstractResourcesChangedListener {
 
    public static final String STDLIB_MAGIC_FOLDER_NAME = "!!!dartstdlib";
    public static final String DEPS_MAGIC_FOLDER_NAME = "!!dartdeps";
@@ -108,13 +108,15 @@ public final class DartDependenciesUpdater implements IResourceChangeListener {
                return true; // check children
          }
 
-         return switch (resource.getName()) {
+         if (resource.getType() != IResource.FILE)
+            return true; // check children
+
+         switch (resource.getName()) {
             case Constants.PUBSPEC_YAML_FILENAME, Constants.PUBSPEC_LOCK_FILENAME -> {
                changedProjects.add(project);
-               yield false; // no need to check children
             }
-            default -> true; // check children
-         };
+         }
+         return false; // no need to check children
       };
 
       try {

@@ -10,8 +10,6 @@ import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
 
 import org.dart4e.navigation.DartDependenciesUpdater;
 import org.dart4e.navigation.WindowListener;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.osgi.framework.BundleContext;
@@ -81,14 +79,14 @@ public class Dart4EPlugin extends AbstractEclipsePlugin {
       super.start(context);
       instance = this;
 
+      DartDependenciesUpdater.INSTANCE.install();
       WindowListener.INSTANCE.attach();
-      ResourcesPlugin.getWorkspace().addResourceChangeListener(DartDependenciesUpdater.INSTANCE, IResourceChangeEvent.POST_CHANGE);
    }
 
    @Override
    public void stop(final BundleContext context) throws Exception {
+      DartDependenciesUpdater.INSTANCE.uninstall();
       WindowListener.INSTANCE.detatch();
-      ResourcesPlugin.getWorkspace().removeResourceChangeListener(DartDependenciesUpdater.INSTANCE);
 
       instance = null;
       super.stop(context);
