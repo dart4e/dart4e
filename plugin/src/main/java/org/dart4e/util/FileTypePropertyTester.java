@@ -24,7 +24,7 @@ import de.sebthom.eclipse.commons.ui.Editors;
  *
  * @author Sebastian Thomschke
  */
-@SuppressWarnings({"restriction", "deprecation"})
+@SuppressWarnings({"deprecation", "removal", "restriction"})
 public final class FileTypePropertyTester extends PropertyTester {
 
    private static final String PROPERTY_CONTENT_TYPE_ID = "contentTypeId";

@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.Image;
  *
  * @author Sebastian Thomschke
  */
-@SuppressWarnings({"restriction", "deprecation"})
+@SuppressWarnings({"deprecation", "restriction", "removal"})
 public final class DartOutlineSymbolsProvider extends SymbolsLabelProvider {
 
    @Override
