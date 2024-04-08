@@ -64,12 +64,15 @@ public class DartBuildFile extends BuildFile {
          throw new IllegalStateException("No Dart SDK found!");
 
       final var pubCacheDir = dartSDK.getPubCacheDir();
-      Assert.isDirectoryReadable(pubCacheDir);
 
-      if (!isLockFileUpToDate()) {
+      boolean depsNewlyResolved = false;
+      if (!Files.exists(pubCacheDir) || !isLockFileUpToDate()) {
          resolveDependencies(monitor); // update needed
+         depsNewlyResolved = true;
       } else if (!deps.isEmpty())
          return deps;
+
+      Assert.isDirectoryReadable(pubCacheDir);
 
       /*
        * parse the pubspec.lock for the resolved dependencies
@@ -118,6 +121,10 @@ public class DartBuildFile extends BuildFile {
                   };
 
                   final var dependencyType = (String) asNonNull(meta.get("dependency"));
+                  if (!depsNewlyResolved && !Files.exists(libLocation)) {
+                     resolveDependencies(monitor);
+                     depsNewlyResolved = true;
+                  }
                   deps.add(new DartDependency(libLocation, name, version, dependencyType.contains("dev"), dependencyType.contains(
                      "transitive")));
                } catch (final Exception ex) {
