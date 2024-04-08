@@ -59,13 +59,13 @@
       <import plugin="org.eclipse.tm.terminal.view.core"/>
       <import plugin="org.eclipse.tm.terminal.view.ui"/>
       <import plugin="org.eclipse.wildwebdeveloper.embedder.node"/>
-      <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.16.0" match="compatible"/>
-      <import plugin="com.fasterxml.jackson.core.jackson-core" version="2.16.0" match="compatible"/>
-      <import plugin="com.fasterxml.jackson.core.jackson-databind" version="2.16.0" match="compatible"/>
+      <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.17.0" match="compatible"/>
+      <import plugin="com.fasterxml.jackson.core.jackson-core" version="2.17.0" match="compatible"/>
+      <import plugin="com.fasterxml.jackson.core.jackson-databind" version="2.17.0" match="compatible"/>
       <import plugin="org.apache.commons.commons-io" version="2.11.0" match="compatible"/>
       <import plugin="org.apache.commons.lang3" version="3.12.0" match="compatible"/>
-      <import plugin="net.sf.jstuff.core" version="7.9.0" match="compatible"/>
-      <import plugin="net.sf.jstuff.xml" version="7.9.0" match="compatible"/>
+      <import plugin="net.sf.jstuff.core" version="7.10.0" match="compatible"/>
+      <import plugin="net.sf.jstuff.xml" version="7.10.0" match="compatible"/>
       <import plugin="de.sebthom.eclipse.commons" version="1.0.0.20240127-2238" match="compatible"/>
       <import plugin="org.yaml.snakeyaml" version="2.2.0" match="compatible"/>
       <import plugin="org.ec4j.core" version="0.3.0" match="greaterOrEqual"/>

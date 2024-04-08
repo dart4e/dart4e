@@ -70,6 +70,7 @@
    <properties>
       <java.version>17</java.version>
       <tycho.version>4.0.7</tycho.version>
+      <tycho.target-platform>oldest</tycho.target-platform>
 
       <!-- to prevent:
       [ERROR] Failed to execute goal com.hubspot.maven.plugins:dependency-scope-maven-plugin:0.10:check (check@validate) on project org.dart4e:
@@ -256,7 +257,7 @@
                <executionEnvironment>JavaSE-${java.version}</executionEnvironment>
 
                <target>
-                  <file>../build.target</file>
+                  <file>${maven.multiModuleProjectDirectory}/target-platforms/${tycho.target-platform}.target</file>
                </target>
                <environments>
                   <environment>
