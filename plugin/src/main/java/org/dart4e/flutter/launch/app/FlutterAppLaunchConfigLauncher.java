@@ -102,12 +102,12 @@ public class FlutterAppLaunchConfigLauncher extends LaunchConfigurationDelegate 
                .getMap();
 
             try {
-               final var builder = new DSPLaunchDelegateLaunchBuilder(config, ILaunchManager.DEBUG_MODE, launch, monitor);
-               builder.setLaunchDebugAdapter( //
-                  flutterSDK.getFlutterExecutable().toString(), //
-                  List.of("debug_adapter"));
-               builder.setMonitorDebugAdapter(LaunchConfigurations.isMonitorDebugAdapter(config));
-               builder.setDspParameters(debuggerOpts);
+               final var builder = new DSPLaunchDelegateLaunchBuilder(config, ILaunchManager.DEBUG_MODE, launch, monitor) //
+                  .setLaunchDebugAdapter( //
+                     flutterSDK.getFlutterExecutable().toString(), //
+                     List.of("debug_adapter")) //
+                  .setMonitorDebugAdapter(LaunchConfigurations.isMonitorDebugAdapter(config)) //
+                  .setDspParameters(debuggerOpts);
                new LaunchDebugConfig().launch(builder);
             } catch (final CoreException ex) {
                Dialogs.showStatus("Failed to start debug session", Dart4EPlugin.status().createError(ex), true);
@@ -131,7 +131,6 @@ public class FlutterAppLaunchConfigLauncher extends LaunchConfigurationDelegate 
                final var processHandle = DebugPlugin.newProcess(launch, proc.getProcess(), flutterSDK.getFlutterExecutable().toString());
                processHandle.setAttribute(LaunchConfigurations.PROCESS_ATTRIBUTE_PROJECT_NAME, project.getName());
                launch.addProcess(processHandle);
-
             } catch (final IOException ex) {
                Dialogs.showStatus(Messages.Flutter_Launch_CouldNotRunFlutter, Dart4EPlugin.status().createError(ex), true);
             }

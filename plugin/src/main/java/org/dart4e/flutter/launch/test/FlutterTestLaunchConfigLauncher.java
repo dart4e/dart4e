@@ -96,6 +96,7 @@ public class FlutterTestLaunchConfigLauncher extends LaunchConfigurationDelegate
             final var debuggerOpts = new TreeBuilder<String>() //
                .put("cwd", workdir.toString()) //
                // TODO appendEnvVars handling, i.e. running with a clean env is not supported (yet) by Dart Debug Adapter
+               .put("evaluateGettersInDebugViews", true) //
                .put("env", envVars) //
                .put("toolArgs", flutterArgs) //
                .getMap();
