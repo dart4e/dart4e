@@ -173,16 +173,18 @@ public final class DartSDK implements Comparable<DartSDK> {
 
    public Path getPubCacheDir() {
       final var pathFromEnv = System.getenv(ENV_PUB_CACHE);
-      if (pathFromEnv != null) {
-         final var p = Paths.get(pathFromEnv);
-         if (Files.exists(p))
-            return p.normalize().toAbsolutePath();
-      }
+      if (pathFromEnv != null)
+         return Paths.get(pathFromEnv).normalize().toAbsolutePath();
 
-      return (SystemUtils.IS_OS_WINDOWS //
-         ? Paths.get(SystemUtils.getEnvironmentVariable("APPDATA", ""), "Pub", "Cache")
-         : Paths.get(SystemUtils.getEnvironmentVariable("HOME", ""), ".pub-cache") //
-      ).normalize().toAbsolutePath();
+      if (SystemUtils.IS_OS_WINDOWS) {
+         // https://dart.dev/resources/dart-3-migration#other-tools-changes
+         final var version = getVersion();
+         return (version != null && version.startsWith("2.") //
+            ? Paths.get(SystemUtils.getEnvironmentVariable("APPDATA", ""), "Pub", "Cache") // Dart < 3
+            : Paths.get(SystemUtils.getEnvironmentVariable("LOCALAPPDATA", ""), "Pub", "Cache") // Dart >= 3
+         ).normalize().toAbsolutePath();
+      }
+      return Paths.get(SystemUtils.getEnvironmentVariable("HOME", ""), ".pub-cache").normalize().toAbsolutePath();
    }
 
    public Path getInstallRoot() {
