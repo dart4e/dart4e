@@ -200,7 +200,7 @@
    <!-- Property Tester                       -->
    <!-- ===================================== -->
    <extension point="org.eclipse.core.expressions.propertyTesters">
-      <!-- https://wiki.eclipse.org/Platform_Expression_Framework -->
+      <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
       <propertyTester
          id="org.dart4e.util.FileTypePropertyTester"
          class="org.dart4e.util.FileTypePropertyTester"
@@ -988,7 +988,14 @@
                         <not>
                            <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
                         </not>
-                        <adapt type="org.eclipse.core.resources.IProject" />
+                        <or>
+                           <adapt type="org.eclipse.core.resources.IProject" />
+                           <and>
+                              <adapt type="org.eclipse.core.resources.IFile" />
+                              <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
+                              <test property="org.eclipse.core.resources.path" value="/*/pubspec.yaml" />
+                           </and>
+                        </or>
                      </and>
                   </iterate>
                </visibleWhen>
@@ -1023,7 +1030,14 @@
                         <not>
                            <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
                         </not>
-                        <adapt type="org.eclipse.core.resources.IProject" />
+                        <or>
+                           <adapt type="org.eclipse.core.resources.IProject" />
+                           <and>
+                              <adapt type="org.eclipse.core.resources.IFile" />
+                              <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
+                              <test property="org.eclipse.core.resources.path" value="/*/pubspec.yaml" />
+                           </and>
+                        </or>
                      </and>
                   </iterate>
                </visibleWhen>
@@ -1058,7 +1072,14 @@
                         <not>
                            <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
                         </not>
-                        <adapt type="org.eclipse.core.resources.IProject" />
+                        <or>
+                           <adapt type="org.eclipse.core.resources.IProject" />
+                           <and>
+                              <adapt type="org.eclipse.core.resources.IFile" />
+                              <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
+                              <test property="org.eclipse.core.resources.path" value="/*/pubspec.yaml" />
+                           </and>
+                        </or>
                      </and>
                   </iterate>
                </visibleWhen>
@@ -1090,7 +1111,14 @@
                   <iterate>
                      <and>
                         <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
-                        <adapt type="org.eclipse.core.resources.IProject" />
+                        <or>
+                           <adapt type="org.eclipse.core.resources.IProject" />
+                           <and>
+                              <adapt type="org.eclipse.core.resources.IFile" />
+                              <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
+                              <test property="org.eclipse.core.resources.path" value="/*/pubspec.yaml" />
+                           </and>
+                        </or>
                      </and>
                   </iterate>
                </visibleWhen>
@@ -1122,7 +1150,14 @@
                   <iterate>
                      <and>
                         <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
-                        <adapt type="org.eclipse.core.resources.IProject" />
+                        <or>
+                           <adapt type="org.eclipse.core.resources.IProject" />
+                           <and>
+                              <adapt type="org.eclipse.core.resources.IFile" />
+                              <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
+                              <test property="org.eclipse.core.resources.path" value="/*/pubspec.yaml" />
+                           </and>
+                        </or>
                      </and>
                   </iterate>
                </visibleWhen>
@@ -1154,7 +1189,14 @@
                   <iterate>
                      <and>
                         <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
-                        <adapt type="org.eclipse.core.resources.IProject" />
+                        <or>
+                           <adapt type="org.eclipse.core.resources.IProject" />
+                           <and>
+                              <adapt type="org.eclipse.core.resources.IFile" />
+                              <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
+                              <test property="org.eclipse.core.resources.path" value="/*/pubspec.yaml" />
+                           </and>
+                        </or>
                      </and>
                   </iterate>
                </visibleWhen>
