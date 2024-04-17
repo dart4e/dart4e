@@ -235,7 +235,10 @@ public class FlutterTestLaunchConfigTab extends AbstractLaunchConfigurationTab {
             combo.setEnabled(true);
             btnRefresh.setEnabled(true);
          }
-      }));
+      })).exceptionally(th -> {
+         UI.run(() -> btnRefresh.setEnabled(true));
+         return null;
+      });
    }
 
    @Override
