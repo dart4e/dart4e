@@ -13,9 +13,9 @@ import java.util.List;
 
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.flutter.launch.FlutterLaunchConfigurations;
+import org.dart4e.flutter.launch.FlutterLaunchDebugConfig;
 import org.dart4e.flutter.prefs.FlutterProjectPreference;
 import org.dart4e.launch.LaunchConfigurations;
-import org.dart4e.launch.LaunchDebugConfig;
 import org.dart4e.localization.Messages;
 import org.dart4e.util.TreeBuilder;
 import org.eclipse.core.runtime.CoreException;
@@ -108,7 +108,7 @@ public class FlutterAppLaunchConfigLauncher extends LaunchConfigurationDelegate 
                      List.of("debug_adapter")) //
                   .setMonitorDebugAdapter(LaunchConfigurations.isMonitorDebugAdapter(config)) //
                   .setDspParameters(debuggerOpts);
-               new LaunchDebugConfig().launch(builder);
+               new FlutterLaunchDebugConfig(project).launch(builder);
             } catch (final CoreException ex) {
                Dialogs.showStatus("Failed to start debug session", Dart4EPlugin.status().createError(ex), true);
             }

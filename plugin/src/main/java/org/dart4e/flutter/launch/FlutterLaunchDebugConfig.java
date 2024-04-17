@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: EPL-2.0
  * SPDX-ArtifactOfProjectHomePage: https://github.com/dart4e/dart4e
  */
-package org.dart4e.launch;
+package org.dart4e.flutter.launch;
 
 import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNullUnsafe;
 
@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
+import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.util.io.LinePrefixingTeeInputStream;
 import org.dart4e.util.io.LinePrefixingTeeOutputStream;
 import org.eclipse.core.resources.IProject;
@@ -28,6 +29,7 @@ import org.eclipse.lsp4e.debug.debugmodel.DSPDebugTarget;
 import org.eclipse.lsp4e.debug.debugmodel.TransportStreams;
 import org.eclipse.lsp4e.debug.debugmodel.TransportStreams.DefaultTransportStreams;
 import org.eclipse.lsp4e.debug.launcher.DSPLaunchDelegate;
+import org.eclipse.lsp4j.debug.ProcessEventArguments;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.debug.DebugLauncher;
@@ -36,27 +38,34 @@ import org.eclipse.lsp4j.jsonrpc.debug.DebugLauncher;
  * @author Sebastian Thomschke
  */
 @SuppressWarnings("restriction")
-public class LaunchDebugConfig extends DSPLaunchDelegate {
+public class FlutterLaunchDebugConfig extends DSPLaunchDelegate {
 
-   private final class DartDebugTargetImpl extends DSPDebugTarget implements DartDebugTarget, DartDebugProtocolEvents {
+   private final class FlutterDebugTargetImpl extends DSPDebugTarget implements FlutterDebugTarget, FlutterDebugProtocolEvents {
 
       private @Nullable DartDebuggerUriEvent debuggerInfo;
 
-      protected DartDebugTargetImpl(final ILaunch launch, final Supplier<TransportStreams> streamsSupplier,
+      protected FlutterDebugTargetImpl(final ILaunch launch, final Supplier<TransportStreams> streamsSupplier,
          final Map<String, Object> dspParameters) {
          super(launch, streamsSupplier, dspParameters);
       }
 
       @Override
       @NonNullByDefault({})
-      protected Launcher<DartDebugAPI> createLauncher(final UnaryOperator<MessageConsumer> wrapper, final InputStream in,
+      protected Launcher<FlutterDebugAPI> createLauncher(final UnaryOperator<MessageConsumer> wrapper, final InputStream in,
          final OutputStream out, final ExecutorService threadPool) {
-         return DebugLauncher.createLauncher(this, DartDebugAPI.class, in, out, threadPool, wrapper);
+         return DebugLauncher.createLauncher(this, FlutterDebugAPI.class, in, out, threadPool, wrapper);
       }
 
       @Override
-      public DartDebugAPI getDebugAPI() {
-         return (DartDebugAPI) getDebugProtocolServer();
+      public FlutterDebugAPI getDebugAPI() {
+         return (FlutterDebugAPI) getDebugProtocolServer();
+      }
+
+      @Override
+      @NonNullByDefault({})
+      public void process(final ProcessEventArguments args) {
+         super.process(args);
+         getProcess().setAttribute(LaunchConfigurations.PROCESS_ATTRIBUTE_PROJECT_NAME, project.getName());
       }
 
       @Override
@@ -74,7 +83,7 @@ public class LaunchDebugConfig extends DSPLaunchDelegate {
 
       @Override
       public void onDartDebuggerUris(final Map<String, ?> args) {
-         DartDebugProtocolEvents.super.onDartDebuggerUris(args);
+         FlutterDebugProtocolEvents.super.onDartDebuggerUris(args);
          debuggerInfo = new DartDebuggerUriEvent(args);
       }
    }
@@ -83,15 +92,15 @@ public class LaunchDebugConfig extends DSPLaunchDelegate {
 
    private final IProject project;
 
-   public LaunchDebugConfig(final IProject project) {
+   public FlutterLaunchDebugConfig(final IProject project) {
       this.project = project;
    }
 
    @Override
    @SuppressWarnings("resource")
    @NonNullByDefault({})
-   protected DartDebugTarget createDebugTarget(final SubMonitor mon, final Supplier<TransportStreams> streamsSupplier, final ILaunch launch,
-      final Map<String, Object> dspParameters) throws CoreException {
+   protected FlutterDebugTarget createDebugTarget(final SubMonitor mon, final Supplier<TransportStreams> streamsSupplier,
+      final ILaunch launch, final Map<String, Object> dspParameters) throws CoreException {
       final var effectiveStreamsSupplier = TRACE_IO //
          ? (Supplier<TransportStreams>) () -> {
             final var streams = streamsSupplier.get();
@@ -101,11 +110,11 @@ public class LaunchDebugConfig extends DSPLaunchDelegate {
          }
          : streamsSupplier;
 
-      final var target = new DartDebugTargetImpl(launch, effectiveStreamsSupplier, dspParameters);
+      final var target = new FlutterDebugTargetImpl(launch, effectiveStreamsSupplier, dspParameters);
       target.initialize(mon.split(80));
 
-      DartDebugTarget.ACTIVE_TARGETS.removeIf(DartDebugTarget::isTerminated);
-      DartDebugTarget.ACTIVE_TARGETS.add(target);
+      FlutterDebugTarget.ACTIVE_TARGETS.removeIf(FlutterDebugTarget::isTerminated);
+      FlutterDebugTarget.ACTIVE_TARGETS.add(target);
 
       return target;
    }

@@ -94,7 +94,7 @@ public class ProgramLaunchConfigLauncher extends LaunchConfigurationDelegate {
                      List.of("debug_adapter")) //
                   .setMonitorDebugAdapter(LaunchConfigurations.isMonitorDebugAdapter(config)) //
                   .setDspParameters(debuggerOpts);
-               new LaunchDebugConfig().launch(builder);
+               new LaunchDebugConfig(project).launch(builder);
             } catch (final CoreException ex) {
                Dialogs.showStatus("Failed to start debug session", Dart4EPlugin.status().createError(ex), true);
             }
