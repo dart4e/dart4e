@@ -65,6 +65,7 @@
 
       <page id="org.dart4e.flutter.prefs.FlutterPreferencePage"
          class="org.dart4e.flutter.prefs.FlutterPreferencePage"
+         category="org.dart4e.prefs.DartPreferencePage"
          name="Flutter">
          <keywordReference id="org.dart4e.prefs.keyword.dart" />
          <keywordReference id="org.dart4e.prefs.keyword.flutter" />

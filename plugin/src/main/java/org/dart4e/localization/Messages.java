@@ -51,6 +51,7 @@ public final class Messages extends NLS {
    public static String Error_ProjectCreationProblem = "Project creation problem";
 
    public static String Prefs_GeneralDescription = "General settings for Dart development:";
+   public static String Prefs_ManageSDKsTitle = "Dart SDKs";
    public static String Prefs_ManageSDKsDescription = "Manage installed Dart SDKs. By default the checked SDK will be used for newly created Dart projects:";
    public static String Prefs_NoSDKRegistered_Title = "Dart SDK missing";
    public static String Prefs_NoSDKRegistered_Body = "No Dart SDK configured";
@@ -92,6 +93,7 @@ public final class Messages extends NLS {
    public static String Flutter_Launch_CouldNotRunFlutter = "Could not run Flutter";
 
    public static String Flutter_Prefs_GeneralDescription = Prefs_GeneralDescription.replace("Dart", "Flutter");
+   public static String Flutter_Prefs_ManageSDKsTitle = "Flutter SDKs";
    public static String Flutter_Prefs_ManageSDKsDescription = Prefs_ManageSDKsDescription.replace("Dart", "Flutter");
    public static String Flutter_Prefs_NoSDKRegistered_Title = Prefs_NoSDKRegistered_Title.replace("Dart", "Flutter");
    public static String Flutter_Prefs_NoSDKRegistered_Body = Prefs_NoSDKRegistered_Body.replace("Dart", "Flutter");

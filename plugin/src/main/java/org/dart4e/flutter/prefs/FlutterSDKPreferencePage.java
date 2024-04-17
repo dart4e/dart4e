@@ -54,11 +54,13 @@ public class FlutterSDKPreferencePage extends PreferencePage implements IWorkben
    private final MutableObservableRef<@Nullable FlutterSDK> defaultSDK = MutableObservableRef.of(null);
 
    public FlutterSDKPreferencePage() {
-      setDescription(Messages.Prefs_ManageSDKsDescription);
+      setDescription(Messages.Flutter_Prefs_ManageSDKsDescription);
    }
 
    @Override
    public Control createContents(final Composite parent) {
+      setTitle(Messages.Flutter_Prefs_ManageSDKsTitle);
+
       final var container = new Composite(parent, SWT.NULL);
       container.setLayout(new GridLayout(2, false));
 

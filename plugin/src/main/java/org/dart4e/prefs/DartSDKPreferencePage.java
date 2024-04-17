@@ -58,6 +58,8 @@ public class DartSDKPreferencePage extends PreferencePage implements IWorkbenchP
 
    @Override
    public Control createContents(final Composite parent) {
+      setTitle(Messages.Prefs_ManageSDKsTitle);
+
       final var container = new Composite(parent, SWT.NULL);
       container.setLayout(new GridLayout(2, false));
 
