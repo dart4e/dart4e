@@ -95,7 +95,7 @@ public class DartBuildFile extends BuildFile {
 
                   final java.nio.file.Path libLocation = switch (source) {
                      case "hosted" -> {
-                        final var url = new URL((String) ((Map<?, ?>) descr).get("url"));
+                        final var url = new URL(asNonNull((String) ((Map<?, ?>) descr).get("url")));
                         yield pubCacheDir.resolve(source).resolve(url.getHost()).resolve(name + "-" + version);
                      }
                      case "git" -> {
@@ -141,7 +141,7 @@ public class DartBuildFile extends BuildFile {
    }
 
    protected java.nio.file.Path getSDKDependencyLocation(final String sdkName, final String pkgName,
-      @SuppressWarnings("unused") final String pkgVersion) {
+         @SuppressWarnings("unused") final String pkgVersion) {
       throw new IllegalArgumentException("Unsupported SDK [" + sdkName + "] of package [" + pkgName + "]");
    }
 

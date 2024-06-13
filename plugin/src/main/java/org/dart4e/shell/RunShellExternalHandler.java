@@ -17,6 +17,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.Nullable;
@@ -51,6 +52,10 @@ public class RunShellExternalHandler extends AbstractHandler {
    private void launchShell(@Nullable final IProject project) {
 
       final var job = Job.create("Preparing Dart Shell", jobMonitor -> {
+         if (jobMonitor == null) {
+            jobMonitor = new NullProgressMonitor();
+         }
+
          final DartSDK dartSDK;
          if (project == null) {
             dartSDK = DartWorkspacePreference.getDefaultDartSDK(true, true);

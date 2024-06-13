@@ -90,7 +90,7 @@ public class FlutterSDKPreferencePage extends PreferencePage implements IWorkben
       sdkTable.setContentProvider((IStructuredContentProvider) input -> {
          @SuppressWarnings("unchecked")
          final var items = (List<FlutterSDK>) input;
-         return items.toArray(new FlutterSDK[items.size()]);
+         return items == null ? new FlutterSDK[0] : items.toArray(new FlutterSDK[items.size()]);
       });
 
       sdkTable.setContentProvider(new IStructuredContentProvider() {
@@ -117,8 +117,8 @@ public class FlutterSDKPreferencePage extends PreferencePage implements IWorkben
                return new StyledString("");
             final var sdk = (FlutterSDK) element;
             return isDefaultFlutterSDK(sdk) //
-               ? new StyledString(sdk.getName(), Fonts.DEFAULT_FONT_BOLD_STYLER)
-               : new StyledString(sdk.getName());
+                  ? new StyledString(sdk.getName(), Fonts.DEFAULT_FONT_BOLD_STYLER)
+                  : new StyledString(sdk.getName());
          }
       });
       colName.getColumn().setWidth(100);

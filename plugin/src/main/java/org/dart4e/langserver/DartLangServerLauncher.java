@@ -53,7 +53,7 @@ public final class DartLangServerLauncher extends ProcessStreamConnectionProvide
    }
 
    @Override
-   public Map<String, Object> getInitializationOptions(final @Nullable URI projectRootUri) {
+   public @Nullable Map<String, Object> getInitializationOptions(final @Nullable URI projectRootUri) {
       final var project = Projects.findProjectOfResource(projectRootUri);
       final @Nullable DartSDK dartSDK;
       final BuildSystem buildSystem;

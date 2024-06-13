@@ -12,6 +12,7 @@ import org.dart4e.localization.Messages;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -48,6 +49,10 @@ public abstract class AbstractFlutterCommandHandler extends AbstractHandler {
 
    public void runFlutterCommand(final IProject project) {
       final var job = Job.create(title, jobMonitor -> {
+         if (jobMonitor == null) {
+            jobMonitor = new NullProgressMonitor();
+         }
+
          final var prefs = FlutterProjectPreference.get(project);
          final var flutterSDK = prefs.getEffectiveFlutterSDK();
 

@@ -46,8 +46,8 @@ public final class FileTypePropertyTester extends PropertyTester {
    }
 
    @Override
-   public boolean test(@Nullable final Object candidate, @Nullable final String property, final Object @Nullable [] args,
-      @Nullable final Object expectedPropertyValue) {
+   public boolean test(@Nullable final Object candidate, @Nullable final String property, final Object[] args,
+         @Nullable final Object expectedPropertyValue) {
       if (candidate == null || property == null || expectedPropertyValue == null)
          return false;
 

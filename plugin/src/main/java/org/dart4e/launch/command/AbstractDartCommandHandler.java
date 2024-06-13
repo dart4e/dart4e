@@ -13,6 +13,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -50,6 +51,10 @@ public class AbstractDartCommandHandler extends AbstractHandler {
 
    public void runDartCommand(final IProject project) {
       final var job = Job.create(title, jobMonitor -> {
+         if (jobMonitor == null) {
+            jobMonitor = new NullProgressMonitor();
+         }
+
          final var prefs = DartProjectPreference.get(project);
          final var dartSDK = prefs.getEffectiveDartSDK();
 
