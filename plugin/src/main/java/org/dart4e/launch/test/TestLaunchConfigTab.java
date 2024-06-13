@@ -7,7 +7,7 @@
 package org.dart4e.launch.test;
 
 import static java.util.Collections.singletonList;
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,11 +50,11 @@ import net.sf.jstuff.core.ref.MutableObservableRef;
  */
 public class TestLaunchConfigTab extends AbstractLaunchConfigurationTab {
 
-   private MutableObservableRef<@Nullable IProject> selectedProject = lazyNonNull();
+   private MutableObservableRef<@Nullable IProject> selectedProject = lateNonNull();
    private MutableObservableRef<List<IResource>> selectedTestResources = MutableObservableRef.of(Collections.emptyList());
-   private MutableObservableRef<@Nullable DartSDK> selectedAltSDK = lazyNonNull();
-   private MutableObservableRef<String> testCommandArgs = lazyNonNull();
-   private MutableObservableRef<String> vmArgs = lazyNonNull();
+   private MutableObservableRef<@Nullable DartSDK> selectedAltSDK = lateNonNull();
+   private MutableObservableRef<String> testCommandArgs = lateNonNull();
+   private MutableObservableRef<String> vmArgs = lateNonNull();
 
    @Override
    public void createControl(final Composite parent) {

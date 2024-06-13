@@ -41,7 +41,7 @@ import net.sf.jstuff.core.concurrent.Threads;
  */
 public final class NewFlutterProjectWizard extends Wizard implements INewWizard {
 
-   private NewFlutterProjectPage newProjectPage = lazyNonNull();
+   private NewFlutterProjectPage newProjectPage = lateNonNull();
    private @Nullable IProject newProject;
 
    @Override

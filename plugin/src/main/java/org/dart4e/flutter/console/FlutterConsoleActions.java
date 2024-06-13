@@ -6,7 +6,7 @@
  */
 package org.dart4e.flutter.console;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
@@ -23,7 +23,7 @@ import org.eclipse.ui.part.IPageBookViewPage;
  */
 public final class FlutterConsoleActions implements IConsolePageParticipant {
 
-   private Action terminate = lazyNonNull();
+   private Action terminate = lateNonNull();
 
    @Override
    public void activated() {

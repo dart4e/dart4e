@@ -49,7 +49,7 @@ import net.sf.jstuff.core.ref.MutableObservableRef;
  */
 public class FlutterSDKPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-   private CheckboxTableViewer sdkTable = lazyNonNull();
+   private CheckboxTableViewer sdkTable = lateNonNull();
    private final ObservableSet<FlutterSDK> sdks = new ObservableSet<>(new HashSet<>());
    private final MutableObservableRef<@Nullable FlutterSDK> defaultSDK = MutableObservableRef.of(null);
 

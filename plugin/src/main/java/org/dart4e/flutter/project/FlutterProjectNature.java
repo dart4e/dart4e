@@ -6,7 +6,7 @@
  */
 package org.dart4e.flutter.project;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
 
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.navigation.DartDependenciesUpdater;
@@ -83,7 +83,7 @@ public final class FlutterProjectNature implements IProjectNature {
       Projects.removeNature(project, DartProjectNature.NATURE_ID, null);
    }
 
-   private IProject project = lazyNonNull();
+   private IProject project = lateNonNull();
 
    @Override
    public void configure() throws CoreException {

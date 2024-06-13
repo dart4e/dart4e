@@ -39,7 +39,7 @@ import net.sf.jstuff.core.concurrent.Threads;
  */
 public final class NewDartProjectWizard extends Wizard implements INewWizard {
 
-   private NewDartProjectPage newDartProjectPage = lazyNonNull();
+   private NewDartProjectPage newDartProjectPage = lateNonNull();
    private @Nullable IProject newProject;
 
    @Override

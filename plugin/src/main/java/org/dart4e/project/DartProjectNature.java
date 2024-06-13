@@ -80,7 +80,7 @@ public final class DartProjectNature implements IProjectNature {
       Projects.removeNature(project, NATURE_ID, null);
    }
 
-   private IProject project = lazyNonNull();
+   private IProject project = lateNonNull();
 
    @Override
    public void configure() throws CoreException {

@@ -26,7 +26,7 @@ import de.sebthom.eclipse.commons.resources.Projects;
  */
 public final class DartProjectPropertyPage extends org.eclipse.ui.dialogs.PropertyPage {
 
-   private DartProjectPreference prefs = lazyNonNull();
+   private DartProjectPreference prefs = lateNonNull();
 
    @Override
    protected Control createContents(final Composite parent) {

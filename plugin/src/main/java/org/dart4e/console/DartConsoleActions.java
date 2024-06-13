@@ -23,7 +23,7 @@ import org.eclipse.ui.part.IPageBookViewPage;
  */
 public final class DartConsoleActions implements IConsolePageParticipant {
 
-   private Action terminate = lazyNonNull();
+   private Action terminate = lateNonNull();
 
    @Override
    public void activated() {

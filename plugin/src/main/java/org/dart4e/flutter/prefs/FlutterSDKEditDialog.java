@@ -6,7 +6,7 @@
  */
 package org.dart4e.flutter.prefs;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
 import static org.dart4e.localization.Messages.*;
 
 import java.io.File;
@@ -47,8 +47,8 @@ public class FlutterSDKEditDialog extends TitleAreaDialog {
 
    private boolean isEditSDK;
 
-   private Text txtSDKName = lazyNonNull();
-   private Text txtSDKPath = lazyNonNull();
+   private Text txtSDKName = lateNonNull();
+   private Text txtSDKPath = lateNonNull();
 
    /**
     * @wbp.parser.constructor

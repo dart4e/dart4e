@@ -23,7 +23,7 @@ import de.sebthom.eclipse.commons.resources.Projects;
  */
 public final class FlutterProjectPropertyPage extends org.eclipse.ui.dialogs.PropertyPage {
 
-   private FlutterProjectPreference prefs = lazyNonNull();
+   private FlutterProjectPreference prefs = lateNonNull();
 
    @Override
    protected Control createContents(final Composite parent) {

@@ -6,7 +6,7 @@
  */
 package org.dart4e.localization;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -28,11 +28,11 @@ public final class Messages extends NLS {
    public static String Label_Dart_Program_Configuration = "Dart Program Configuration";
    public static String Label_Dart_Test_Configuration = "Dart Test Configuration";
    public static String Label_Dart_SDK = "Dart SDK";
-   public static String Label_Dart_File = lazyNonNull();
-   public static String Label_Dart_Project = lazyNonNull();
-   public static String Label_Dart_Pub_Get = lazyNonNull();
-   public static String Label_Dart_Pub_Downgrade = lazyNonNull();
-   public static String Label_Dart_Pub_Upgrade = lazyNonNull();
+   public static String Label_Dart_File = lateNonNull();
+   public static String Label_Dart_Project = lateNonNull();
+   public static String Label_Dart_Pub_Get = lateNonNull();
+   public static String Label_Dart_Pub_Downgrade = lateNonNull();
+   public static String Label_Dart_Pub_Upgrade = lateNonNull();
    public static String Label_Name = "Name";
    public static String Label_Version = "Version";
    public static String Label_Path = "Path";
@@ -61,13 +61,13 @@ public final class Messages extends NLS {
    public static String Prefs_SavingPreferencesFailed = "Saving preferences failed.";
 
    public static String NewDartFile = "New Dart File";
-   public static String NewDartFile_Descr = lazyNonNull();
+   public static String NewDartFile_Descr = lateNonNull();
    public static String NewDartFile_Creating = "Creating Dart file \"{0}\"...";
    public static String NewDartFile_OpeningInEditor = "Opening Dart file in editor...";
    public static String NewDartFile_DirectoryDoesNotExist = "Directory \"{0}\" does not exist.";
 
    public static String NewDartProject = "New Dart Project";
-   public static String NewDartProject_Descr = lazyNonNull();
+   public static String NewDartProject_Descr = lateNonNull();
    public static String NewDartProject_SDKNotFound_Message = "No valid Dart SDK found! Please specify a valid SDK on the Dart preference page.";
 
    public static String Launch_NoProjectSelected = "No project selected";
@@ -81,13 +81,13 @@ public final class Messages extends NLS {
     * Flutter specific
     */
    public static String Label_Flutter_SDK = "Flutter SDK";
-   public static String Label_Flutter_Project = lazyNonNull();
+   public static String Label_Flutter_Project = lateNonNull();
    public static String Label_Flutter_App_Configuration = "Flutter App Configuration";
    public static String Label_Flutter_Command_Configuration = "Flutter Command Configuration";
    public static String Label_Flutter_Test_Configuration = "Flutter Test Configuration";
-   public static String Label_Flutter_Pub_Get = lazyNonNull();
-   public static String Label_Flutter_Pub_Downgrade = lazyNonNull();
-   public static String Label_Flutter_Pub_Upgrade = lazyNonNull();
+   public static String Label_Flutter_Pub_Get = lateNonNull();
+   public static String Label_Flutter_Pub_Downgrade = lateNonNull();
+   public static String Label_Flutter_Pub_Upgrade = lateNonNull();
 
    public static String Flutter_Launch_CouldNotRunFlutter = "Could not run Flutter";
 
@@ -101,7 +101,7 @@ public final class Messages extends NLS {
    public static String Flutter_Prefs_SDKPathInvalid_Message = Prefs_SDKPathInvalid_Message.replace("Dart", "Flutter");
 
    public static String Flutter_NewProject = "New Flutter Project";
-   public static String Flutter_NewProject_Descr = lazyNonNull();
+   public static String Flutter_NewProject_Descr = lateNonNull();
    public static String Flutter_NewProject_SDKNotFound_Message = "No valid Flutter SDK found! Please specify a valid SDK on the Flutter preference page.";
 
    static {

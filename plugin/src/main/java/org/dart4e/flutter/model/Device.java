@@ -6,7 +6,7 @@
  */
 package org.dart4e.flutter.model;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
 
 import java.util.Map;
 import java.util.Objects;
@@ -57,13 +57,13 @@ public class Device {
 
    protected Device() {
       // for Jackson
-      id = lazyNonNull();
-      name = lazyNonNull();
-      sdk = lazyNonNull();
+      id = lateNonNull();
+      name = lateNonNull();
+      sdk = lateNonNull();
       isEmulator = false;
       isSupported = false;
-      targetPlatform = lazyNonNull();
-      capabilities = lazyNonNull();
+      targetPlatform = lateNonNull();
+      capabilities = lateNonNull();
    }
 
    @Override

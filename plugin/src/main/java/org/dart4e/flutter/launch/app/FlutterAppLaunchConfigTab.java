@@ -6,7 +6,7 @@
  */
 package org.dart4e.flutter.launch.app;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
@@ -44,11 +44,11 @@ import net.sf.jstuff.core.ref.MutableObservableRef;
  */
 public class FlutterAppLaunchConfigTab extends AbstractLaunchConfigurationTab {
 
-   private MutableObservableRef<@Nullable IProject> selectedProject = lazyNonNull();
-   private MutableObservableRef<@Nullable IFile> selectedDartFile = lazyNonNull();
-   private MutableObservableRef<@Nullable FlutterSDK> selectedAltSDK = lazyNonNull();
+   private MutableObservableRef<@Nullable IProject> selectedProject = lateNonNull();
+   private MutableObservableRef<@Nullable IFile> selectedDartFile = lateNonNull();
+   private MutableObservableRef<@Nullable FlutterSDK> selectedAltSDK = lateNonNull();
    private final MutableObservableRef<@Nullable Device> selectedDevice = MutableObservableRef.of(null);
-   private MutableObservableRef<String> flutterArgs = lazyNonNull();
+   private MutableObservableRef<String> flutterArgs = lateNonNull();
 
    @Override
    public void createControl(final Composite parent) {

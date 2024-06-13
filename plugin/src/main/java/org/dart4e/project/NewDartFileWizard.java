@@ -6,7 +6,7 @@
  */
 package org.dart4e.project;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -36,8 +36,8 @@ import net.sf.jstuff.core.concurrent.Threads;
  */
 public final class NewDartFileWizard extends Wizard implements INewWizard {
 
-   private NewDartFilePage dartFilePage = lazyNonNull();
-   private IStructuredSelection selection = lazyNonNull();
+   private NewDartFilePage dartFilePage = lateNonNull();
+   private IStructuredSelection selection = lateNonNull();
 
    @Override
    public void addPages() {

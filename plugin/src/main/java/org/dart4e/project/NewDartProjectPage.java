@@ -6,7 +6,7 @@
  */
 package org.dart4e.project;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
@@ -32,7 +32,7 @@ import net.sf.jstuff.core.ref.ObservableRef;
  */
 public final class NewDartProjectPage extends WizardNewProjectCreationPage {
 
-   public ObservableRef<@Nullable DartSDK> altSDK = lazyNonNull();
+   public ObservableRef<@Nullable DartSDK> altSDK = lateNonNull();
    public MutableObservableRef<String> template = MutableObservableRef.of("console");
 
    public NewDartProjectPage(final String pageName) {

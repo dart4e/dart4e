@@ -7,7 +7,7 @@
 package org.dart4e.flutter.launch.test;
 
 import static java.util.Collections.singletonList;
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,10 +58,10 @@ import net.sf.jstuff.core.ref.MutableObservableRef;
  */
 public class FlutterTestLaunchConfigTab extends AbstractLaunchConfigurationTab {
 
-   private MutableObservableRef<@Nullable IProject> selectedProject = lazyNonNull();
+   private MutableObservableRef<@Nullable IProject> selectedProject = lateNonNull();
    private final MutableObservableRef<List<IResource>> selectedTestResources = MutableObservableRef.of(Collections.emptyList());
-   private MutableObservableRef<@Nullable FlutterSDK> selectedAltSDK = lazyNonNull();
-   private MutableObservableRef<String> testCommandArgs = lazyNonNull();
+   private MutableObservableRef<@Nullable FlutterSDK> selectedAltSDK = lateNonNull();
+   private MutableObservableRef<String> testCommandArgs = lateNonNull();
    private final MutableObservableRef<@Nullable Device> selectedDevice = MutableObservableRef.of(null);
 
    @Override

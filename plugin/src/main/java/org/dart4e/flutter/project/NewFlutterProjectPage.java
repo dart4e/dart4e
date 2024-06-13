@@ -46,7 +46,7 @@ public final class NewFlutterProjectPage extends WizardNewProjectCreationPage {
 
    private static final List<String> TARGET_PLATFORMS = List.of("android", "ios", "linux", "macos", "web", "windows");
 
-   public ObservableRef<@Nullable FlutterSDK> altSDK = lazyNonNull();
+   public ObservableRef<@Nullable FlutterSDK> altSDK = lateNonNull();
    public MutableObservableRef<String> template = MutableObservableRef.of("app");
    public MutableObservableRef<String> description = MutableObservableRef.of("A new Flutter project.");
    public MutableObservableRef<String> orgName = MutableObservableRef.of("com.example");

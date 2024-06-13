@@ -6,7 +6,7 @@
  */
 package org.dart4e.prefs;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lazyNonNull;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
 
 import org.dart4e.localization.Messages;
 import org.dart4e.widget.FormatterSettingsGroup;
@@ -25,7 +25,7 @@ import net.sf.jstuff.core.ref.MutableObservableRef;
  */
 public class DartPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-   private MutableObservableRef<Integer> formatterMaxLineLength = lazyNonNull();
+   private MutableObservableRef<Integer> formatterMaxLineLength = lateNonNull();
 
    public DartPreferencePage() {
       setDescription(Messages.Prefs_GeneralDescription);
