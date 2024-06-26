@@ -60,13 +60,13 @@
             <dependency>
                <groupId>net.sf.jstuff</groupId>
                <artifactId>jstuff-core</artifactId>
-               <version>7.11.0</version>
+               <version>7.12.0</version>
                <type>jar</type>
             </dependency>
             <dependency>
                <groupId>net.sf.jstuff</groupId>
                <artifactId>jstuff-xml</artifactId>
-               <version>7.11.0</version>
+               <version>7.12.0</version>
                <type>jar</type>
             </dependency>
             <dependency>

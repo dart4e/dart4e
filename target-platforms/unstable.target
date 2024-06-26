@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target includeMode="feature" name="Haxe4E plugin platform config targeting current stable Eclipse release">
+<target includeMode="feature" name="Dart4E plugin platform config targeting integration builds of the next Eclipse release">
    <locations>
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -59,13 +59,13 @@
             <dependency>
                <groupId>net.sf.jstuff</groupId>
                <artifactId>jstuff-core</artifactId>
-               <version>7.11.0</version>
+               <version>7.12.0</version>
                <type>jar</type>
             </dependency>
             <dependency>
                <groupId>net.sf.jstuff</groupId>
                <artifactId>jstuff-xml</artifactId>
-               <version>7.11.0</version>
+               <version>7.12.0</version>
                <type>jar</type>
             </dependency>
             <dependency>
