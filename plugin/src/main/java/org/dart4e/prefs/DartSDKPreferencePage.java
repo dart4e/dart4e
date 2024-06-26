@@ -75,7 +75,7 @@ public class DartSDKPreferencePage extends PreferencePage implements IWorkbenchP
       sdkTable.setCheckStateProvider(new ICheckStateProvider() {
          @Override
          public boolean isChecked(final @Nullable Object element) {
-            return element == null ? false : isDefaultDartSDK((DartSDK) element);
+            return element != null && isDefaultDartSDK((DartSDK) element);
          }
 
          @Override

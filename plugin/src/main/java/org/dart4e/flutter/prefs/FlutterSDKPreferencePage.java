@@ -10,7 +10,6 @@ import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 
 import org.dart4e.flutter.model.FlutterSDK;
@@ -76,7 +75,7 @@ public class FlutterSDKPreferencePage extends PreferencePage implements IWorkben
       sdkTable.setCheckStateProvider(new ICheckStateProvider() {
          @Override
          public boolean isChecked(final @Nullable Object element) {
-            return element == null ? false : isDefaultFlutterSDK((FlutterSDK) element);
+            return element != null && isDefaultFlutterSDK((FlutterSDK) element);
          }
 
          @Override
@@ -88,12 +87,6 @@ public class FlutterSDKPreferencePage extends PreferencePage implements IWorkben
       table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 4));
       table.setHeaderVisible(true);
       table.setLinesVisible(true);
-
-      sdkTable.setContentProvider((IStructuredContentProvider) input -> {
-         @SuppressWarnings("unchecked")
-         final var items = (List<FlutterSDK>) input;
-         return items == null ? new FlutterSDK[0] : items.toArray(new FlutterSDK[items.size()]);
-      });
 
       sdkTable.setContentProvider(new IStructuredContentProvider() {
          @Override
