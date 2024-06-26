@@ -112,8 +112,8 @@ public class DartSDKPreferencePage extends PreferencePage implements IWorkbenchP
                return new StyledString("");
             final var sdk = (DartSDK) element;
             return isDefaultDartSDK(sdk) //
-               ? new StyledString(sdk.getName(), Fonts.DEFAULT_FONT_BOLD_STYLER)
-               : new StyledString(sdk.getName());
+                  ? new StyledString(sdk.getName(), Fonts.DEFAULT_FONT_BOLD_STYLER)
+                  : new StyledString(sdk.getName());
          }
       });
       colName.getColumn().setWidth(100);
@@ -197,28 +197,23 @@ public class DartSDKPreferencePage extends PreferencePage implements IWorkbenchP
    }
 
    private void onButton_Edit() {
-      final var sel = (StructuredSelection) sdkTable.getSelection();
-      if (sel.isEmpty())
-         return;
-
-      final var sdk = asNonNullUnsafe((DartSDK) sel.getFirstElement());
-      final var dialog = new DartSDKEditDialog(getShell(), sdk);
-      if (dialog.open() == Window.OK) {
-         sdks.remove(sdk);
-         sdks.add(new DartSDK( //
-            asNonNullUnsafe(dialog.sdkName.get()), //
-            asNonNullUnsafe(dialog.sdkPath.get()) //
-         ));
+      if (((StructuredSelection) sdkTable.getSelection()).getFirstElement() instanceof final DartSDK sdk) {
+         final var dialog = new DartSDKEditDialog(getShell(), sdk);
+         if (dialog.open() == Window.OK) {
+            sdks.remove(sdk);
+            sdks.add(new DartSDK( //
+               asNonNullUnsafe(dialog.sdkName.get()), //
+               asNonNullUnsafe(dialog.sdkPath.get()) //
+            ));
+         }
       }
    }
 
    private void onButton_Remove() {
-      final var sel = (StructuredSelection) sdkTable.getSelection();
-      if (sel.isEmpty())
-         return;
-      final var sdk = (DartSDK) sel.getFirstElement();
-      sdks.remove(sdk);
-      sdkTable.refresh();
+      if (((StructuredSelection) sdkTable.getSelection()).getFirstElement() instanceof final DartSDK sdk) {
+         sdks.remove(sdk);
+         sdkTable.refresh();
+      }
    }
 
    @Override

@@ -19,9 +19,8 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchShortcut;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.part.FileEditorInput;
@@ -44,11 +43,9 @@ public class RunSelectedTestShortcut implements ILaunchShortcut {
 
    @Override
    public void launch(final ISelection selection, final String mode) {
-      if (selection instanceof final IStructuredSelection structuredSelection) {
-         final var firstElement = structuredSelection.getFirstElement();
-         if (firstElement instanceof @NonNull final IResource res) {
-            launchDartTest(res, mode);
-         }
+      if (selection instanceof final StructuredSelection structuredSel //
+            && structuredSel.getFirstElement() instanceof final IResource res) {
+         launchDartTest(res, mode);
       }
    }
 
@@ -64,8 +61,8 @@ public class RunSelectedTestShortcut implements ILaunchShortcut {
          // use an existing launch config if available
          for (final var cfg : launchMgr.getLaunchConfigurations(launchConfigType)) {
             if (project.getName().equalsIgnoreCase(LaunchConfigurations.getProjectName(cfg)) //
-               && cfg.getAttribute(TestLaunchConfigurations.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(Constants.PROJECT_TEST_DIRNAME))
-                  .equals(testResourceAsList)) {
+                  && cfg.getAttribute(TestLaunchConfigurations.LAUNCH_ATTR_DART_TEST_RESOURCES, singletonList(
+                     Constants.PROJECT_TEST_DIRNAME)).equals(testResourceAsList)) {
                DebugUITools.launch(cfg, mode);
                return;
             }

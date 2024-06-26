@@ -17,9 +17,8 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchShortcut;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.part.FileEditorInput;
@@ -42,11 +41,9 @@ public class RunDartFileShortcut implements ILaunchShortcut {
 
    @Override
    public void launch(final ISelection selection, final String mode) {
-      if (selection instanceof final IStructuredSelection structuredSelection) {
-         final var firstElement = structuredSelection.getFirstElement();
-         if (firstElement instanceof @NonNull final IFile file) {
-            launchDartFile(file, mode);
-         }
+      if (selection instanceof final StructuredSelection structuredSel //
+            && structuredSel.getFirstElement() instanceof final IFile file) {
+         launchDartFile(file, mode);
       }
    }
 
@@ -59,7 +56,7 @@ public class RunDartFileShortcut implements ILaunchShortcut {
          // use an existing launch config if available
          for (final var cfg : launchMgr.getLaunchConfigurations(launchConfigType)) {
             if (project.getName().equalsIgnoreCase(LaunchConfigurations.getProjectName(cfg)) //
-               && dartFile.getProjectRelativePath().toString().equals(LaunchConfigurations.getDartMainFilePath(cfg)) //
+                  && dartFile.getProjectRelativePath().toString().equals(LaunchConfigurations.getDartMainFilePath(cfg)) //
             ) {
                DebugUITools.launch(cfg, mode);
                return;

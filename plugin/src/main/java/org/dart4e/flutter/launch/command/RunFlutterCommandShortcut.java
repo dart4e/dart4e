@@ -46,11 +46,9 @@ public class RunFlutterCommandShortcut implements ILaunchShortcut {
    @Override
    public void launch(final ISelection selection, final String mode) {
       IProject project = null;
-      if (selection instanceof final StructuredSelection structuredSel) {
-         final var firstElement = structuredSel.getFirstElement();
-         if (firstElement instanceof final IResource res) {
-            project = res.getProject();
-         }
+      if (selection instanceof final StructuredSelection structuredSel //
+            && structuredSel.getFirstElement() instanceof final IResource res) {
+         project = res.getProject();
       }
 
       if (project == null)

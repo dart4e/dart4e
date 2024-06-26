@@ -111,7 +111,9 @@ public final class DartConsole extends MessageConsole {
          console.setTitle("<running> " + exe + " (" + startAtStr + ")");
 
          while (proc.isAlive()) {
-            // kill process if job was aborted by user
+            /*
+             * kill process if job was aborted by user
+             */
             if (monitor.isCanceled()) {
                proc.terminate() //
                   .waitForExit(2, TimeUnit.SECONDS) //

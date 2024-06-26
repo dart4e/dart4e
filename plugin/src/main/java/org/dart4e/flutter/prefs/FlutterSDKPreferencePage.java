@@ -197,28 +197,23 @@ public class FlutterSDKPreferencePage extends PreferencePage implements IWorkben
    }
 
    private void onButton_Edit() {
-      final var sel = (StructuredSelection) sdkTable.getSelection();
-      if (sel.isEmpty())
-         return;
-
-      final var sdk = asNonNullUnsafe((FlutterSDK) sel.getFirstElement());
-      final var dialog = new FlutterSDKEditDialog(getShell(), sdk);
-      if (dialog.open() == Window.OK) {
-         sdks.remove(sdk);
-         sdks.add(new FlutterSDK( //
-            asNonNullUnsafe(dialog.sdkName.get()), //
-            asNonNullUnsafe(dialog.sdkPath.get()) //
-         ));
+      if (((StructuredSelection) sdkTable.getSelection()).getFirstElement() instanceof final FlutterSDK sdk) {
+         final var dialog = new FlutterSDKEditDialog(getShell(), sdk);
+         if (dialog.open() == Window.OK) {
+            sdks.remove(sdk);
+            sdks.add(new FlutterSDK( //
+               asNonNullUnsafe(dialog.sdkName.get()), //
+               asNonNullUnsafe(dialog.sdkPath.get()) //
+            ));
+         }
       }
    }
 
    private void onButton_Remove() {
-      final var sel = (StructuredSelection) sdkTable.getSelection();
-      if (sel.isEmpty())
-         return;
-      final var sdk = (FlutterSDK) sel.getFirstElement();
-      sdks.remove(sdk);
-      sdkTable.refresh();
+      if (((StructuredSelection) sdkTable.getSelection()).getFirstElement() instanceof final FlutterSDK sdk) {
+         sdks.remove(sdk);
+         sdkTable.refresh();
+      }
    }
 
    @Override

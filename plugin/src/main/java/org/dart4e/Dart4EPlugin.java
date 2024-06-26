@@ -29,7 +29,7 @@ public class Dart4EPlugin extends AbstractEclipsePlugin {
    /**
     * during runtime you can get ID with getBundle().getSymbolicName()
     */
-   public static final String PLUGIN_ID = asNonNull(Dart4EPlugin.class.getPackage()).getName();
+   public static final String PLUGIN_ID = Dart4EPlugin.class.getPackageName();
 
    private static @Nullable Dart4EPlugin instance;
 

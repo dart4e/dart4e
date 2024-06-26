@@ -118,18 +118,18 @@ public final class DartProjectPreference {
          if (oldValue == null) {
             prefs.setToDefault(event.getProperty());
          }
-         if (oldValue instanceof String) {
-            prefs.setValue(event.getProperty(), (String) oldValue);
-         } else if (oldValue instanceof Boolean) {
-            prefs.setValue(event.getProperty(), (Boolean) oldValue);
-         } else if (oldValue instanceof Integer) {
-            prefs.setValue(event.getProperty(), (Integer) oldValue);
-         } else if (oldValue instanceof Long) {
-            prefs.setValue(event.getProperty(), (Long) oldValue);
-         } else if (oldValue instanceof Float) {
-            prefs.setValue(event.getProperty(), (Float) oldValue);
-         } else if (oldValue instanceof Double) {
-            prefs.setValue(event.getProperty(), (Double) oldValue);
+         if (oldValue instanceof final String oldValue_) {
+            prefs.setValue(event.getProperty(), oldValue_);
+         } else if (oldValue instanceof final Boolean oldValue_) {
+            prefs.setValue(event.getProperty(), oldValue_);
+         } else if (oldValue instanceof final Integer oldValue_) {
+            prefs.setValue(event.getProperty(), oldValue_);
+         } else if (oldValue instanceof final Long oldValue_) {
+            prefs.setValue(event.getProperty(), oldValue_);
+         } else if (oldValue instanceof final Float oldValue_) {
+            prefs.setValue(event.getProperty(), oldValue_);
+         } else if (oldValue instanceof final Double oldValue_) {
+            prefs.setValue(event.getProperty(), oldValue_);
          }
       }
       changeEvents.clear();

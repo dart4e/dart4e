@@ -46,11 +46,9 @@ public class RunProjectShortcut implements ILaunchShortcut {
    @Override
    public void launch(final ISelection selection, final String mode) {
       IProject project = null;
-      if (selection instanceof final StructuredSelection structuredSel) {
-         final var firstElement = structuredSel.getFirstElement();
-         if (firstElement instanceof final IResource res) {
-            project = res.getProject();
-         }
+      if (selection instanceof final StructuredSelection structuredSel //
+            && structuredSel.getFirstElement() instanceof final IResource res) {
+         project = res.getProject();
       }
 
       if (project == null)
@@ -67,7 +65,7 @@ public class RunProjectShortcut implements ILaunchShortcut {
          for (final var launch : launchMgr.getLaunches()) {
             final var cfg = launch.getLaunchConfiguration();
             if (cfg != null && cfg.getType().equals(launchConfigType) //
-               && project.getName().equalsIgnoreCase(LaunchConfigurations.getProjectName(cfg)) //
+                  && project.getName().equalsIgnoreCase(LaunchConfigurations.getProjectName(cfg)) //
             ) {
                DebugUITools.launch(cfg, mode);
                return;
