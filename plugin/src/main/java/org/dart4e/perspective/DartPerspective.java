@@ -32,6 +32,7 @@ public class DartPerspective implements IPerspectiveFactory {
       bottom.addView(IPageLayout.ID_BOOKMARKS);
       bottom.addView(IPageLayout.ID_TASK_LIST);
       bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
+      bottom.addView("de.sebthom.eclipse.previewer.ui.PreviewView");
       bottom.addView("de.sebthom.eclipse.findview.ui.FindView");
       bottom.addView("org.eclipse.team.ui.GenericHistoryView");
       bottom.addView("org.eclipse.egit.ui.StagingView");
