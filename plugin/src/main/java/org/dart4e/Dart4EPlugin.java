@@ -6,8 +6,6 @@
  */
 package org.dart4e;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
-
 import org.dart4e.navigation.DartDependenciesUpdater;
 import org.dart4e.navigation.WindowListener;
 import org.eclipse.jdt.annotation.Nullable;
@@ -37,8 +35,7 @@ public class Dart4EPlugin extends AbstractEclipsePlugin {
     * @return the shared instance
     */
    public static Dart4EPlugin get() {
-      Assert.notNull(instance, "Default plugin instance is still null.");
-      return asNonNullUnsafe(instance);
+      return Assert.notNull(instance, "Default plugin instance is still null.");
    }
 
    public static PluginLogger log() {
