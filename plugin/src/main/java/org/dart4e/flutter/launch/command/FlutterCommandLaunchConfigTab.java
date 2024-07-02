@@ -62,7 +62,7 @@ public class FlutterCommandLaunchConfigTab extends AbstractLaunchConfigurationTa
 
    @Override
    public String getName() {
-      return Messages.Label_Flutter_App_Configuration;
+      return Messages.Label_Flutter_Command_Configuration;
    }
 
    @Override
