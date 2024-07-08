@@ -41,6 +41,7 @@ import net.sf.jstuff.core.SystemUtils;
 import net.sf.jstuff.core.concurrent.Threads;
 import net.sf.jstuff.core.functional.Suppliers;
 import net.sf.jstuff.core.io.Processes;
+import net.sf.jstuff.core.io.RuntimeIOException;
 import net.sf.jstuff.core.validation.Args;
 
 /**
@@ -163,7 +164,7 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
          return false;
       final var other = (FlutterSDK) obj;
       return Objects.equals(name, other.name) //
-         && Objects.equals(installRoot, other.installRoot);
+            && Objects.equals(installRoot, other.installRoot);
    }
 
    public DartSDK getDartSDK() {
@@ -196,8 +197,11 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
                   );
                }
                return Status.OK_STATUS;
+            } catch (final RuntimeIOException ex) {
+               Dart4EPlugin.log().error(ex.getWrapped(), "Failed to determine devices: " + sb);
+               future.completeExceptionally(ex.getWrapped());
             } catch (final IOException ex) {
-               Dart4EPlugin.log().error(ex);
+               Dart4EPlugin.log().error(ex, "Failed to determine devices: " + sb);
                future.completeExceptionally(ex);
             } catch (final InterruptedException ex) {
                Threads.handleInterruptedException(ex);
