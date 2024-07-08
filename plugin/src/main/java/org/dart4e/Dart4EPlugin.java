@@ -6,6 +6,8 @@
  */
 package org.dart4e;
 
+import org.dart4e.flutter.launch.FlutterHotReloadListener;
+import org.dart4e.launch.DartHotReloadListener;
 import org.dart4e.navigation.DartDependenciesUpdater;
 import org.dart4e.navigation.WindowListener;
 import org.eclipse.jdt.annotation.Nullable;
@@ -77,12 +79,16 @@ public class Dart4EPlugin extends AbstractEclipsePlugin {
       instance = this;
 
       DartDependenciesUpdater.INSTANCE.install();
+      DartHotReloadListener.INSTANCE.install();
+      FlutterHotReloadListener.INSTANCE.install();
       WindowListener.INSTANCE.attach();
    }
 
    @Override
    public void stop(final BundleContext context) throws Exception {
       DartDependenciesUpdater.INSTANCE.uninstall();
+      DartHotReloadListener.INSTANCE.uninstall();
+      FlutterHotReloadListener.INSTANCE.uninstall();
       WindowListener.INSTANCE.detatch();
 
       instance = null;

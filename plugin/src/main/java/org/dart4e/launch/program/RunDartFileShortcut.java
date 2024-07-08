@@ -27,6 +27,8 @@ import de.sebthom.eclipse.commons.ui.Dialogs;
 import de.sebthom.eclipse.commons.ui.UI;
 
 /**
+ * Handler for Dart file context menu {@code Debug/Run As -> Dart Program}
+ *
  * @author Sebastian Thomschke
  */
 public class RunDartFileShortcut implements ILaunchShortcut {

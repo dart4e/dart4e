@@ -27,6 +27,8 @@ import de.sebthom.eclipse.commons.ui.Dialogs;
 import de.sebthom.eclipse.commons.ui.UI;
 
 /**
+ * Handler for Flutter project context menu {@code Debug/Run As -> Flutter App}
+ *
  * @author Sebastian Thomschke
  */
 public class RunFlutterAppShortcut implements ILaunchShortcut {

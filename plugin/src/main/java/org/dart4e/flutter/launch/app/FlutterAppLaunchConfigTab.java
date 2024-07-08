@@ -20,6 +20,7 @@ import org.dart4e.launch.LaunchConfigurations;
 import org.dart4e.localization.Messages;
 import org.dart4e.util.ui.GridDatas;
 import org.dart4e.widget.DartFileSelectionGroup;
+import org.dart4e.widget.HotReloadSettingsGroup;
 import org.dart4e.widget.TextFieldGroup;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -49,6 +50,7 @@ public class FlutterAppLaunchConfigTab extends AbstractLaunchConfigurationTab {
    private MutableObservableRef<@Nullable FlutterSDK> selectedAltSDK = lateNonNull();
    private final MutableObservableRef<@Nullable Device> selectedDevice = MutableObservableRef.of(null);
    private MutableObservableRef<String> flutterArgs = lateNonNull();
+   private MutableObservableRef<Boolean> hotReloadOnSave = lateNonNull();
 
    @Override
    public void createControl(final Composite parent) {
@@ -85,6 +87,8 @@ public class FlutterAppLaunchConfigTab extends AbstractLaunchConfigurationTab {
       selectedAltSDK = new FlutterSDKSelectionGroup(form).selectedAltSDK;
       selectedAltSDK.subscribe(s -> refreshDeviceList(cmbDevice, btnRefresh));
 
+      hotReloadOnSave = new HotReloadSettingsGroup(form).hotReloadOnSave;
+
       setControl(form);
    }
 
@@ -111,14 +115,17 @@ public class FlutterAppLaunchConfigTab extends AbstractLaunchConfigurationTab {
       selectedDartFile.set(LaunchConfigurations.getDartMainFile(config));
       selectedDartFile.subscribe(this::updateLaunchConfigurationDialog);
 
+      flutterArgs.set(LaunchConfigurations.getProgramArgs(config));
+      flutterArgs.subscribe(this::updateLaunchConfigurationDialog);
+
       selectedAltSDK.set(FlutterLaunchConfigurations.getAlternativeFlutterSDK(config));
       selectedAltSDK.subscribe(this::updateLaunchConfigurationDialog);
 
       selectedDevice.set(FlutterLaunchConfigurations.getFlutterDevice(config));
       selectedDevice.subscribe(this::updateLaunchConfigurationDialog);
 
-      flutterArgs.set(LaunchConfigurations.getProgramArgs(config));
-      flutterArgs.subscribe(this::updateLaunchConfigurationDialog);
+      hotReloadOnSave.set(LaunchConfigurations.isHotReloadOnSave(config));
+      hotReloadOnSave.subscribe(this::updateLaunchConfigurationDialog);
    }
 
    @Override
@@ -155,6 +162,7 @@ public class FlutterAppLaunchConfigTab extends AbstractLaunchConfigurationTab {
       LaunchConfigurations.setProgramArgs(config, flutterArgs.get());
       FlutterLaunchConfigurations.setAlternativeFlutterSDK(config, selectedAltSDK.get());
       FlutterLaunchConfigurations.setFlutterDevice(config, selectedDevice.get());
+      LaunchConfigurations.setHotReloadOnSave(config, hotReloadOnSave.get());
    }
 
    private void refreshDeviceList(final ComboWrapper<Device> combo, final Button btnRefresh) {

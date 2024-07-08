@@ -16,6 +16,7 @@ import org.dart4e.model.DartSDK;
 import org.dart4e.widget.DartFileSelectionGroup;
 import org.dart4e.widget.DartProjectSelectionGroup;
 import org.dart4e.widget.DartSDKSelectionGroup;
+import org.dart4e.widget.HotReloadSettingsGroup;
 import org.dart4e.widget.TextFieldGroup;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -37,9 +38,10 @@ public class ProgramLaunchConfigTab extends AbstractLaunchConfigurationTab {
 
    private MutableObservableRef<@Nullable IProject> selectedProject = lateNonNull();
    private MutableObservableRef<@Nullable IFile> selectedDartFile = lateNonNull();
-   private MutableObservableRef<@Nullable DartSDK> selectedAltSDK = lateNonNull();
    private MutableObservableRef<String> programArgs = lateNonNull();
    private MutableObservableRef<String> vmArgs = lateNonNull();
+   private MutableObservableRef<@Nullable DartSDK> selectedAltSDK = lateNonNull();
+   private MutableObservableRef<Boolean> hotReloadOnSave = lateNonNull();
 
    @Override
    public void createControl(final Composite parent) {
@@ -55,6 +57,8 @@ public class ProgramLaunchConfigTab extends AbstractLaunchConfigurationTab {
       programArgs = new TextFieldGroup(form, "Program arguments").text;
       vmArgs = new TextFieldGroup(form, "Dart VM arguments").text;
       selectedAltSDK = new DartSDKSelectionGroup(form).selectedAltSDK;
+
+      hotReloadOnSave = new HotReloadSettingsGroup(form).hotReloadOnSave;
 
       setControl(form);
    }
@@ -82,14 +86,17 @@ public class ProgramLaunchConfigTab extends AbstractLaunchConfigurationTab {
       selectedDartFile.set(LaunchConfigurations.getDartMainFile(config));
       selectedDartFile.subscribe(this::updateLaunchConfigurationDialog);
 
-      selectedAltSDK.set(LaunchConfigurations.getAlternativeDartSDK(config));
-      selectedAltSDK.subscribe(this::updateLaunchConfigurationDialog);
-
       programArgs.set(LaunchConfigurations.getProgramArgs(config));
       programArgs.subscribe(this::updateLaunchConfigurationDialog);
 
       vmArgs.set(LaunchConfigurations.getDartVMArgs(config));
       vmArgs.subscribe(this::updateLaunchConfigurationDialog);
+
+      selectedAltSDK.set(LaunchConfigurations.getAlternativeDartSDK(config));
+      selectedAltSDK.subscribe(this::updateLaunchConfigurationDialog);
+
+      hotReloadOnSave.set(LaunchConfigurations.isHotReloadOnSave(config));
+      hotReloadOnSave.subscribe(this::updateLaunchConfigurationDialog);
    }
 
    @Override
@@ -126,6 +133,7 @@ public class ProgramLaunchConfigTab extends AbstractLaunchConfigurationTab {
       LaunchConfigurations.setProgramArgs(config, programArgs.get());
       LaunchConfigurations.setDartVMArgs(config, vmArgs.get());
       LaunchConfigurations.setAlternativeDartSDK(config, selectedAltSDK.get());
+      LaunchConfigurations.setHotReloadOnSave(config, hotReloadOnSave.get());
    }
 
    @Override

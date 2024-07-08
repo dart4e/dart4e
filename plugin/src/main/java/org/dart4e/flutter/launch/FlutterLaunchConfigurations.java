@@ -37,7 +37,7 @@ public abstract class FlutterLaunchConfigurations {
    }
 
    public static void setAlternativeFlutterSDK(final ILaunchConfigurationWorkingCopy config, @Nullable final FlutterSDK altSDK) {
-      LaunchConfigurations.setAttribute(config, LAUNCH_FLUTTER_ATTR_SDK, altSDK == null ? null : altSDK.getName());
+      LaunchConfigurations.setOrRemoveAttribute(config, LAUNCH_FLUTTER_ATTR_SDK, altSDK == null ? null : altSDK.getName());
    }
 
    public static @Nullable Device getFlutterDevice(final ILaunchConfiguration config) {
@@ -50,6 +50,6 @@ public abstract class FlutterLaunchConfigurations {
    }
 
    public static void setFlutterDevice(final ILaunchConfigurationWorkingCopy config, @Nullable final Device device) {
-      LaunchConfigurations.setAttribute(config, LAUNCH_FLUTTER_ATTR_DEVICE, device == null ? null : JSON.serialize(device));
+      LaunchConfigurations.setOrRemoveAttribute(config, LAUNCH_FLUTTER_ATTR_DEVICE, device == null ? null : JSON.serialize(device));
    }
 }

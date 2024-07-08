@@ -43,6 +43,7 @@ public abstract class LaunchConfigurations {
    private static final String LAUNCH_ATTR_PROJECT = "launch.dart.project";
    private static final String LAUNCH_ATTR_DART_MAIN_FILE = "launch.dart.dart_main_file";
    private static final String LAUNCH_ATTR_DART_SDK = "launch.dart.sdk";
+   private static final String LAUNCH_ATTR_HOT_RELOAD_ON_SAVE = "launch.dart.hot_reload_on_save";
    private static final String LAUNCH_ATTR_PROGRAM_ARGS = "launch.dart.program_args";
    private static final String LAUNCH_ATTR_VM_ARGS = "launch.dart.vm_args";
 
@@ -59,7 +60,8 @@ public abstract class LaunchConfigurations {
       return config.getAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
    }
 
-   public static void setAttribute(final ILaunchConfigurationWorkingCopy config, final String attrName, @Nullable final String value) {
+   public static void setOrRemoveAttribute(final ILaunchConfigurationWorkingCopy config, final String attrName,
+         @Nullable final String value) {
       if (value == null) {
          config.removeAttribute(attrName);
       } else {
@@ -82,7 +84,7 @@ public abstract class LaunchConfigurations {
    }
 
    public static void setAlternativeDartSDK(final ILaunchConfigurationWorkingCopy config, @Nullable final DartSDK altSDK) {
-      setAttribute(config, LAUNCH_ATTR_DART_SDK, altSDK == null ? null : altSDK.getName());
+      setOrRemoveAttribute(config, LAUNCH_ATTR_DART_SDK, altSDK == null ? null : altSDK.getName());
    }
 
    public static Map<String, String> getEnvVars(final ILaunchConfiguration config) throws CoreException {
@@ -124,11 +126,11 @@ public abstract class LaunchConfigurations {
    }
 
    public static void setDartVMArgs(final ILaunchConfigurationWorkingCopy config, @Nullable final String args) {
-      setAttribute(config, LAUNCH_ATTR_VM_ARGS, args);
+      setOrRemoveAttribute(config, LAUNCH_ATTR_VM_ARGS, args);
    }
 
    public static void setDartMainFile(final ILaunchConfigurationWorkingCopy config, @Nullable final IFile dartFile) {
-      setAttribute(config, LAUNCH_ATTR_DART_MAIN_FILE, dartFile == null ? null : dartFile.getProjectRelativePath().toString());
+      setOrRemoveAttribute(config, LAUNCH_ATTR_DART_MAIN_FILE, dartFile == null ? null : dartFile.getProjectRelativePath().toString());
    }
 
    public static boolean isMonitorDebugAdapter(final ILaunchConfiguration config) throws CoreException {
@@ -145,7 +147,7 @@ public abstract class LaunchConfigurations {
    }
 
    public static void setProgramArgs(final ILaunchConfigurationWorkingCopy config, @Nullable final String args) {
-      setAttribute(config, LAUNCH_ATTR_PROGRAM_ARGS, args);
+      setOrRemoveAttribute(config, LAUNCH_ATTR_PROGRAM_ARGS, args);
    }
 
    public static @Nullable IProject getProject(final ILaunchConfiguration config) {
@@ -163,7 +165,7 @@ public abstract class LaunchConfigurations {
    }
 
    public static void setProject(final ILaunchConfigurationWorkingCopy config, @Nullable final IProject project) {
-      setAttribute(config, LAUNCH_ATTR_PROJECT, project == null ? null : project.getName());
+      setOrRemoveAttribute(config, LAUNCH_ATTR_PROJECT, project == null ? null : project.getName());
    }
 
    public static Path getWorkingDirectory(final ILaunchConfiguration config) throws CoreException {
@@ -173,7 +175,20 @@ public abstract class LaunchConfigurations {
 
       final var project = getProject(config);
       return project == null //
-         ? MoreFiles.getWorkingDirectory()
-         : Resources.toAbsolutePath(project);
+            ? MoreFiles.getWorkingDirectory()
+            : Resources.toAbsolutePath(project);
+   }
+
+   public static boolean isHotReloadOnSave(final ILaunchConfiguration config) {
+      try {
+         return config.getAttribute(LAUNCH_ATTR_HOT_RELOAD_ON_SAVE, true);
+      } catch (final Exception ex) {
+         Dart4EPlugin.log().error(ex);
+         return true;
+      }
+   }
+
+   public static void setHotReloadOnSave(final ILaunchConfigurationWorkingCopy config, final boolean hotReloadOnSave) {
+      config.setAttribute(LAUNCH_ATTR_HOT_RELOAD_ON_SAVE, hotReloadOnSave);
    }
 }

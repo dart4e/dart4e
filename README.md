@@ -26,6 +26,7 @@ programming language and the [Flutter](https://flutter.dev/) application framewo
 - Code Refactoring
 - [Interactive Dart Shell](https://github.com/fzyzcjy/dart_interactive) (REPL)
 - Running and debugging of Dart programs/tests and Flutter applications
+- Hot reload on save
 - Display direct and transitive dependencies in project outline
 
 ![](src/site/images/screenshot_editor.png)

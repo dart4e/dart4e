@@ -579,7 +579,8 @@
       <factory
          class="org.eclipse.core.runtime.IAdaptable"
          adaptableType="org.eclipse.core.resources.IResource">
-         <!-- https://insights.sigasi.com/tech/run-menu-item-strangely-disappearing-context-menu/ -->
+         <!-- https://insights.sigasi.com/tech/run-menu-item-strangely-disappearing-context-menu/
+              https://bugs.eclipse.org/bugs/show_bug.cgi?id=494153 -->
          <adapter type="org.eclipse.debug.ui.actions.ILaunchable" />
       </factory>
    </extension>
