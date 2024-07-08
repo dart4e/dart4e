@@ -33,6 +33,8 @@ public final class Messages extends NLS {
    public static String Label_Dart_Pub_Get = lateNonNull();
    public static String Label_Dart_Pub_Downgrade = lateNonNull();
    public static String Label_Dart_Pub_Upgrade = lateNonNull();
+   public static String Label_Dart_Pub_UpgradeMajorVersions = lateNonNull();
+   public static String Label_Dart_Pub_UpgradeTighten = lateNonNull();
    public static String Label_Name = "Name";
    public static String Label_Version = "Version";
    public static String Label_Path = "Path";
@@ -89,6 +91,8 @@ public final class Messages extends NLS {
    public static String Label_Flutter_Pub_Get = lateNonNull();
    public static String Label_Flutter_Pub_Downgrade = lateNonNull();
    public static String Label_Flutter_Pub_Upgrade = lateNonNull();
+   public static String Label_Flutter_Pub_UpgradeMajorVersions = lateNonNull();
+   public static String Label_Flutter_Pub_UpgradeTighten = lateNonNull();
 
    public static String Flutter_Launch_CouldNotRunFlutter = "Could not run Flutter";
 

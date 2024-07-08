@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: EPL-2.0
  * SPDX-ArtifactOfProjectHomePage: https://github.com/dart4e/dart4e
  */
-package org.dart4e.launch.command;
+package org.dart4e.flutter.launch.command;
 
 import org.dart4e.localization.Messages;
 
@@ -13,8 +13,9 @@ import org.dart4e.localization.Messages;
  *
  * @author Sebastian Thomschke
  */
-public class RunPubDowngradeHandler extends AbstractDartCommandHandler {
-   public RunPubDowngradeHandler() {
-      super(Messages.Label_Dart_Pub_Downgrade, "pub", "downgrade");
+public class RunFlutterPubUpgradeTightenHandler extends AbstractFlutterCommandHandler {
+
+   public RunFlutterPubUpgradeTightenHandler() {
+      super(Messages.Label_Flutter_Pub_UpgradeTighten, "pub", "upgrade", "--tighten");
    }
 }

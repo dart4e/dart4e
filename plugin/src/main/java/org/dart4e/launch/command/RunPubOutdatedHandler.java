@@ -13,8 +13,9 @@ import org.dart4e.localization.Messages;
  *
  * @author Sebastian Thomschke
  */
-public class RunPubDowngradeHandler extends AbstractDartCommandHandler {
-   public RunPubDowngradeHandler() {
-      super(Messages.Label_Dart_Pub_Downgrade, "pub", "downgrade");
+public class RunPubOutdatedHandler extends AbstractDartCommandHandler {
+
+   public RunPubOutdatedHandler() {
+      super(Messages.Label_Dart_Pub_Downgrade, "pub", "outdated");
    }
 }
