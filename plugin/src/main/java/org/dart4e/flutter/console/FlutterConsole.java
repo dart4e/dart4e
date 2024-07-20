@@ -64,7 +64,7 @@ public final class FlutterConsole extends MessageConsole {
    private static void runWithConsole(final IProgressMonitor monitor, final String headLine, final FlutterSDK flutterSDK,
       final @Nullable IProject project, final @Nullable Path workdir, String... flutterArgs) throws CoreException {
 
-      if (flutterArgs.length > 0 && "pub".equals(flutterArgs) //
+      if (flutterArgs.length > 0 && "pub".equals(flutterArgs[0]) //
          && Consoles.isAnsiColorsSupported() //
          && !ArrayUtils.contains(flutterArgs, "--color")) {
          flutterArgs = ArrayUtils.add(flutterArgs, "--color");
