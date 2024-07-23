@@ -16,6 +16,6 @@ import org.dart4e.localization.Messages;
 public class RunFlutterPubOutdatedHandler extends AbstractFlutterCommandHandler {
 
    public RunFlutterPubOutdatedHandler() {
-      super(Messages.Label_Flutter_Pub_Upgrade, "pub", "outdated");
+      super(Messages.Label_Flutter_Pub_Outdated, "pub", "outdated");
    }
 }

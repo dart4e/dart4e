@@ -62,11 +62,11 @@ public final class DartConsole extends MessageConsole {
    public static final String CONSOLE_TYPE = DartConsole.class.getName();
 
    private static void runWithConsole(final IProgressMonitor monitor, final String headLine, final DartSDK dartSDK,
-      final @Nullable IProject project, final @Nullable Path workdir, String... dartArgs) throws CoreException {
+         final @Nullable IProject project, final @Nullable Path workdir, String... dartArgs) throws CoreException {
 
       if (dartArgs.length > 0 && "pub".equals(dartArgs[0]) //
-         && Consoles.isAnsiColorsSupported() //
-         && !ArrayUtils.contains(dartArgs, "--color")) {
+            && Consoles.isAnsiColorsSupported() //
+            && !ArrayUtils.contains(dartArgs, "--color")) {
          dartArgs = ArrayUtils.add(dartArgs, "--color");
       }
 
@@ -75,8 +75,8 @@ public final class DartConsole extends MessageConsole {
       final var onTerminated = new CompletableFuture<@Nullable Void>();
       final var console = new DartConsole(project, onTerminated, monitor);
       Consoles.closeConsoles(c -> c instanceof final DartConsole dartConsole //
-         && dartConsole.project == project // CHECKSTYLE:IGNORE .*
-         && dartConsole.onTerminated.toCompletableFuture().isDone());
+            && dartConsole.project == project // CHECKSTYLE:IGNORE .*
+            && dartConsole.onTerminated.toCompletableFuture().isDone());
       Consoles.showConsole(console);
 
       try (var out = console.newMessageStream();
@@ -91,6 +91,8 @@ public final class DartConsole extends MessageConsole {
          final var startAtStr = startAt.truncatedTo(ChronoUnit.SECONDS).format(DateTimeFormatter.ISO_TIME);
 
          out.println(headLine);
+         out.println();
+         out.println("> dart " + Strings.join(dartArgs, ' '));
          out.println();
 
          final var hasOutput = new AtomicBoolean(false);
@@ -169,7 +171,7 @@ public final class DartConsole extends MessageConsole {
     * Runs the Dart command in the {@link DartConsole}.
     */
    public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final DartSDK dartSDK,
-      final @Nullable Path workdir, final String... dartArgs) throws CoreException {
+         final @Nullable Path workdir, final String... dartArgs) throws CoreException {
       runWithConsole(monitor, headLine, dartSDK, null, workdir, dartArgs);
    }
 
@@ -177,7 +179,7 @@ public final class DartConsole extends MessageConsole {
     * Runs the Dart command in the {@link DartConsole}.
     */
    public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final IProject project,
-      final String... dartArgs) throws CoreException {
+         final String... dartArgs) throws CoreException {
       final var prefs = DartProjectPreference.get(project);
       final var dartSDK = prefs.getEffectiveDartSDK();
       if (dartSDK == null)
@@ -196,7 +198,7 @@ public final class DartConsole extends MessageConsole {
    public final IProgressMonitor monitor;
 
    private DartConsole(final @Nullable IProject project, final CompletionStage<@Nullable Void> onTerminated,
-      final IProgressMonitor monitor) {
+         final IProgressMonitor monitor) {
       super("Dart", CONSOLE_TYPE, null, true);
       this.project = project;
       this.onTerminated = onTerminated;

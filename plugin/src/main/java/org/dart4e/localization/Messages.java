@@ -32,6 +32,7 @@ public final class Messages extends NLS {
    public static String Label_Dart_Project = lateNonNull();
    public static String Label_Dart_Pub_Get = lateNonNull();
    public static String Label_Dart_Pub_Downgrade = lateNonNull();
+   public static String Label_Dart_Pub_Outdated = lateNonNull();
    public static String Label_Dart_Pub_Upgrade = lateNonNull();
    public static String Label_Dart_Pub_UpgradeMajorVersions = lateNonNull();
    public static String Label_Dart_Pub_UpgradeTighten = lateNonNull();
@@ -90,6 +91,7 @@ public final class Messages extends NLS {
    public static String Label_Flutter_Test_Configuration = "Flutter Test Configuration";
    public static String Label_Flutter_Pub_Get = lateNonNull();
    public static String Label_Flutter_Pub_Downgrade = lateNonNull();
+   public static String Label_Flutter_Pub_Outdated = lateNonNull();
    public static String Label_Flutter_Pub_Upgrade = lateNonNull();
    public static String Label_Flutter_Pub_UpgradeMajorVersions = lateNonNull();
    public static String Label_Flutter_Pub_UpgradeTighten = lateNonNull();
