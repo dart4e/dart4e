@@ -8,6 +8,7 @@ package org.dart4e.navigation;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.lsp4e.outline.SymbolsLabelProvider;
 import org.eclipse.lsp4e.outline.SymbolsModel.DocumentSymbolWithFile;
@@ -27,7 +28,7 @@ import org.eclipse.swt.graphics.Image;
 public final class DartOutlineSymbolsProvider extends SymbolsLabelProvider {
 
    @Override
-   public @Nullable Image getImage(final Object item) {
+   public @Nullable Image getImage(final @NonNullByDefault({}) Object item) {
       SymbolKind kind = null;
       if (item instanceof final SymbolInformation symbolInfo) {
          kind = symbolInfo.getKind();
