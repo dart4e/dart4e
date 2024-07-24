@@ -78,7 +78,7 @@ public final class DartLangServerLauncher extends ProcessStreamConnectionProvide
        * https://github.com/dart-lang/sdk/blob/main/pkg/analysis_server/tool/lsp_spec/README.md#initialization-options
        */
       final var opts = new TreeBuilder<String>() //
-         .put("flutterOutline ", buildSystem == BuildSystem.FLUTTER) //
+         .put("flutterOutline", buildSystem == BuildSystem.FLUTTER) //
          .put("suggestFromUnimportedLibraries", true) //
          .getMap();
 
