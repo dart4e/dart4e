@@ -63,6 +63,33 @@ public interface FlutterDebugProtocolEvents extends DartDebugProtocolEvents {
    }
 
    /* ************************************************************************
+    * flutter.forwardedEvent
+    * ************************************************************************/
+
+   @JsonNotification("flutter.forwardedEvent")
+   default void onFlutterForwardedEvent(final Map<String, ?> args) {
+      final var event = new FlutterForwardedEventEvent(args);
+      Dart4EPlugin.log().debug("onFlutterForwardedEvent: {0}", event.args);
+   }
+
+   /**
+    * E.g.
+    * <pre>
+    * {event=app.webLaunchUrl, params={url=http://localhost:60122, launched=true}}
+    * </pre>
+    */
+   final class FlutterForwardedEventEvent extends DebugProtocolEvent {
+      public final String event;
+      public final Map<String, Object> params;
+
+      public FlutterForwardedEventEvent(final Map<String, ?> args) {
+         super(args);
+         event = getStringArg("event");
+         params = getMapArg("params");
+      }
+   }
+
+   /* ************************************************************************
     * flutter.serviceExtensionStateChanged
     * ************************************************************************/
 
@@ -74,8 +101,10 @@ public interface FlutterDebugProtocolEvents extends DartDebugProtocolEvents {
 
    /**
     * E.g.
+    * <pre>
     * {extension=ext.flutter.activeDevToolsServerAddress, value=http://127.0.0.1:9102}
     * {extension=ext.flutter.connectedVmServiceUri, value=http://127.0.0.1:52894/BxITDkg2xgk=/}
+    * </pre>
     */
    final class FlutterServiceExtensionStateChangedEvent extends DebugProtocolEvent {
       public final String extension;

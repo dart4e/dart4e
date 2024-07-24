@@ -35,7 +35,20 @@ public interface DartDebugProtocolEvents extends IDebugProtocolClient {
             return bool;
 
          throw new IllegalStateException("Value of argument [" + name + "] not a boolean: " + value + "(" + value.getClass().getName()
-            + ")");
+               + ")");
+      }
+
+      @SuppressWarnings("unchecked")
+      protected Map<String, Object> getMapArg(final String name) {
+         final Object value = args.get(name);
+         if (value == null)
+            throw new IllegalStateException("Argument [" + name + "] not present in: " + this);
+
+         if (value instanceof final Map map)
+            return map;
+
+         throw new IllegalStateException("Value of argument [" + name + "] not a string: " + value + "(" + value.getClass().getName()
+               + ")");
       }
 
       protected String getStringArg(final String name) {
@@ -47,7 +60,7 @@ public interface DartDebugProtocolEvents extends IDebugProtocolClient {
             return str;
 
          throw new IllegalStateException("Value of argument [" + name + "] not a string: " + value + "(" + value.getClass().getName()
-            + ")");
+               + ")");
       }
 
       @Override
