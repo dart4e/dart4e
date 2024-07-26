@@ -18,11 +18,14 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.lsp4e.LSPEclipseUtils;
 import org.eclipse.lsp4e.LanguageClientImpl;
 import org.eclipse.lsp4j.ConfigurationParams;
+import org.eclipse.lsp4j.RegistrationParams;
 import org.eclipse.lsp4j.WorkspaceFolder;
 
 import de.sebthom.eclipse.commons.resources.Projects;
 
 /**
+ * https://github.com/dart-lang/sdk/blob/main/pkg/analysis_server/tool/lsp_spec/README.md#custom-fields-methods-and-notifications
+ *
  * @author Sebastian Thomschke
  */
 @SuppressWarnings("restriction") // https://bugs.eclipse.org/bugs/show_bug.cgi?id=536215
@@ -53,6 +56,11 @@ public final class DartLangServerClientImpl extends LanguageClientImpl implement
             .getMap());
       }
       return CompletableFuture.completedFuture(configs);
+   }
+
+   @Override
+   public @NonNullByDefault({}) CompletableFuture<Void> registerCapability(final RegistrationParams params) {
+      return super.registerCapability(params);
    }
 
    @Override

@@ -6,6 +6,10 @@
  */
 package org.dart4e.langserver;
 
+import java.util.Map;
+
+import org.dart4e.Dart4EPlugin;
+import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.services.LanguageClient;
 
 /**
@@ -15,4 +19,26 @@ import org.eclipse.lsp4j.services.LanguageClient;
  */
 public interface DartLangServerClient extends LanguageClient {
 
+   @JsonNotification("dart/textDocument/publishOutline")
+   default void onPublishOutline(final Map<String, ?> args) {
+      final var event = new PublishOutlineEvent(args);
+      Dart4EPlugin.log().debug("onPublishOutline: {0}", event.args);
+   }
+
+   @JsonNotification("dart/textDocument/publishFlutterOutline")
+   default void onPublishFlutterOutline(final Map<String, ?> args) {
+      final var event = new PublishOutlineEvent(args);
+      Dart4EPlugin.log().debug("onPublishFlutterOutline: {0}", event.args);
+   }
+
+   final class PublishOutlineEvent extends LSPEventArgs {
+      public final String uri;
+      public final Map<String, ?> outline;
+
+      public PublishOutlineEvent(final Map<String, ?> args) {
+         super(args);
+         uri = getStringArg("uri");
+         outline = getMapArg("outline");
+      }
+   }
 }

@@ -6,6 +6,8 @@
  */
 package org.dart4e.langserver;
 
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
@@ -19,13 +21,15 @@ import org.dart4e.model.buildsystem.BuildSystem;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.prefs.DartWorkspacePreference;
 import org.dart4e.util.TreeBuilder;
-import org.dart4e.util.io.LinePrefixingTeeInputStream;
-import org.dart4e.util.io.LinePrefixingTeeOutputStream;
+import org.dart4e.util.io.LineTransformingOutputStream;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.lsp4e.server.ProcessStreamConnectionProvider;
 
 import de.sebthom.eclipse.commons.resources.Projects;
+import net.sf.jstuff.core.Strings;
+import net.sf.jstuff.core.io.stream.LinePrefixingTeeInputStream;
+import net.sf.jstuff.core.io.stream.LinePrefixingTeeOutputStream;
 
 /**
  * Launches the Dart language server.
@@ -52,6 +56,8 @@ public final class DartLangServerLauncher extends ProcessStreamConnectionProvide
       return new LinePrefixingTeeInputStream(stream, System.out, "SRVERR >> ");
    }
 
+   private DartSDK dartSDK = lateNonNull();
+
    @Override
    public @Nullable Map<String, Object> getInitializationOptions(final @Nullable URI projectRootUri) {
       final var project = Projects.findProjectOfResource(projectRootUri);
@@ -69,6 +75,7 @@ public final class DartLangServerLauncher extends ProcessStreamConnectionProvide
       if (dartSDK == null)
          throw new IllegalStateException("Cannot initialize Dart Language Server, no Dart SDK found.");
 
+      this.dartSDK = dartSDK;
       setCommands(Arrays.asList( //
          dartSDK.getDartExecutable().toString(), //
          dartSDK.getInstallRoot().resolve("bin/snapshots/analysis_server.dart.snapshot").toString(), //
@@ -78,6 +85,7 @@ public final class DartLangServerLauncher extends ProcessStreamConnectionProvide
        * https://github.com/dart-lang/sdk/blob/main/pkg/analysis_server/tool/lsp_spec/README.md#initialization-options
        */
       final var opts = new TreeBuilder<String>() //
+         .put("outline", true) //
          .put("flutterOutline", buildSystem == BuildSystem.FLUTTER) //
          .put("suggestFromUnimportedLibraries", true) //
          .getMap();
@@ -91,21 +99,38 @@ public final class DartLangServerLauncher extends ProcessStreamConnectionProvide
    @Override
    public @Nullable InputStream getInputStream() {
       final var stream = super.getInputStream();
+      if (stream == null)
+         return null;
 
-      if (!TRACE_IO)
-         return stream;
-
-      return stream == null ? null : new LinePrefixingTeeInputStream(stream, System.out, "SERVER >> ");
+      return TRACE_IO //
+            ? new LinePrefixingTeeInputStream(stream, System.out, "SERVER >> ")
+            : stream;
    }
 
    @Override
    public @Nullable OutputStream getOutputStream() {
-      final var stream = super.getOutputStream();
+      var stream = super.getOutputStream();
+      if (stream == null)
+         return null;
 
-      if (!TRACE_IO)
-         return stream;
+      /*
+       * workaround for https://github.com/dart-lang/sdk/issues/56311#issuecomment-2250089185
+       */
+      final var dartVersion = dartSDK.getVersion();
+      if (dartVersion != null && (dartVersion.startsWith("3.4.") || dartVersion.startsWith("3.5."))) {
+         final boolean[] isFirstInlayHintRequest = {true};
+         stream = new LineTransformingOutputStream(stream, line -> {
+            if (isFirstInlayHintRequest[0] && line.contains("\"method\":\"textDocument/inlayHint\"")) {
+               isFirstInlayHintRequest[0] = false;
+               return Strings.replace(line, "\"method\":\"textDocument/inlayHint\"", "\"method\":\"dart-lang/sdk#56311\"   ");
+            }
+            return line;
+         });
+      }
 
-      return stream == null ? null : new LinePrefixingTeeOutputStream(stream, System.out, "CLIENT >> ");
+      return TRACE_IO //
+            ? new LinePrefixingTeeOutputStream(stream, System.out, "CLIENT >> ")
+            : stream;
    }
 
    @Override

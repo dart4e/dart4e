@@ -9,7 +9,8 @@ package org.dart4e.flutter.launch;
 import java.util.Map;
 
 import org.dart4e.Dart4EPlugin;
-import org.dart4e.launch.DartDebugProtocolEvents;
+import org.dart4e.langserver.LSPEventArgs;
+import org.dart4e.launch.DartDebugClient;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 
 /**
@@ -17,7 +18,7 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
  *
  * @author Sebastian Thomschke
  */
-public interface FlutterDebugProtocolEvents extends DartDebugProtocolEvents {
+public interface FlutterDebugClient extends DartDebugClient {
 
    /* ************************************************************************
     * flutter.appStart
@@ -29,7 +30,7 @@ public interface FlutterDebugProtocolEvents extends DartDebugProtocolEvents {
       Dart4EPlugin.log().debug("onFlutterAppStart: {0}", event.args);
    }
 
-   final class FlutterAppStartEvent extends DebugProtocolEvent {
+   final class FlutterAppStartEvent extends LSPEventArgs {
       public final String appId;
       public final String directory;
       public final boolean supportsRestart;
@@ -56,7 +57,7 @@ public interface FlutterDebugProtocolEvents extends DartDebugProtocolEvents {
       Dart4EPlugin.log().debug("onFlutterAppStarted: {0}", event.args);
    }
 
-   final class FlutterAppStartedEvent extends DebugProtocolEvent {
+   final class FlutterAppStartedEvent extends LSPEventArgs {
       public FlutterAppStartedEvent(final Map<String, ?> args) {
          super(args);
       }
@@ -78,7 +79,7 @@ public interface FlutterDebugProtocolEvents extends DartDebugProtocolEvents {
     * {event=app.webLaunchUrl, params={url=http://localhost:60122, launched=true}}
     * </pre>
     */
-   final class FlutterForwardedEventEvent extends DebugProtocolEvent {
+   final class FlutterForwardedEventEvent extends LSPEventArgs {
       public final String event;
       public final Map<String, Object> params;
 
@@ -106,7 +107,7 @@ public interface FlutterDebugProtocolEvents extends DartDebugProtocolEvents {
     * {extension=ext.flutter.connectedVmServiceUri, value=http://127.0.0.1:52894/BxITDkg2xgk=/}
     * </pre>
     */
-   final class FlutterServiceExtensionStateChangedEvent extends DebugProtocolEvent {
+   final class FlutterServiceExtensionStateChangedEvent extends LSPEventArgs {
       public final String extension;
       public final String value;
 

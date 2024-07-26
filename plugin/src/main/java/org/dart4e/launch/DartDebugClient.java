@@ -9,6 +9,7 @@ package org.dart4e.launch;
 import java.util.Map;
 
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.langserver.LSPEventArgs;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolClient;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 
@@ -17,57 +18,7 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
  *
  * @author Sebastian Thomschke
  */
-public interface DartDebugProtocolEvents extends IDebugProtocolClient {
-
-   class DebugProtocolEvent {
-      public final Map<String, ?> args;
-
-      protected DebugProtocolEvent(final Map<String, ?> args) {
-         this.args = args;
-      }
-
-      protected boolean getBooleanArg(final String name) {
-         final Object value = args.get(name);
-         if (value == null)
-            throw new IllegalStateException("Argument [" + name + "] not present in: " + this);
-
-         if (value instanceof final Boolean bool)
-            return bool;
-
-         throw new IllegalStateException("Value of argument [" + name + "] not a boolean: " + value + "(" + value.getClass().getName()
-               + ")");
-      }
-
-      @SuppressWarnings("unchecked")
-      protected Map<String, Object> getMapArg(final String name) {
-         final Object value = args.get(name);
-         if (value == null)
-            throw new IllegalStateException("Argument [" + name + "] not present in: " + this);
-
-         if (value instanceof final Map map)
-            return map;
-
-         throw new IllegalStateException("Value of argument [" + name + "] not a string: " + value + "(" + value.getClass().getName()
-               + ")");
-      }
-
-      protected String getStringArg(final String name) {
-         final Object value = args.get(name);
-         if (value == null)
-            throw new IllegalStateException("Argument [" + name + "] not present in: " + this);
-
-         if (value instanceof final String str)
-            return str;
-
-         throw new IllegalStateException("Value of argument [" + name + "] not a string: " + value + "(" + value.getClass().getName()
-               + ")");
-      }
-
-      @Override
-      public String toString() {
-         return this.getClass().getSimpleName() + args;
-      }
-   }
+public interface DartDebugClient extends IDebugProtocolClient {
 
    /* ************************************************************************
     * dart.debuggerUris
@@ -79,7 +30,7 @@ public interface DartDebugProtocolEvents extends IDebugProtocolClient {
       Dart4EPlugin.log().debug("onDartDebuggerUris: {0}", event.args);
    }
 
-   final class DartDebuggerUriEvent extends DebugProtocolEvent {
+   final class DartDebuggerUriEvent extends LSPEventArgs {
       public final String vmServiceUri;
 
       public DartDebuggerUriEvent(final Map<String, ?> args) {
@@ -98,7 +49,7 @@ public interface DartDebugProtocolEvents extends IDebugProtocolClient {
       Dart4EPlugin.log().debug("onDartLog: {0}", event.args);
    }
 
-   final class DartLogEvent extends DebugProtocolEvent {
+   final class DartLogEvent extends LSPEventArgs {
       public final String message;
 
       public DartLogEvent(final Map<String, ?> args) {
@@ -117,7 +68,7 @@ public interface DartDebugProtocolEvents extends IDebugProtocolClient {
       Dart4EPlugin.log().debug("onDartServiceRegistered: {0}", event.args);
    }
 
-   final class DartServiceRegisteredEvent extends DebugProtocolEvent {
+   final class DartServiceRegisteredEvent extends LSPEventArgs {
       public final String service;
       public final String method;
 
@@ -134,7 +85,7 @@ public interface DartDebugProtocolEvents extends IDebugProtocolClient {
       Dart4EPlugin.log().debug("onDartServiceUnregistered: {0}", event.args);
    }
 
-   final class DartServiceUnregisteredEvent extends DebugProtocolEvent {
+   final class DartServiceUnregisteredEvent extends LSPEventArgs {
       public final String service;
       public final String method;
 
@@ -155,7 +106,7 @@ public interface DartDebugProtocolEvents extends IDebugProtocolClient {
       Dart4EPlugin.log().debug("onDartServiceExtensionAdded: {0}", event.args);
    }
 
-   final class DartServiceExtensionAddedEvent extends DebugProtocolEvent {
+   final class DartServiceExtensionAddedEvent extends LSPEventArgs {
       public final String extensionRPC;
       public final String isolateId;
 

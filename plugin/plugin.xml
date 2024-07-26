@@ -87,6 +87,7 @@
       <server id="org.dart4e.langserv"
          class="org.dart4e.langserver.DartLangServerLauncher"
          clientImpl="org.dart4e.langserver.DartLangServerClientImpl"
+         serverInterface="org.dart4e.langserver.DartLangServerAPI"
          label="%Label_Dart_Language_Server"
       />
       <contentTypeMapping id="org.dart4e.langserv" contentType="org.dart4e.content.dart" />

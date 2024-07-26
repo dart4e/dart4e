@@ -15,8 +15,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-import org.dart4e.util.io.LinePrefixingTeeInputStream;
-import org.dart4e.util.io.LinePrefixingTeeOutputStream;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
@@ -32,25 +30,28 @@ import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.debug.DebugLauncher;
 
+import net.sf.jstuff.core.io.stream.LinePrefixingTeeInputStream;
+import net.sf.jstuff.core.io.stream.LinePrefixingTeeOutputStream;
+
 /**
  * @author Sebastian Thomschke
  */
 @SuppressWarnings("restriction")
 public class LaunchDebugConfig extends DSPLaunchDelegate {
 
-   private final class DartDebugTargetImpl extends DSPDebugTarget implements DartDebugTarget, DartDebugProtocolEvents {
+   private final class DartDebugTargetImpl extends DSPDebugTarget implements DartDebugTarget, DartDebugClient {
 
       private @Nullable DartDebuggerUriEvent debuggerInfo;
 
       protected DartDebugTargetImpl(final ILaunch launch, final Supplier<TransportStreams> streamsSupplier,
-         final Map<String, Object> dspParameters) {
+            final Map<String, Object> dspParameters) {
          super(launch, streamsSupplier, dspParameters);
       }
 
       @Override
       @NonNullByDefault({})
       protected Launcher<DartDebugAPI> createLauncher(final UnaryOperator<MessageConsumer> wrapper, final InputStream in,
-         final OutputStream out, final ExecutorService threadPool) {
+            final OutputStream out, final ExecutorService threadPool) {
          return DebugLauncher.createLauncher(this, DartDebugAPI.class, in, out, threadPool, wrapper);
       }
 
@@ -74,7 +75,7 @@ public class LaunchDebugConfig extends DSPLaunchDelegate {
 
       @Override
       public void onDartDebuggerUris(final Map<String, ?> args) {
-         DartDebugProtocolEvents.super.onDartDebuggerUris(args);
+         DartDebugClient.super.onDartDebuggerUris(args);
          debuggerInfo = new DartDebuggerUriEvent(args);
       }
    }
@@ -91,15 +92,15 @@ public class LaunchDebugConfig extends DSPLaunchDelegate {
    @SuppressWarnings("resource")
    @NonNullByDefault({})
    protected DartDebugTarget createDebugTarget(final SubMonitor mon, final Supplier<TransportStreams> streamsSupplier, final ILaunch launch,
-      final Map<String, Object> dspParameters) throws CoreException {
+         final Map<String, Object> dspParameters) throws CoreException {
       final var effectiveStreamsSupplier = TRACE_IO //
-         ? (Supplier<TransportStreams>) () -> {
-            final var streams = streamsSupplier.get();
-            return new DefaultTransportStreams( //
-               new LinePrefixingTeeInputStream(asNonNullUnsafe(streams.in), System.out, "SERVER >> "), //
-               new LinePrefixingTeeOutputStream(asNonNullUnsafe(streams.out), System.out, "CLIENT >> "));
-         }
-         : streamsSupplier;
+            ? (Supplier<TransportStreams>) () -> {
+               final var streams = streamsSupplier.get();
+               return new DefaultTransportStreams( //
+                  new LinePrefixingTeeInputStream(asNonNullUnsafe(streams.in), System.out, "SERVER >> "), //
+                  new LinePrefixingTeeOutputStream(asNonNullUnsafe(streams.out), System.out, "CLIENT >> "));
+            }
+            : streamsSupplier;
 
       final var target = new DartDebugTargetImpl(launch, effectiveStreamsSupplier, dspParameters);
       target.initialize(mon.split(80));
