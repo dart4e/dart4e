@@ -970,23 +970,25 @@
    <!-- Context Menu: Dart ...                -->
    <!-- ===================================== -->
    <extension point="org.eclipse.ui.commands">
+      <command id="org.dart4e.commands.run_pub_deps_nodev" name="%Label_Dart_Pub_Deps_NoDev" />
       <command id="org.dart4e.commands.run_pub_get" name="%Label_Dart_Pub_Get" />
       <command id="org.dart4e.commands.run_pub_outdated" name="%Label_Dart_Pub_Outdated" />
       <command id="org.dart4e.commands.run_pub_upgrade" name="%Label_Dart_Pub_Upgrade" />
-      <command id="org.dart4e.commands.run_pub_downgrade" name="%Label_Dart_Pub_Downgrade" />
       <command id="org.dart4e.commands.run_pub_upgrade_major_versions" name="%Label_Dart_Pub_UpgradeMajorVersions" />
       <command id="org.dart4e.commands.run_pub_upgrade_tighten" name="%Label_Dart_Pub_UpgradeTighten" />
+      <command id="org.dart4e.commands.run_pub_downgrade" name="%Label_Dart_Pub_Downgrade" />
       <command id="org.dart4e.commands.run_dart_shell_embedded" name="%Label_Dart_Shell_Embedded" />
       <command id="org.dart4e.commands.run_dart_shell_external" name="%Label_Dart_Shell_External" />
    </extension>
 
    <extension point="org.eclipse.ui.handlers">
+      <handler class="org.dart4e.launch.command.RunPubDepsNoDevHandler" commandId="org.dart4e.commands.run_pub_deps_nodev" />
       <handler class="org.dart4e.launch.command.RunPubGetHandler" commandId="org.dart4e.commands.run_pub_get" />
       <handler class="org.dart4e.launch.command.RunPubOutdatedHandler" commandId="org.dart4e.commands.run_pub_outdated" />
       <handler class="org.dart4e.launch.command.RunPubUpgradeHandler" commandId="org.dart4e.commands.run_pub_upgrade" />
-      <handler class="org.dart4e.launch.command.RunPubDowngradeHandler" commandId="org.dart4e.commands.run_pub_downgrade" />
       <handler class="org.dart4e.launch.command.RunPubUpgradeMajorVersionsHandler" commandId="org.dart4e.commands.run_pub_upgrade_major_versions" />
       <handler class="org.dart4e.launch.command.RunPubUpgradeTightenHandler" commandId="org.dart4e.commands.run_pub_upgrade_tighten" />
+      <handler class="org.dart4e.launch.command.RunPubDowngradeHandler" commandId="org.dart4e.commands.run_pub_downgrade" />
       <handler class="org.dart4e.shell.RunShellEmbeddedHandler" commandId="org.dart4e.commands.run_dart_shell_embedded" />
       <handler class="org.dart4e.shell.RunShellExternalHandler" commandId="org.dart4e.commands.run_dart_shell_external" />
    </extension>
@@ -995,6 +997,25 @@
       <!-- possible location URIs: https://blogs.itemis.com/auf-einen-blick-eclipse-actions-f%C3%BCr-project-und-package-explorer -->
       <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <menu label="Dart" icon="src/main/resources/images/logo/dart_icon.png" id="org.dart4e.projectMenu">
+
+            <command commandId="org.dart4e.commands.run_pub_deps_nodev" icon="platform:/plugin/org.eclipse.ui.navigator/icons/full/elcl16/content.png">
+               <visibleWhen>
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <not><reference definitionId="org.dart4e.flutter.project.nature.isConfigured" /></not>
+                        <or>
+                           <adapt type="org.eclipse.core.resources.IProject" />
+                           <and>
+                              <adapt type="org.eclipse.core.resources.IFile" />
+                              <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
+                              <test property="org.eclipse.core.resources.path" value="/*/pubspec.yaml" />
+                           </and>
+                        </or>
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
 
             <command commandId="org.dart4e.commands.run_pub_get" icon="platform:/plugin/org.eclipse.debug.ui/icons/full/obj16/refresh_tab.png">
                <visibleWhen>
@@ -1053,25 +1074,6 @@
                </visibleWhen>
             </command>
 
-            <command commandId="org.dart4e.commands.run_pub_downgrade" icon="platform:/plugin/org.eclipse.ui.ide/icons/full/etool16/next_nav.png">
-               <visibleWhen>
-                  <iterate>
-                     <and>
-                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
-                        <not><reference definitionId="org.dart4e.flutter.project.nature.isConfigured" /></not>
-                        <or>
-                           <adapt type="org.eclipse.core.resources.IProject" />
-                           <and>
-                              <adapt type="org.eclipse.core.resources.IFile" />
-                              <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
-                              <test property="org.eclipse.core.resources.path" value="/*/pubspec.yaml" />
-                           </and>
-                        </or>
-                     </and>
-                  </iterate>
-               </visibleWhen>
-            </command>
-
             <command commandId="org.dart4e.commands.run_pub_upgrade_major_versions">
                <visibleWhen>
                   <iterate>
@@ -1092,6 +1094,25 @@
             </command>
 
             <command commandId="org.dart4e.commands.run_pub_upgrade_tighten">
+               <visibleWhen>
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.project.nature.isConfigured" />
+                        <not><reference definitionId="org.dart4e.flutter.project.nature.isConfigured" /></not>
+                        <or>
+                           <adapt type="org.eclipse.core.resources.IProject" />
+                           <and>
+                              <adapt type="org.eclipse.core.resources.IFile" />
+                              <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
+                              <test property="org.eclipse.core.resources.path" value="/*/pubspec.yaml" />
+                           </and>
+                        </or>
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
+
+            <command commandId="org.dart4e.commands.run_pub_downgrade" icon="platform:/plugin/org.eclipse.ui.ide/icons/full/etool16/next_nav.png">
                <visibleWhen>
                   <iterate>
                      <and>
@@ -1142,27 +1163,47 @@
    <!-- Context Menu: Flutter ...             -->
    <!-- ===================================== -->
    <extension point="org.eclipse.ui.commands">
+      <command id="org.dart4e.flutter.commands.run_pub_deps_nodev" name="%Label_Flutter_Pub_Deps_NoDev" />
       <command id="org.dart4e.flutter.commands.run_pub_get" name="%Label_Flutter_Pub_Get" />
       <command id="org.dart4e.flutter.commands.run_pub_outdated" name="%Label_Flutter_Pub_Outdated" />
       <command id="org.dart4e.flutter.commands.run_pub_upgrade" name="%Label_Flutter_Pub_Upgrade" />
-      <command id="org.dart4e.flutter.commands.run_pub_downgrade" name="%Label_Flutter_Pub_Downgrade" />
       <command id="org.dart4e.flutter.commands.run_pub_upgrade_major_versions" name="%Label_Flutter_Pub_UpgradeMajorVersions" />
       <command id="org.dart4e.flutter.commands.run_pub_upgrade_tighten" name="%Label_Flutter_Pub_UpgradeTighten" />
+      <command id="org.dart4e.flutter.commands.run_pub_downgrade" name="%Label_Flutter_Pub_Downgrade" />
    </extension>
 
    <extension point="org.eclipse.ui.handlers">
+      <handler class="org.dart4e.flutter.launch.command.RunFlutterPubDepsNoDevHandler" commandId="org.dart4e.flutter.commands.run_pub_deps_nodev" />
       <handler class="org.dart4e.flutter.launch.command.RunFlutterPubGetHandler" commandId="org.dart4e.flutter.commands.run_pub_get" />
       <handler class="org.dart4e.flutter.launch.command.RunFlutterPubOutdatedHandler" commandId="org.dart4e.flutter.commands.run_pub_outdated" />
       <handler class="org.dart4e.flutter.launch.command.RunFlutterPubUpgradeHandler" commandId="org.dart4e.flutter.commands.run_pub_upgrade" />
-      <handler class="org.dart4e.flutter.launch.command.RunFlutterPubDowngradeHandler" commandId="org.dart4e.flutter.commands.run_pub_downgrade" />
       <handler class="org.dart4e.flutter.launch.command.RunFlutterPubUpgradeMajorVersionsHandler" commandId="org.dart4e.flutter.commands.run_pub_upgrade_major_versions" />
       <handler class="org.dart4e.flutter.launch.command.RunFlutterPubUpgradeTightenHandler" commandId="org.dart4e.flutter.commands.run_pub_upgrade_tighten" />
+      <handler class="org.dart4e.flutter.launch.command.RunFlutterPubDowngradeHandler" commandId="org.dart4e.flutter.commands.run_pub_downgrade" />
    </extension>
 
    <extension point="org.eclipse.ui.menus">
       <!-- possible location URIs: https://blogs.itemis.com/auf-einen-blick-eclipse-actions-f%C3%BCr-project-und-package-explorer -->
       <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <menu label="Flutter" icon="src/main/resources/flutter/images/logo/flutter_icon.png" id="org.dart4e.flutter.projectMenu">
+
+            <command commandId="org.dart4e.flutter.commands.run_pub_deps_nodev" icon="platform:/plugin/org.eclipse.ui.navigator/icons/full/elcl16/content.png">
+               <visibleWhen>
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        <or>
+                           <adapt type="org.eclipse.core.resources.IProject" />
+                           <and>
+                              <adapt type="org.eclipse.core.resources.IFile" />
+                              <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
+                              <test property="org.eclipse.core.resources.path" value="/*/pubspec.yaml" />
+                           </and>
+                        </or>
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
 
             <command commandId="org.dart4e.flutter.commands.run_pub_get" icon="platform:/plugin/org.eclipse.debug.ui/icons/full/obj16/refresh_tab.png">
                <visibleWhen>
@@ -1218,24 +1259,6 @@
                </visibleWhen>
             </command>
 
-            <command commandId="org.dart4e.flutter.commands.run_pub_downgrade" icon="platform:/plugin/org.eclipse.ui.ide/icons/full/etool16/next_nav.png">
-               <visibleWhen>
-                  <iterate>
-                     <and>
-                        <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
-                        <or>
-                           <adapt type="org.eclipse.core.resources.IProject" />
-                           <and>
-                              <adapt type="org.eclipse.core.resources.IFile" />
-                              <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
-                              <test property="org.eclipse.core.resources.path" value="/*/pubspec.yaml" />
-                           </and>
-                        </or>
-                     </and>
-                  </iterate>
-               </visibleWhen>
-            </command>
-
             <command commandId="org.dart4e.flutter.commands.run_pub_upgrade_major_versions">
                <visibleWhen>
                   <iterate>
@@ -1255,6 +1278,24 @@
             </command>
 
             <command commandId="org.dart4e.flutter.commands.run_pub_upgrade_tighten">
+               <visibleWhen>
+                  <iterate>
+                     <and>
+                        <reference definitionId="org.dart4e.flutter.project.nature.isConfigured" />
+                        <or>
+                           <adapt type="org.eclipse.core.resources.IProject" />
+                           <and>
+                              <adapt type="org.eclipse.core.resources.IFile" />
+                              <!-- https://github.com/eclipse-platform/eclipse.platform.ui/blob/master/docs/Command_Core_Expressions.md#property-testers -->
+                              <test property="org.eclipse.core.resources.path" value="/*/pubspec.yaml" />
+                           </and>
+                        </or>
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
+
+            <command commandId="org.dart4e.flutter.commands.run_pub_downgrade" icon="platform:/plugin/org.eclipse.ui.ide/icons/full/etool16/next_nav.png">
                <visibleWhen>
                   <iterate>
                      <and>
