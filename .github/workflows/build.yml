@@ -215,13 +215,14 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         RELEASE_NAME: ${{ steps.release.outputs.name }}
+        COMMIT_MSG: ${{ github.event.head_commit.message }} # https://stackoverflow.com/a/78420438/5116073
       # https://cli.github.com/manual/gh_release_create
       run: |
         GH_DEBUG=1 gh release create "$RELEASE_NAME" \
           --title "$RELEASE_NAME" \
           ${{ steps.release.outputs.name == 'stable' && '--latest' || '' }} \
           ${{ steps.release.outputs.name == 'preview' && '--prerelease' || '' }} \
-          --notes "${{ github.event.head_commit.message }}" \
+          --notes "$COMMIT_MSG" \
           --target "${{ github.sha }}" \
           updatesite/target/org.dart4e.plugin.updatesite.zip
 
