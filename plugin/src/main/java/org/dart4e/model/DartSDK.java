@@ -45,7 +45,7 @@ import net.sf.jstuff.core.validation.Args;
    isGetterVisibility = JsonAutoDetect.Visibility.NONE //
 )
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class DartSDK implements Comparable<DartSDK> {
+public class DartSDK implements Comparable<DartSDK> {
 
    /**
     * Points to a folder containing the Dart SDK

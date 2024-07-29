@@ -170,7 +170,15 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
    public DartSDK getDartSDK() {
       var dartSDK = this.dartSDK;
       if (dartSDK == null) {
-         dartSDK = this.dartSDK = new DartSDK(installRoot.resolve("bin/cache/dart-sdk"));
+         dartSDK = this.dartSDK = new DartSDK(installRoot.resolve("bin/cache/dart-sdk")) {
+            @Override
+            public Path getPubCacheDir() {
+               // TODO workaround for https://github.com/dart4e/dart4e/issues/51 / https://github.com/flutter/flutter/issues/105257
+               if (SystemUtils.IS_OS_MAC && System.getenv(ENV_PUB_CACHE) == null)
+                  return FlutterSDK.this.getInstallRoot().resolve(".pub-cache");
+               return super.getPubCacheDir();
+            }
+         };
       }
       return dartSDK;
    }
