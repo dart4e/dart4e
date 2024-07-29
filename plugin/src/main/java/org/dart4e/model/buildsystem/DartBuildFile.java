@@ -85,7 +85,7 @@ public class DartBuildFile extends BuildFile {
          if (packages != null) {
             for (final var entry : packages.entrySet()) {
                try {
-                  final var name = entry.getKey();
+                  final String name = entry.getKey();
                   monitor.setTaskName("Locating Dart library " + name + "...");
 
                   final var meta = entry.getValue();
@@ -112,11 +112,11 @@ public class DartBuildFile extends BuildFile {
                      case "path" -> {
                         final var path = (@NonNull String) ((Map<?, ?>) descr).get("path");
                         final var isRelative = (Boolean) ((Map<?, ?>) descr).get("relative");
-                        yield isRelative ? Resources.toAbsolutePath(project).resolve(path).normalize() : Paths.get(path);
+                        yield isRelative //
+                              ? Resources.toAbsolutePath(project).resolve(path).normalize()
+                              : Paths.get(path);
                      }
-                     case "sdk" -> {
-                        yield getSDKDependencyLocation((String) descr, name, version);
-                     }
+                     case "sdk" -> getSDKDependencyLocation((String) descr, name, version);
                      default -> throw new IllegalArgumentException("Unkown source " + source + " for package " + name);
                   };
 

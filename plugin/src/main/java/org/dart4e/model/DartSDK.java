@@ -153,7 +153,7 @@ public final class DartSDK implements Comparable<DartSDK> {
          return false;
       final var other = (DartSDK) obj;
       return Objects.equals(name, other.name) //
-         && Objects.equals(installRoot, other.installRoot);
+            && Objects.equals(installRoot, other.installRoot);
    }
 
    public Path getDartExecutable() {
@@ -180,8 +180,8 @@ public final class DartSDK implements Comparable<DartSDK> {
          // https://dart.dev/resources/dart-3-migration#other-tools-changes
          final var version = getVersion();
          return (version != null && version.startsWith("2.") //
-            ? Paths.get(SystemUtils.getEnvironmentVariable("APPDATA", ""), "Pub", "Cache") // Dart < 3
-            : Paths.get(SystemUtils.getEnvironmentVariable("LOCALAPPDATA", ""), "Pub", "Cache") // Dart >= 3
+               ? Paths.get(SystemUtils.getEnvironmentVariable("APPDATA", ""), "Pub", "Cache") // Dart < 3
+               : Paths.get(SystemUtils.getEnvironmentVariable("LOCALAPPDATA", ""), "Pub", "Cache") // Dart >= 3
          ).normalize().toAbsolutePath();
       }
       return Paths.get(SystemUtils.getEnvironmentVariable("HOME", ""), ".pub-cache").normalize().toAbsolutePath();

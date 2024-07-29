@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import org.dart4e.Constants;
 import org.dart4e.Dart4EPlugin;
+import org.dart4e.model.DartDependency;
 import org.dart4e.model.buildsystem.BuildFile;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.project.DartProjectNature;
@@ -25,6 +26,7 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -112,9 +114,7 @@ public final class DartDependenciesUpdater extends AbstractResourcesChangedListe
             return true; // check children
 
          switch (resource.getName()) {
-            case Constants.PUBSPEC_YAML_FILENAME, Constants.PUBSPEC_LOCK_FILENAME -> {
-               changedProjects.add(project);
-            }
+            case Constants.PUBSPEC_YAML_FILENAME, Constants.PUBSPEC_LOCK_FILENAME -> changedProjects.add(project);
          }
          return false; // no need to check children
       };
@@ -148,7 +148,7 @@ public final class DartDependenciesUpdater extends AbstractResourcesChangedListe
          if (stdLibFolder.exists()) {
             if (!stdLibFolder.isLinked())
                return Dart4EPlugin.status().createError("Cannot update Dart standard library folder. Physical folder with name '"
-                  + STDLIB_MAGIC_FOLDER_NAME + "' exists!");
+                     + STDLIB_MAGIC_FOLDER_NAME + "' exists!");
             if (!asNonNull(stdLibFolder.getLocation()).toFile().toPath().equals(sdk.getStandardLibDir())) {
                stdLibFolder.createLink(sdk.getStandardLibDir().toUri(), IResource.REPLACE, monitor);
             }
@@ -173,7 +173,7 @@ public final class DartDependenciesUpdater extends AbstractResourcesChangedListe
          if (depsFolder.exists()) {
             if (!depsFolder.isVirtual())
                return Dart4EPlugin.status().createError("Cannot update 'Dart Dependencies' list. Physical folder with name '"
-                  + DEPS_MAGIC_FOLDER_NAME + "' exists!");
+                     + DEPS_MAGIC_FOLDER_NAME + "' exists!");
          } else {
             depsFolder.create(IResource.VIRTUAL, true, monitor);
          }
@@ -181,14 +181,14 @@ public final class DartDependenciesUpdater extends AbstractResourcesChangedListe
          final var depsToCheck = buildFile //
             .getDependencies(monitor).stream() //
             .collect(Collectors.toMap(d -> d.name //
-               + ("0.0.0".equals(d.version) ? "" : " [" + d.version + "]") //
-               + (d.isDevDependency ? " (dev)" : ""), //
+                  + ("0.0.0".equals(d.version) ? "" : " [" + d.version + "]") //
+                  + (d.isDevDependency ? " (dev)" : ""), //
                Function.identity()));
 
-         for (final var folder : depsFolder.members()) {
+         for (final IResource folder : depsFolder.members()) {
             if (depsToCheck.containsKey(folder.getName())) {
-               final var dep = asNonNullUnsafe(depsToCheck.get(folder.getName()));
-               final var rawLoc = folder.getRawLocation();
+               final DartDependency dep = asNonNullUnsafe(depsToCheck.get(folder.getName()));
+               final IPath rawLoc = folder.getRawLocation();
                if (rawLoc != null && dep.location.equals(rawLoc.toFile().toPath())) {
                   depsToCheck.remove(folder.getName());
                } else {
