@@ -53,8 +53,6 @@ public final class FlutterHotReloadListener extends AbstractResourcesChangedList
          if (project == null) // e.g. Workspace Root
             return true; // check children
 
-         // ignore children
-
          // if the project was just opened ignore it
          if (!Projects.hasNature(project, DartProjectNature.NATURE_ID) //
                || resource == project && (delta.getFlags() & IResourceDelta.OPEN) != 0)
@@ -94,8 +92,7 @@ public final class FlutterHotReloadListener extends AbstractResourcesChangedList
    private void hotReload(final IProject project) {
       FlutterDebugTarget.ACTIVE_TARGETS.stream() //
          .filter(target -> !target.isDisconnected() && project.equals(target.getProject())) //
-         .findFirst() //
-         .ifPresent(target -> {
+         .forEach(target -> {
             try {
                Dart4EPlugin.log().debug("Hot reloading [{0}]...", target.getName());
             } catch (final Exception ex) {
