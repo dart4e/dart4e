@@ -41,7 +41,7 @@ public class ProgramLaunchConfigLauncher extends LaunchConfigurationDelegate {
 
    @Override
    public void launch(final ILaunchConfiguration config, final String mode, final ILaunch launch, final @Nullable IProgressMonitor monitor)
-      throws CoreException {
+         throws CoreException {
 
       final var project = LaunchConfigurations.getProject(config);
       if (project == null) {
@@ -77,12 +77,13 @@ public class ProgramLaunchConfigLauncher extends LaunchConfigurationDelegate {
       switch (mode) {
 
          case ILaunchManager.DEBUG_MODE:
-            // https://github.com/dart-lang/sdk/blob/main/pkg/dds/tool/dap/README.md
+            // https://github.com/dart-lang/sdk/blob/main/third_party/pkg/dap/tool/README.md#launchattach-arguments
             final var debuggerOpts = new TreeBuilder<String>() //
                .put("cwd", workdir.toString()) //
                .put("program", dartMainFilePath.toString()) //
                // TODO appendEnvVars handling, i.e. running with a clean env is not supported (yet) by Dart Debug Adapter
                .put("env", envVars) //
+               // .put("sendLogsToClient", true) // has performance implications, intended for troubleshooting
                .put("args", programArgs) //
                .put("vmAdditionalArgs", vmArgs) //
                .getMap();
@@ -94,7 +95,7 @@ public class ProgramLaunchConfigLauncher extends LaunchConfigurationDelegate {
                      List.of("debug_adapter")) //
                   .setMonitorDebugAdapter(LaunchConfigurations.isMonitorDebugAdapter(config)) //
                   .setDspParameters(debuggerOpts);
-               new LaunchDebugConfig(project).launch(builder);
+               new LaunchDebugConfig(project, LaunchConfigurations.isHotReloadOnSave(config)).launch(builder);
             } catch (final CoreException ex) {
                Dialogs.showStatus("Failed to start debug session", Dart4EPlugin.status().createError(ex), true);
             }

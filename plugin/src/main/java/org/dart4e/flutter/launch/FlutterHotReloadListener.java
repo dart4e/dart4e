@@ -71,9 +71,6 @@ public final class FlutterHotReloadListener extends AbstractResourcesChangedList
          if (resource.getType() != IResource.FILE)
             return true; // check children
 
-         if (resource.toString().endsWith(".dart_tool/dartpad/web_plugin_registrant.dart"))
-            return false; // ignore to prevent "Null check operator used on a null value" on launch in debug mode on web target
-
          if (resource.getName().endsWith(".dart")) {
             changedProjects.add(project);
          }
@@ -91,7 +88,13 @@ public final class FlutterHotReloadListener extends AbstractResourcesChangedList
 
    private void hotReload(final IProject project) {
       FlutterDebugTarget.ACTIVE_TARGETS.stream() //
-         .filter(target -> !target.isDisconnected() && project.equals(target.getProject())) //
+         .filter(target -> target.isHotReloadOnSave() //
+               && !target.isDisconnected() //
+               && project.equals(target.getProject()) //
+
+               // only attempt hot reload once dart debugger is fully setup to avoid race-conditions such as
+               // https://github.com/flutter/flutter/issues/152819
+               && target.getDartDebuggerURI() != null) //
          .forEach(target -> {
             try {
                Dart4EPlugin.log().debug("Hot reloading [{0}]...", target.getName());

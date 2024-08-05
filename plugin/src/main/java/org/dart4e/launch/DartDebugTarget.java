@@ -28,4 +28,6 @@ public interface DartDebugTarget extends IDebugTarget {
    String getDartDebuggerURI();
 
    IProject getProject();
+
+   boolean isHotReloadOnSave();
 }

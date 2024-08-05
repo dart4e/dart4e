@@ -43,7 +43,7 @@ public class FlutterAppLaunchConfigLauncher extends LaunchConfigurationDelegate 
 
    @Override
    public void launch(final ILaunchConfiguration config, final String mode, final ILaunch launch, final @Nullable IProgressMonitor monitor)
-      throws CoreException {
+         throws CoreException {
 
       final var project = LaunchConfigurations.getProject(config);
       if (project == null) {
@@ -92,12 +92,13 @@ public class FlutterAppLaunchConfigLauncher extends LaunchConfigurationDelegate 
       switch (mode) {
 
          case ILaunchManager.DEBUG_MODE:
-            // https://github.com/flutter/flutter/blob/master/packages/flutter_tools/lib/src/debug_adapters/README.md
+            // https://github.com/flutter/flutter/blob/master/packages/flutter_tools/lib/src/debug_adapters/README.md#launchattach-arguments
             final var debuggerOpts = new TreeBuilder<String>() //
                .put("cwd", workdir.toString()) //
                // TODO appendEnvVars handling, i.e. running with a clean env is not supported (yet) by Dart Debug Adapter
                .put("evaluateGettersInDebugViews", true) //
                .put("env", envVars) //
+               // .put("sendLogsToClient", true) // has performance implications, intended for troubleshooting
                .put("toolArgs", flutterArgs) //
                .getMap();
 
@@ -108,7 +109,7 @@ public class FlutterAppLaunchConfigLauncher extends LaunchConfigurationDelegate 
                      List.of("debug_adapter")) //
                   .setMonitorDebugAdapter(LaunchConfigurations.isMonitorDebugAdapter(config)) //
                   .setDspParameters(debuggerOpts);
-               new FlutterLaunchDebugConfig(project).launch(builder);
+               new FlutterLaunchDebugConfig(project, LaunchConfigurations.isHotReloadOnSave(config)).launch(builder);
             } catch (final CoreException ex) {
                Dialogs.showStatus("Failed to start debug session", Dart4EPlugin.status().createError(ex), true);
             }

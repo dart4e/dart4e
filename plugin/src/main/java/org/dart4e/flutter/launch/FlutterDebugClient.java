@@ -14,7 +14,7 @@ import org.dart4e.launch.DartDebugClient;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 
 /**
- * https://github.com/flutter/flutter/tree/master/packages/flutter_tools/lib/src/debug_adapters#custom-events
+ * https://github.com/flutter/flutter/tree/master/packages/flutter_tools/lib/src/debug_adapters/README.md#custom-events
  *
  * @author Sebastian Thomschke
  */

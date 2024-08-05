@@ -87,7 +87,13 @@ public final class DartHotReloadListener extends AbstractResourcesChangedListene
 
    private void hotReload(final IProject project) {
       DartDebugTarget.ACTIVE_TARGETS.stream() //
-         .filter(target -> !target.isDisconnected() && project.equals(target.getProject())) //
+      .filter(target -> target.isHotReloadOnSave() //
+         && !target.isDisconnected() //
+         && project.equals(target.getProject()) //
+
+         // only attempt hot reload once dart debugger is fully setup to avoid race-conditions such as
+         // https://github.com/flutter/flutter/issues/152819
+         && target.getDartDebuggerURI() != null) //
          .forEach(target -> {
             try {
                Dart4EPlugin.log().debug("Hot reloading [{0}]...", target.getName());

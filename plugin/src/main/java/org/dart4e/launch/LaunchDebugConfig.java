@@ -69,6 +69,11 @@ public class LaunchDebugConfig extends DSPLaunchDelegate {
       }
 
       @Override
+      public boolean isHotReloadOnSave() {
+         return hotReloadOnSave;
+      }
+
+      @Override
       public IProject getProject() {
          return project;
       }
@@ -83,9 +88,11 @@ public class LaunchDebugConfig extends DSPLaunchDelegate {
    private static final boolean TRACE_IO = Platform.getDebugBoolean("org.dart4e/trace/debugserv/io");
 
    private final IProject project;
+   private boolean hotReloadOnSave;
 
-   public LaunchDebugConfig(final IProject project) {
+   public LaunchDebugConfig(final IProject project, final boolean hotReloadOnSave) {
       this.project = project;
+      this.hotReloadOnSave = hotReloadOnSave;
    }
 
    @Override

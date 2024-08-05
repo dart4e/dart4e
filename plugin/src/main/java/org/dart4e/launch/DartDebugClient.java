@@ -14,7 +14,7 @@ import org.eclipse.lsp4j.debug.services.IDebugProtocolClient;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 
 /**
- * https://github.com/dart-lang/sdk/tree/main/third_party/pkg/dap/tool#custom-events
+ * https://github.com/dart-lang/sdk/blob/main/third_party/pkg/dap/tool/README.md#custom-events
  *
  * @author Sebastian Thomschke
  */
