@@ -180,6 +180,11 @@
    <!-- ===================================== -->
    <!-- Syntax Highlighting                   -->
    <!-- ===================================== -->
+   <extension point="org.eclipse.core.contenttype.contentTypes">
+      <!-- associate Flutter Application Resource Bundle files (*.arb) with the TM4E Language Pack JSON content type to enable syntax highlighting -->
+      <file-association content-type="org.eclipse.tm4e.language_pack.json" file-extensions="arb" />
+   </extension>
+
    <extension point="org.eclipse.tm4e.registry.grammars">
       <grammar path="src/main/resources/langcfg/dart.tmLanguage.json" scopeName="source.dart" />
       <scopeNameContentTypeBinding contentTypeId="org.dart4e.content.dart" scopeName="source.dart" />
