@@ -6,6 +6,8 @@
  */
 package org.dart4e.flutter.launch;
 
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
+
 import java.util.Map;
 
 import org.dart4e.Dart4EPlugin;
@@ -109,12 +111,12 @@ public interface FlutterDebugClient extends DartDebugClient {
     */
    final class FlutterServiceExtensionStateChangedEvent extends LSPEventArgs {
       public final String extension;
-      public final String value;
+      public final Object value;
 
       public FlutterServiceExtensionStateChangedEvent(final Map<String, ?> args) {
          super(args);
          extension = getStringArg("extension");
-         value = getStringArg("value");
+         value = asNonNull(args.get("value"));
       }
    }
 }
