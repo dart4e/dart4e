@@ -22,14 +22,16 @@ import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.prefs.DartWorkspacePreference;
 import org.dart4e.util.TreeBuilder;
 import org.dart4e.util.io.LineTransformingOutputStream;
+import org.dart4e.util.io.VSCodeJsonRpcLineTracing;
+import org.dart4e.util.io.VSCodeJsonRpcLineTracing.Source;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.lsp4e.server.ProcessStreamConnectionProvider;
 
 import de.sebthom.eclipse.commons.resources.Projects;
 import net.sf.jstuff.core.Strings;
-import net.sf.jstuff.core.io.stream.LinePrefixingTeeInputStream;
-import net.sf.jstuff.core.io.stream.LinePrefixingTeeOutputStream;
+import net.sf.jstuff.core.io.stream.LineCapturingInputStream;
+import net.sf.jstuff.core.io.stream.LineCapturingOutputStream;
 
 /**
  * Launches the Dart language server.
@@ -38,8 +40,9 @@ import net.sf.jstuff.core.io.stream.LinePrefixingTeeOutputStream;
  */
 public final class DartLangServerLauncher extends ProcessStreamConnectionProvider {
 
-   private static final boolean TRACE_IO = Platform.getDebugBoolean("org.dart4e/trace/langserv/io");
    private static final boolean TRACE_INIT_OPTIONS = Platform.getDebugBoolean("org.dart4e/trace/langserv/init_options");
+   private static final boolean TRACE_IO = Platform.getDebugBoolean("org.dart4e/trace/langserv/io");
+   private static final boolean TRACE_IO_VERBOSE = Platform.getDebugBoolean("org.dart4e/trace/langserv/io/verbose");
 
    public DartLangServerLauncher() {
       setWorkingDirectory(SystemUtils.getUserDir().getAbsolutePath());
@@ -48,12 +51,12 @@ public final class DartLangServerLauncher extends ProcessStreamConnectionProvide
    @Override
    public @Nullable InputStream getErrorStream() {
       final var stream = super.getErrorStream();
-      if (!TRACE_IO)
+      if (!TRACE_IO && !TRACE_IO_VERBOSE)
          return stream;
 
       if (stream == null)
          return null;
-      return new LinePrefixingTeeInputStream(stream, System.out, "SRVERR >> ");
+      return new LineCapturingInputStream(stream, line -> VSCodeJsonRpcLineTracing.traceLine(Source.SERVER_ERR, line, TRACE_IO_VERBOSE));
    }
 
    private DartSDK dartSDK = lateNonNull();
@@ -102,8 +105,8 @@ public final class DartLangServerLauncher extends ProcessStreamConnectionProvide
       if (stream == null)
          return null;
 
-      return TRACE_IO //
-            ? new LinePrefixingTeeInputStream(stream, System.out, "SERVER >> ")
+      return TRACE_IO || TRACE_IO_VERBOSE //
+            ? new LineCapturingInputStream(stream, line -> VSCodeJsonRpcLineTracing.traceLine(Source.SERVER_OUT, line, TRACE_IO_VERBOSE))
             : stream;
    }
 
@@ -128,8 +131,8 @@ public final class DartLangServerLauncher extends ProcessStreamConnectionProvide
          });
       }
 
-      return TRACE_IO //
-            ? new LinePrefixingTeeOutputStream(stream, System.out, "CLIENT >> ")
+      return TRACE_IO || TRACE_IO_VERBOSE //
+            ? new LineCapturingOutputStream(stream, line -> VSCodeJsonRpcLineTracing.traceLine(Source.CLIENT_OUT, line, TRACE_IO_VERBOSE))
             : stream;
    }
 

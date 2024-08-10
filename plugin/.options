@@ -1,7 +1,9 @@
 # Debugging options for the dart4e plug-in
 
 org.dart4e/trace/debugserv/io=false
+org.dart4e/trace/debugserv/io/verbose=false
 org.dart4e/trace/langserv/init_options=false
 org.dart4e/trace/langserv/io=false
+org.dart4e/trace/langserv/io/verbose=false
 org.dart4e/trace/spellcheck/regions=false
 org.dart4e/trace/spellcheck/tokens=false

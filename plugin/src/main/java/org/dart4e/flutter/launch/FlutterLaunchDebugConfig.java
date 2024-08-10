@@ -7,6 +7,7 @@
 package org.dart4e.flutter.launch;
 
 import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNullUnsafe;
+import static org.dart4e.launch.LaunchDebugConfig.*;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -16,9 +17,10 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 import org.dart4e.launch.LaunchConfigurations;
+import org.dart4e.util.io.VSCodeJsonRpcLineTracing;
+import org.dart4e.util.io.VSCodeJsonRpcLineTracing.Source;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -32,8 +34,8 @@ import org.eclipse.lsp4j.jsonrpc.Launcher;
 import org.eclipse.lsp4j.jsonrpc.MessageConsumer;
 import org.eclipse.lsp4j.jsonrpc.debug.DebugLauncher;
 
-import net.sf.jstuff.core.io.stream.LinePrefixingTeeInputStream;
-import net.sf.jstuff.core.io.stream.LinePrefixingTeeOutputStream;
+import net.sf.jstuff.core.io.stream.LineCapturingInputStream;
+import net.sf.jstuff.core.io.stream.LineCapturingOutputStream;
 
 /**
  * @author Sebastian Thomschke
@@ -94,8 +96,6 @@ public class FlutterLaunchDebugConfig extends DSPLaunchDelegate {
       }
    }
 
-   private static final boolean TRACE_IO = Platform.getDebugBoolean("org.dart4e/trace/debugserv/io");
-
    private final IProject project;
    private boolean hotReloadOnSave;
 
@@ -109,12 +109,14 @@ public class FlutterLaunchDebugConfig extends DSPLaunchDelegate {
    @NonNullByDefault({})
    protected FlutterDebugTarget createDebugTarget(final SubMonitor mon, final Supplier<TransportStreams> streamsSupplier,
          final ILaunch launch, final Map<String, Object> dspParameters) throws CoreException {
-      final var effectiveStreamsSupplier = TRACE_IO //
+      final var effectiveStreamsSupplier = TRACE_IO || TRACE_IO_VERBOSE //
             ? (Supplier<TransportStreams>) () -> {
                final var streams = streamsSupplier.get();
                return new DefaultTransportStreams( //
-                  new LinePrefixingTeeInputStream(asNonNullUnsafe(streams.in), System.out, "SERVER >> "), //
-                  new LinePrefixingTeeOutputStream(asNonNullUnsafe(streams.out), System.out, "CLIENT >> "));
+                  new LineCapturingInputStream(asNonNullUnsafe(streams.in), line -> VSCodeJsonRpcLineTracing.traceLine(Source.SERVER_OUT,
+                     line, TRACE_IO_VERBOSE)), //
+                  new LineCapturingOutputStream(asNonNullUnsafe(streams.out), line -> VSCodeJsonRpcLineTracing.traceLine(Source.CLIENT_OUT,
+                     line, TRACE_IO_VERBOSE)));
             }
             : streamsSupplier;
 
