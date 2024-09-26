@@ -9,7 +9,7 @@
       </location>
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <repository location="https://download.eclipse.org/releases/2024-06/"/>
+         <repository location="https://download.eclipse.org/releases/2024-09/"/>
          <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
          <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
          <unit id="org.eclipse.tm.terminal.feature.feature.group" version="0.0.0"/>
@@ -17,7 +17,7 @@
       </location>
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <repository location="https://download.eclipse.org/eclipse/updates/4.32/"/>
+         <repository location="https://download.eclipse.org/eclipse/updates/4.33/"/>
          <unit id="org.eclipse.jface.text.tests" version="0.0.0"/>
          <unit id="org.eclipse.test.feature.group" version="0.0.0"/>
       </location>
@@ -25,6 +25,12 @@
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
          <repository location="https://download.eclipse.org/reddeer/releases/latest"/>
          <unit id="org.eclipse.reddeer.go" version="0.0.0"/>
+      </location>
+
+      <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <!-- https://download.eclipse.org/tools/orbit/downloads/ -->
+         <repository location="https://download.eclipse.org/tools/orbit/downloads/2022-03/"/>
+         <unit id="org.json" version="0.0.0"/> <!-- required by reddeer -->
       </location>
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
