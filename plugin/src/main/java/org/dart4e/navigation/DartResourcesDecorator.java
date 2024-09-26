@@ -88,7 +88,7 @@ public class DartResourcesDecorator extends BaseLabelProvider implements ILabelD
 
          if (DartProjectNature.hasNature(project)) {
             if (folder.isLinked() //
-               && folder.getName().equals(DartDependenciesUpdater.STDLIB_MAGIC_FOLDER_NAME) //
+                  && folder.getName().equals(DartDependenciesUpdater.STDLIB_MAGIC_FOLDER_NAME) //
             ) {
                final var prefs = DartProjectPreference.get(asNonNullUnsafe(project));
                final var dartSDK = prefs.getEffectiveDartSDK();
@@ -96,7 +96,7 @@ public class DartResourcesDecorator extends BaseLabelProvider implements ILabelD
             }
 
             if (folder.isVirtual() //
-               && folder.getName().equals(DartDependenciesUpdater.DEPS_MAGIC_FOLDER_NAME) //
+                  && folder.getName().equals(DartDependenciesUpdater.DEPS_MAGIC_FOLDER_NAME) //
             ) {
                int depCount = 0;
                try {

@@ -34,8 +34,8 @@ public abstract class TestLaunchConfigurations {
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
       final var launchConfigType = launchMgr.getLaunchConfigurationType(LAUNCH_CONFIGURATION_ID);
       final var launchConfigName = testResource == null //
-         ? project.getName() //
-         : project.getName() + " (" + testResource + ")";
+            ? project.getName() //
+            : project.getName() + " (" + testResource + ")";
       final var newLaunchConfig = launchConfigType.newInstance(null, //
          launchMgr.generateLaunchConfigurationName(launchConfigName));
       initialize(newLaunchConfig, project, testResource);
@@ -49,7 +49,7 @@ public abstract class TestLaunchConfigurations {
    }
 
    private static void initialize(final ILaunchConfigurationWorkingCopy config, final IProject project,
-      final @Nullable String testResource) {
+         final @Nullable String testResource) {
       initialize(config);
       LaunchConfigurations.setProject(config, project);
       LaunchConfigurations.setAlternativeDartSDK(config, DartProjectPreference.get(project).getAlternateDartSDK());

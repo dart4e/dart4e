@@ -62,12 +62,12 @@ public final class DartEditor extends ExtensionBasedTextEditor {
       if (viewer instanceof final ISourceViewerExtension4 viewer4) {
          final var contentAssistantFacade = viewer4.getContentAssistantFacade();
          if (contentAssistantFacade != null //
-            && Fields.read(contentAssistantFacade, "fContentAssistant") instanceof final ContentAssistant contentAssistant)
+               && Fields.read(contentAssistantFacade, "fContentAssistant") instanceof final ContentAssistant contentAssistant)
             return contentAssistant;
       }
 
       if (viewer instanceof SourceViewer //
-         && Fields.read(viewer, "fContentAssistant") instanceof final ContentAssistant contentAssistant)
+            && Fields.read(viewer, "fContentAssistant") instanceof final ContentAssistant contentAssistant)
          return contentAssistant;
 
       return null;
@@ -122,8 +122,8 @@ public final class DartEditor extends ExtensionBasedTextEditor {
          for (final var breakpoint : breakpoints) {
             try {
                if (breakpoint instanceof final ILineBreakpoint lineBreakpoint //
-                  && resource.equals(breakpoint.getMarker().getResource()) //
-                  && lineBreakpoint.getLineNumber() == lineIndex + 1) {
+                     && resource.equals(breakpoint.getMarker().getResource()) //
+                     && lineBreakpoint.getLineNumber() == lineIndex + 1) {
                   breakpoint.delete();
                }
             } catch (final CoreException ex) {

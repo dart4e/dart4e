@@ -62,11 +62,11 @@ public final class FlutterConsole extends MessageConsole {
    public static final String CONSOLE_TYPE = FlutterConsole.class.getName();
 
    private static void runWithConsole(final IProgressMonitor monitor, final String headLine, final FlutterSDK flutterSDK,
-      final @Nullable IProject project, final @Nullable Path workdir, String... flutterArgs) throws CoreException {
+         final @Nullable IProject project, final @Nullable Path workdir, String... flutterArgs) throws CoreException {
 
       if (flutterArgs.length > 0 && "pub".equals(flutterArgs[0]) //
-         && Consoles.isAnsiColorsSupported() //
-         && !ArrayUtils.contains(flutterArgs, "--color")) {
+            && Consoles.isAnsiColorsSupported() //
+            && !ArrayUtils.contains(flutterArgs, "--color")) {
          flutterArgs = ArrayUtils.add(flutterArgs, "--color");
       }
 
@@ -75,8 +75,8 @@ public final class FlutterConsole extends MessageConsole {
       final var onTerminated = new CompletableFuture<@Nullable Void>();
       final var console = new FlutterConsole(project, onTerminated, monitor);
       Consoles.closeConsoles(c -> c instanceof final FlutterConsole flutterConsole //
-         && flutterConsole.project == project // CHECKSTYLE:IGNORE .*
-         && flutterConsole.onTerminated.toCompletableFuture().isDone());
+            && flutterConsole.project == project // CHECKSTYLE:IGNORE .*
+            && flutterConsole.onTerminated.toCompletableFuture().isDone());
       Consoles.showConsole(console);
 
       try (var out = console.newMessageStream();
@@ -167,7 +167,7 @@ public final class FlutterConsole extends MessageConsole {
     * Runs the Flutter command in the {@link FlutterConsole}.
     */
    public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final FlutterSDK flutterSDK,
-      final @Nullable Path workdir, final String... flutterArgs) throws CoreException {
+         final @Nullable Path workdir, final String... flutterArgs) throws CoreException {
       runWithConsole(monitor, headLine, flutterSDK, null, workdir, flutterArgs);
    }
 
@@ -175,7 +175,7 @@ public final class FlutterConsole extends MessageConsole {
     * Runs the Flutter command in the {@link FlutterConsole}.
     */
    public static void runWithConsole(final IProgressMonitor monitor, final String headLine, final IProject project,
-      final String... flutterArgs) throws CoreException {
+         final String... flutterArgs) throws CoreException {
       final var prefs = FlutterProjectPreference.get(project);
       final var flutterSDK = prefs.getEffectiveFlutterSDK();
       if (flutterSDK == null)
@@ -194,7 +194,7 @@ public final class FlutterConsole extends MessageConsole {
    public final IProgressMonitor monitor;
 
    private FlutterConsole(final @Nullable IProject project, final CompletionStage<@Nullable Void> onTerminated,
-      final IProgressMonitor monitor) {
+         final IProgressMonitor monitor) {
       super("Flutter", CONSOLE_TYPE, null, true);
       this.project = project;
       this.onTerminated = onTerminated;

@@ -34,8 +34,8 @@ public class DartFileSelectionDialog extends ElementTreeSelectionDialog {
 
          if (element instanceof final IContainer container && container.isAccessible()) {
             if (container.getName().startsWith(".") //
-               || DartDependenciesUpdater.DEPS_MAGIC_FOLDER_NAME.equals(container.getName()) //
-               || DartDependenciesUpdater.STDLIB_MAGIC_FOLDER_NAME.equals(container.getName()))
+                  || DartDependenciesUpdater.DEPS_MAGIC_FOLDER_NAME.equals(container.getName()) //
+                  || DartDependenciesUpdater.STDLIB_MAGIC_FOLDER_NAME.equals(container.getName()))
                return false;
 
             try {

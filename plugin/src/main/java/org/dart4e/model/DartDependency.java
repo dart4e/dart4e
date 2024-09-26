@@ -24,7 +24,7 @@ public final class DartDependency implements Comparable<DartDependency> {
    public final String version;
 
    public DartDependency(final Path directory, final String name, final String version, final boolean isDevDependency,
-      final boolean isTransitiveDependency) {
+         final boolean isTransitiveDependency) {
       location = directory;
       this.name = name;
       this.version = version;
