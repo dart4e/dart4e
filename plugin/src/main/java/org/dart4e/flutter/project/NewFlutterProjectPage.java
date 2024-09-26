@@ -87,9 +87,9 @@ public final class NewFlutterProjectPage extends WizardNewProjectCreationPage {
             case "module" -> "project to add a Flutter module to an existing Android or iOS app";
             case "package" -> "shareable Flutter project with modular Dart code";
             case "plugin" -> "shareable Flutter project with an API in Dart code with platform-specific "
-               + "implementations for supported platforms";
+                  + "implementations for supported platforms";
             case "plugin_ffi" -> "shareable Flutter project with an API in Dart code with a platform-specific "
-               + "implementations for supported platforms";
+                  + "implementations for supported platforms";
             case "skeleton" -> "List View / Detail View Flutter app that follows community best practices.";
             default -> item;
          }) //

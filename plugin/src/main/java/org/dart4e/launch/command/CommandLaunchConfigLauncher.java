@@ -39,7 +39,7 @@ public class CommandLaunchConfigLauncher extends LaunchConfigurationDelegate {
 
    @Override
    public void launch(final ILaunchConfiguration config, final String mode, final ILaunch launch, final @Nullable IProgressMonitor monitor)
-      throws CoreException {
+         throws CoreException {
 
       final var project = LaunchConfigurations.getProject(config);
       if (project == null) {

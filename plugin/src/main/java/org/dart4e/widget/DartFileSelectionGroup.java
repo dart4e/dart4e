@@ -60,7 +60,7 @@ public class DartFileSelectionGroup extends Composite {
       txtSelectedDartFile.setEditable(false);
       txtSelectedDartFile.setLayoutData(GridDatas.fillHorizontalExcessive());
       Texts.bind(txtSelectedDartFile, selectedDartFile, this::getDartFile, dartFile -> dartFile == null ? ""
-         : dartFile.getProjectRelativePath().toString());
+            : dartFile.getProjectRelativePath().toString());
 
       btnBrowseForDartFile = new Button(grpDartFile, SWT.NONE);
       btnBrowseForDartFile.setText(Messages.Label_Browse);

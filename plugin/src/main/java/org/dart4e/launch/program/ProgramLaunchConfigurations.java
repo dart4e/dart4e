@@ -32,7 +32,7 @@ public abstract class ProgramLaunchConfigurations {
       final var launchMgr = DebugPlugin.getDefault().getLaunchManager();
       final var launchConfigType = launchMgr.getLaunchConfigurationType(LAUNCH_CONFIGURATION_ID);
       final var newLaunchConfig = launchConfigType.newInstance(null, launchMgr.generateLaunchConfigurationName(project.getName() + " ("
-         + dartFile.getName() + ")"));
+            + dartFile.getName() + ")"));
       initialize(newLaunchConfig, dartFile);
       return newLaunchConfig;
    }
