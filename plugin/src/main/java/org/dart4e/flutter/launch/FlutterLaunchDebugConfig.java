@@ -6,7 +6,7 @@
  */
 package org.dart4e.flutter.launch;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNullUnsafe;
+import static net.sf.jstuff.core.validation.NullAnalysisHelper.*;
 import static org.dart4e.launch.LaunchDebugConfig.*;
 
 import java.io.InputStream;
@@ -65,10 +65,9 @@ public class FlutterLaunchDebugConfig extends DSPLaunchDelegate {
       }
 
       @Override
-      @NonNullByDefault({})
-      public void process(final ProcessEventArguments args) {
-         super.process(args);
-         getProcess().setAttribute(LaunchConfigurations.PROCESS_ATTRIBUTE_PROJECT_NAME, project.getName());
+      public void process(final @Nullable ProcessEventArguments args) {
+         super.process(asNonNullUnsafe(args)); // workaround for nullable changes in LSP4E API between versions
+         asNonNull(getProcess()).setAttribute(LaunchConfigurations.PROCESS_ATTRIBUTE_PROJECT_NAME, project.getName());
       }
 
       @Override

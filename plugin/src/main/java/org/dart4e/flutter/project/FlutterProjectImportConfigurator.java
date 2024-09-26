@@ -55,7 +55,7 @@ public final class FlutterProjectImportConfigurator implements ProjectConfigurat
             public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
                final var fileName = file.getFileName().toString();
                if (Constants.PUBSPEC_YAML_FILENAME.equals(fileName) //
-                  && BuildSystem.guessBuildSystemOfProject(file.getParent()) == BuildSystem.FLUTTER) {
+                     && BuildSystem.guessBuildSystemOfProject(file.getParent()) == BuildSystem.FLUTTER) {
                   flutterProjects.add(file.getParent().toFile());
                }
                return FileVisitResult.CONTINUE;

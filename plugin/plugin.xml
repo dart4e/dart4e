@@ -199,7 +199,7 @@
    </extension>
 
    <extension point="org.eclipse.tm4e.ui.snippets">
-      <snippet name="Dart Example" path="src/main/resources/langcfg/dart.sample.dart" scopeName="source.dart" />
+      <snippet name="Dart Example" path="src/main/resources/langcfg/dart.example.dart" scopeName="source.dart" />
    </extension>
 
 

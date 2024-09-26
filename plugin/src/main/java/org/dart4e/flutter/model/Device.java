@@ -43,7 +43,9 @@ public class Device {
    /** e.g. "SM G970F", "Android SDK built for x86 64", "Windows", "Edge" */
    public final String name;
 
-   /** e.g. "Android 12 (API 31)", "Android 5.0.2 (API 21)", "Microsoft Windows [Version 10.0.19045.2130]", "Microsoft Edge 106.0.1370.52" */
+   /**
+    * e.g. "Android 12 (API 31)", "Android 5.0.2 (API 21)", "Microsoft Windows [Version 10.0.19045.2130]", "Microsoft Edge 106.0.1370.52"
+    */
    public final String sdk;
 
    public final @JsonAlias("emulator") boolean isEmulator;
