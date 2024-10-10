@@ -30,7 +30,7 @@ import net.sf.jstuff.core.ref.MutableObservableRef;
  */
 public class DartSDKSelectionGroup extends Composite {
 
-   public final MutableObservableRef<@Nullable DartSDK> selectedAltSDK = MutableObservableRef.of(null);
+   public final MutableObservableRef<@Nullable DartSDK> selectedAltSDK = MutableObservableRef.ofNullable(null);
 
    public DartSDKSelectionGroup(final Composite parent) {
       this(parent, SWT.NONE);

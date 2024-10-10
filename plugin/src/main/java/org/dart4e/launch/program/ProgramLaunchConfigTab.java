@@ -64,7 +64,7 @@ public class ProgramLaunchConfigTab extends AbstractLaunchConfigurationTab {
    }
 
    @Override
-   public String getId() {
+   public @Nullable String getId() {
       return ProgramLaunchConfigTab.class.getName();
    }
 

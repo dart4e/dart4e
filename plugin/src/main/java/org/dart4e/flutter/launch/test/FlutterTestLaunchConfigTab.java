@@ -62,7 +62,7 @@ public class FlutterTestLaunchConfigTab extends AbstractLaunchConfigurationTab {
    private final MutableObservableRef<List<IResource>> selectedTestResources = MutableObservableRef.of(Collections.emptyList());
    private MutableObservableRef<@Nullable FlutterSDK> selectedAltSDK = lateNonNull();
    private MutableObservableRef<String> testCommandArgs = lateNonNull();
-   private final MutableObservableRef<@Nullable Device> selectedDevice = MutableObservableRef.of(null);
+   private final MutableObservableRef<@Nullable Device> selectedDevice = MutableObservableRef.ofNullable(null);
 
    @Override
    public void createControl(final Composite parent) {
@@ -140,7 +140,7 @@ public class FlutterTestLaunchConfigTab extends AbstractLaunchConfigurationTab {
    }
 
    @Override
-   public String getId() {
+   public @Nullable String getId() {
       return FlutterTestLaunchConfigTab.class.getName();
    }
 

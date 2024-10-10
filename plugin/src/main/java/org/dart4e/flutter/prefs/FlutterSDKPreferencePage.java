@@ -50,7 +50,7 @@ public class FlutterSDKPreferencePage extends PreferencePage implements IWorkben
 
    private CheckboxTableViewer sdkTable = lateNonNull();
    private final ObservableSet<FlutterSDK> sdks = new ObservableSet<>(new HashSet<>());
-   private final MutableObservableRef<@Nullable FlutterSDK> defaultSDK = MutableObservableRef.of(null);
+   private final MutableObservableRef<@Nullable FlutterSDK> defaultSDK = MutableObservableRef.ofNullable(null);
 
    public FlutterSDKPreferencePage() {
       setDescription(Messages.Flutter_Prefs_ManageSDKsDescription);

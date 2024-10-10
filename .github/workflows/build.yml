@@ -64,7 +64,7 @@ jobs:
           - target-platform: latest
             java-version: 21
           - target-platform: unstable
-            java-version: 21
+            java-version: 22
 
     steps:
     - name: "Show: GitHub context"

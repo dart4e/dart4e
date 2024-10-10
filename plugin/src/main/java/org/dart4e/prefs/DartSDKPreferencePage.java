@@ -50,7 +50,7 @@ public class DartSDKPreferencePage extends PreferencePage implements IWorkbenchP
 
    private CheckboxTableViewer sdkTable = lateNonNull();
    private final ObservableSet<DartSDK> sdks = new ObservableSet<>(new HashSet<>());
-   private final MutableObservableRef<@Nullable DartSDK> defaultSDK = MutableObservableRef.of(null);
+   private final MutableObservableRef<@Nullable DartSDK> defaultSDK = MutableObservableRef.ofNullable(null);
 
    public DartSDKPreferencePage() {
       setDescription(Messages.Prefs_ManageSDKsDescription);

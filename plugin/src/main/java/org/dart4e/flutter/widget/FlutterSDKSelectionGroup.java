@@ -30,7 +30,7 @@ import net.sf.jstuff.core.ref.MutableObservableRef;
  */
 public class FlutterSDKSelectionGroup extends Composite {
 
-   public final MutableObservableRef<@Nullable FlutterSDK> selectedAltSDK = MutableObservableRef.of(null);
+   public final MutableObservableRef<@Nullable FlutterSDK> selectedAltSDK = MutableObservableRef.ofNullable(null);
 
    public FlutterSDKSelectionGroup(final Composite parent) {
       this(parent, SWT.NONE);

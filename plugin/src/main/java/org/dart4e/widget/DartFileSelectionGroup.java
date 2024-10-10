@@ -37,7 +37,7 @@ public class DartFileSelectionGroup extends Composite {
 
    private @Nullable DartProjectPreference projectPrefs;
    private Button btnBrowseForDartFile;
-   public final MutableObservableRef<@Nullable IFile> selectedDartFile = MutableObservableRef.of(null);
+   public final MutableObservableRef<@Nullable IFile> selectedDartFile = MutableObservableRef.ofNullable(null);
 
    public DartFileSelectionGroup(final Composite parent) {
       this(parent, SWT.NONE);

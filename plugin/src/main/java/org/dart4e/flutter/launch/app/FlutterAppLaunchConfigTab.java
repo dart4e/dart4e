@@ -48,7 +48,7 @@ public class FlutterAppLaunchConfigTab extends AbstractLaunchConfigurationTab {
    private MutableObservableRef<@Nullable IProject> selectedProject = lateNonNull();
    private MutableObservableRef<@Nullable IFile> selectedDartFile = lateNonNull();
    private MutableObservableRef<@Nullable FlutterSDK> selectedAltSDK = lateNonNull();
-   private final MutableObservableRef<@Nullable Device> selectedDevice = MutableObservableRef.of(null);
+   private final MutableObservableRef<@Nullable Device> selectedDevice = MutableObservableRef.ofNullable(null);
    private MutableObservableRef<String> flutterArgs = lateNonNull();
    private MutableObservableRef<Boolean> hotReloadOnSave = lateNonNull();
 
@@ -93,7 +93,7 @@ public class FlutterAppLaunchConfigTab extends AbstractLaunchConfigurationTab {
    }
 
    @Override
-   public String getId() {
+   public @Nullable String getId() {
       return FlutterAppLaunchConfigTab.class.getName();
    }
 

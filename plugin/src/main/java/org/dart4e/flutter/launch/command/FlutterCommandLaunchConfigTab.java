@@ -51,7 +51,7 @@ public class FlutterCommandLaunchConfigTab extends AbstractLaunchConfigurationTa
    }
 
    @Override
-   public String getId() {
+   public @Nullable String getId() {
       return FlutterCommandLaunchConfigTab.class.getName();
    }
 

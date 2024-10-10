@@ -30,7 +30,7 @@ import net.sf.jstuff.core.ref.MutableObservableRef;
  */
 public class DartProjectSelectionGroup extends Composite {
 
-   public final MutableObservableRef<@Nullable IProject> selectedProject = MutableObservableRef.of(null);
+   public final MutableObservableRef<@Nullable IProject> selectedProject = MutableObservableRef.ofNullable(null);
 
    public DartProjectSelectionGroup(final Composite parent) {
       this(parent, SWT.NONE);

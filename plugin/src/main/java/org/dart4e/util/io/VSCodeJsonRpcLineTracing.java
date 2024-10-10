@@ -9,7 +9,6 @@ package org.dart4e.util.io;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.util.Ansi;
 
@@ -37,7 +36,7 @@ public final class VSCodeJsonRpcLineTracing {
          line = Strings.substringBefore(line, "Content-Length: ");
          if (line.isBlank())
             return;
-         line = StringUtils.replace(line, "\"jsonrpc\":\"2.0\",", "");
+         line = Strings.replace(line, "\"jsonrpc\":\"2.0\",", "");
       }
 
       line += (colorize ? Ansi.RESET : "") + System.lineSeparator();
