@@ -15,11 +15,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
+import org.dart4e.prefs.DartWorkspacePreference;
 import org.dart4e.util.io.VSCodeJsonRpcLineTracing;
 import org.dart4e.util.io.VSCodeJsonRpcLineTracing.Source;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -87,9 +87,6 @@ public class LaunchDebugConfig extends DSPLaunchDelegate {
       }
    }
 
-   public static final boolean TRACE_IO = Platform.getDebugBoolean("org.dart4e/trace/debugserv/io");
-   public static final boolean TRACE_IO_VERBOSE = Platform.getDebugBoolean("org.dart4e/trace/debugserv/io/verbose");
-
    private final IProject project;
    private boolean hotReloadOnSave;
 
@@ -103,14 +100,15 @@ public class LaunchDebugConfig extends DSPLaunchDelegate {
    @NonNullByDefault({})
    protected DartDebugTarget createDebugTarget(final SubMonitor mon, final Supplier<TransportStreams> streamsSupplier, final ILaunch launch,
          final Map<String, Object> dspParameters) throws CoreException {
-      final var effectiveStreamsSupplier = TRACE_IO || TRACE_IO_VERBOSE //
+      final var isTraceIOVerbose = DartWorkspacePreference.isDAPTraceIOVerbose();
+      final var effectiveStreamsSupplier = isTraceIOVerbose || DartWorkspacePreference.isDAPTraceIO() //
             ? (Supplier<TransportStreams>) () -> {
                final var streams = streamsSupplier.get();
                return new DefaultTransportStreams( //
                   new LineCapturingInputStream(asNonNullUnsafe(streams.in), line -> VSCodeJsonRpcLineTracing.traceLine(Source.SERVER_OUT,
-                     line, TRACE_IO_VERBOSE)), //
+                     line, isTraceIOVerbose)), //
                   new LineCapturingOutputStream(asNonNullUnsafe(streams.out), line -> VSCodeJsonRpcLineTracing.traceLine(Source.CLIENT_OUT,
-                     line, TRACE_IO_VERBOSE)));
+                     line, isTraceIOVerbose)));
             }
             : streamsSupplier;
 

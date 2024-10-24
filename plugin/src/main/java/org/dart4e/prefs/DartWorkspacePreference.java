@@ -16,6 +16,8 @@ import org.dart4e.Dart4EPlugin;
 import org.dart4e.localization.Messages;
 import org.dart4e.model.DartSDK;
 import org.dart4e.util.io.JSON;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
@@ -31,10 +33,26 @@ import net.sf.jstuff.core.Strings;
  */
 public final class DartWorkspacePreference {
 
+   public static final class Initializer extends AbstractPreferenceInitializer {
+
+      @Override
+      public void initializeDefaultPreferences() {
+         STORE.setDefault(PREFKEY_FORMATTER_MAX_LINE_LENGTH, 80);
+         STORE.setDefault(PREFKEY_WARNED_NO_SDK_REGISTERED, false);
+      }
+   }
+
    static final String PREFKEY_DEFAULT_DART_SDK = "dart.default_sdk";
    static final String PREFKEY_DART_SDKS = "dart.sdks";
    static final String PREFKEY_FORMATTER_MAX_LINE_LENGTH = "dart.formatter.max_line_length";
    static final String PREFKEY_WARNED_NO_SDK_REGISTERED = "dart.warned_no_sdk_registered";
+
+   static final String PREFKEY_DAP_TRACE_IO = "dart.dap.trace.io";
+   static final String PREFKEY_DAP_TRACE_IO_VERBOSE = "dart.dap.trace.io.verbose";
+
+   static final String PREFKEY_LSP_TRACE_INITOPTS = "dart.lsp.trace.init_options";
+   static final String PREFKEY_LSP_TRACE_IO = "dart.lsp.trace.io";
+   static final String PREFKEY_LSP_TRACE_IO_VERBOSE = "dart.lsp.trace.io.verbose";
 
    static final IPersistentPreferenceStore STORE = new ScopedPreferenceStore(InstanceScope.INSTANCE, Dart4EPlugin.PLUGIN_ID);
 
@@ -148,8 +166,37 @@ public final class DartWorkspacePreference {
    }
 
    public static int getFormatterMaxLineLength() {
-      final var maxLineLength = STORE.getInt(PREFKEY_FORMATTER_MAX_LINE_LENGTH);
-      return maxLineLength > 0 ? maxLineLength : 80;
+      return STORE.getInt(PREFKEY_FORMATTER_MAX_LINE_LENGTH);
+   }
+
+   public static boolean isDAPTraceIO() {
+      if (STORE.contains(PREFKEY_DAP_TRACE_IO))
+         return STORE.getBoolean(PREFKEY_DAP_TRACE_IO);
+      return Platform.getDebugBoolean(Dart4EPlugin.PLUGIN_ID + "/trace/dap/io");
+   }
+
+   public static boolean isDAPTraceIOVerbose() {
+      if (STORE.contains(PREFKEY_DAP_TRACE_IO_VERBOSE))
+         return STORE.getBoolean(PREFKEY_DAP_TRACE_IO_VERBOSE);
+      return Platform.getDebugBoolean(Dart4EPlugin.PLUGIN_ID + "/trace/dap/io/verbose");
+   }
+
+   public static boolean isLSPTraceIO() {
+      if (STORE.contains(PREFKEY_LSP_TRACE_IO))
+         return STORE.getBoolean(PREFKEY_LSP_TRACE_IO);
+      return Platform.getDebugBoolean(Dart4EPlugin.PLUGIN_ID + "/trace/lsp/io");
+   }
+
+   public static boolean isLSPTraceIOVerbose() {
+      if (STORE.contains(PREFKEY_LSP_TRACE_IO_VERBOSE))
+         return STORE.getBoolean(PREFKEY_LSP_TRACE_IO_VERBOSE);
+      return Platform.getDebugBoolean(Dart4EPlugin.PLUGIN_ID + "/trace/lsp/io/verbose");
+   }
+
+   public static boolean isLSPTraceInitOptions() {
+      if (STORE.contains(PREFKEY_LSP_TRACE_INITOPTS))
+         return STORE.getBoolean(PREFKEY_LSP_TRACE_INITOPTS);
+      return Platform.getDebugBoolean(Dart4EPlugin.PLUGIN_ID + "/trace/lsp/init_options");
    }
 
    public static boolean save() {

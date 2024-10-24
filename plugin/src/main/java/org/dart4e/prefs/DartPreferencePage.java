@@ -6,41 +6,28 @@
  */
 package org.dart4e.prefs;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
+import java.util.List;
 
 import org.dart4e.localization.Messages;
-import org.dart4e.widget.FormatterSettingsGroup;
-import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import net.sf.jstuff.core.ref.MutableObservableRef;
+import de.sebthom.eclipse.commons.prefs.fieldeditor.GroupFieldEditor;
+import de.sebthom.eclipse.commons.prefs.fieldeditor.ScaleFieldEditor;
 
 /**
  * @author Sebastian Thomschke
  */
-public class DartPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
-
-   private MutableObservableRef<Integer> formatterMaxLineLength = lateNonNull();
+public class DartPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
    public DartPreferencePage() {
+      super(GRID);
       setDescription(Messages.Prefs_GeneralDescription);
-   }
-
-   @Override
-   public Control createContents(final Composite parent) {
-      final var container = new Composite(parent, SWT.NULL);
-      container.setLayout(new GridLayout(1, true));
-
-      final var formatterSettings = new FormatterSettingsGroup(container);
-      formatterSettings.defaultMaxLineLength.set(80);
-      formatterMaxLineLength = formatterSettings.maxLineLength;
-      formatterMaxLineLength.set(DartWorkspacePreference.getFormatterMaxLineLength());
-      return container;
    }
 
    @Override
@@ -49,20 +36,33 @@ public class DartPreferencePage extends PreferencePage implements IWorkbenchPref
    }
 
    @Override
-   protected void performDefaults() {
-      super.performDefaults();
+   protected void createFieldEditors() {
+      final var parent = getFieldEditorParent();
+
+      addField(new GroupFieldEditor("Dart Language Server - Troubleshooting", parent, group -> List.of( //
+         new BooleanFieldEditor(DartWorkspacePreference.PREFKEY_LSP_TRACE_INITOPTS, "Log Init Options", group), //
+         new BooleanFieldEditor(DartWorkspacePreference.PREFKEY_LSP_TRACE_IO, "Log Language Server Protocol communication", group), //
+         new BooleanFieldEditor(DartWorkspacePreference.PREFKEY_LSP_TRACE_IO_VERBOSE,
+            "Log Language Server Protocol communication (verbose)", group) //
+      )));
+
+      addField(new GroupFieldEditor("Dart Debug Adapter - Troubleshooting", parent, group -> List.of( //
+         new BooleanFieldEditor(DartWorkspacePreference.PREFKEY_DAP_TRACE_IO, "Log Debug Adatper Protocol communication", group), //
+         new BooleanFieldEditor(DartWorkspacePreference.PREFKEY_DAP_TRACE_IO_VERBOSE, "Log Debug Adatper Protocol communication (verbose)",
+            group) //
+      )));
+
+      addField(new GroupFieldEditor("Dart Formatter Settings", parent, group -> List.of( //
+         new ScaleFieldEditor(DartWorkspacePreference.PREFKEY_FORMATTER_MAX_LINE_LENGTH, "Maximal Line Length", group) {
+            @Override
+            protected Scale createScale(final Composite parent) {
+               final var scale = new Scale(parent, SWT.HORIZONTAL);
+               scale.setMinimum(40);
+               scale.setMaximum(300);
+               scale.setIncrement(1);
+               scale.setPageIncrement(10);
+               return scale;
+            }
+         })));
    }
-
-   @Override
-   public boolean performOk() {
-      DartWorkspacePreference.setFormatterMaxLineLength(formatterMaxLineLength.get());
-      if (!DartWorkspacePreference.save()) {
-         setValid(false);
-         return false;
-      }
-
-      setValid(true);
-      return true;
-   }
-
 }
