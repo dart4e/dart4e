@@ -123,7 +123,9 @@ public class DartSDKPreferencePage extends PreferencePage implements IWorkbenchP
       colVer.setLabelProvider(new ColumnLabelProvider() {
          @Override
          public @Nullable String getText(final @Nullable Object element) {
-            return element == null ? null : ((DartSDK) element).getVersion();
+            if (element instanceof final DartSDK sdk)
+               return sdk.getVersion();
+            return null;
          }
       });
       colVer.getColumn().setWidth(100);
@@ -133,11 +135,25 @@ public class DartSDKPreferencePage extends PreferencePage implements IWorkbenchP
       colPath.setLabelProvider(new ColumnLabelProvider() {
          @Override
          public @Nullable String getText(final @Nullable Object element) {
-            return element == null ? null : ((DartSDK) element).getInstallRoot().toString();
+            if (element instanceof final DartSDK sdk)
+               return sdk.getInstallRoot().toString();
+            return null;
          }
       });
       colPath.getColumn().setWidth(100);
       colPath.getColumn().setText(Messages.Label_Path);
+
+      final var colValid = new TableViewerColumn(sdkTable, SWT.NONE);
+      colValid.setLabelProvider(new ColumnLabelProvider() {
+         @Override
+         public @Nullable String getText(final @Nullable Object element) {
+            if (element instanceof final DartSDK sdk)
+               return sdk.isValid() ? "yes" : "no";
+            return null;
+         }
+      });
+      colValid.getColumn().setWidth(100);
+      colValid.getColumn().setText("Valid");
 
       final var btnAdd = new Button(container, SWT.NONE);
       btnAdd.setLayoutData(GridDatas.fillHorizontal());
