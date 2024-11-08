@@ -61,7 +61,7 @@ jobs:
           - target-platform: latest
             java-version: 21
           - target-platform: unstable
-            java-version: 22
+            java-version: 23
 
     env:
       JAVA_VERSION: ${{ matrix.java-version }}

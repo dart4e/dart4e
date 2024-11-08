@@ -60,19 +60,19 @@
             <dependency>
                <groupId>com.fasterxml.jackson.core</groupId>
                <artifactId>jackson-databind</artifactId>
-               <version>2.18.0</version>
+               <version>2.18.1</version>
                <type>jar</type>
             </dependency>
             <dependency>
                <groupId>net.sf.jstuff</groupId>
                <artifactId>jstuff-core</artifactId>
-               <version>8.0.0</version>
+               <version>8.0.1</version>
                <type>jar</type>
             </dependency>
             <dependency>
                <groupId>net.sf.jstuff</groupId>
                <artifactId>jstuff-xml</artifactId>
-               <version>8.0.0</version>
+               <version>8.0.1</version>
                <type>jar</type>
             </dependency>
             <dependency>
@@ -97,5 +97,5 @@
       </location>
    </locations>
 
-   <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-22"/>
+   <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-23"/>
 </target>

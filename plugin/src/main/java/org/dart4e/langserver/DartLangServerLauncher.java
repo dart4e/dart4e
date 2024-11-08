@@ -21,7 +21,6 @@ import org.dart4e.model.buildsystem.BuildSystem;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.prefs.DartWorkspacePreference;
 import org.dart4e.util.TreeBuilder;
-import org.dart4e.util.io.LineTransformingOutputStream;
 import org.dart4e.util.io.VSCodeJsonRpcLineTracing;
 import org.dart4e.util.io.VSCodeJsonRpcLineTracing.Source;
 import org.eclipse.jdt.annotation.Nullable;
@@ -31,6 +30,7 @@ import de.sebthom.eclipse.commons.resources.Projects;
 import net.sf.jstuff.core.Strings;
 import net.sf.jstuff.core.io.stream.LineCapturingInputStream;
 import net.sf.jstuff.core.io.stream.LineCapturingOutputStream;
+import net.sf.jstuff.core.io.stream.LineTransformingOutputStream;
 
 /**
  * Launches the Dart language server.
