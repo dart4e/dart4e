@@ -69,7 +69,7 @@
 
    <properties>
       <java.version>17</java.version>
-      <tycho.version>4.0.9</tycho.version>
+      <tycho.version>4.0.10</tycho.version>
       <tycho.target-platform>oldest</tycho.target-platform>
 
       <!-- to prevent:
