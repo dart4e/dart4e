@@ -50,4 +50,4 @@ Require-Bundle: org.eclipse.platform;bundle-version="4.29.0",
  net.sf.jstuff.xml;bundle-version="[8.0.1,9.0.0)",
  de.sebthom.eclipse.commons;bundle-version="[1.0.0.20241108-1431,2.0.0)",
  org.yaml.snakeyaml;bundle-version="[2.3.0,3.0.0)",
- org.ec4j.core;bundle-version="0.3.0"
+ org.ec4j.core;bundle-version="1.1.0"
