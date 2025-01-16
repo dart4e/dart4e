@@ -11,9 +11,8 @@ import org.dart4e.Dart4EPlugin;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.lsp4e.outline.SymbolsLabelProvider;
-import org.eclipse.lsp4e.outline.SymbolsModel.DocumentSymbolWithFile;
+import org.eclipse.lsp4e.outline.SymbolsModel.DocumentSymbolWithURI;
 import org.eclipse.lsp4j.DocumentSymbol;
-import org.eclipse.lsp4j.SymbolInformation;
 import org.eclipse.lsp4j.SymbolKind;
 import org.eclipse.lsp4j.WorkspaceSymbol;
 import org.eclipse.swt.graphics.Image;
@@ -24,17 +23,15 @@ import org.eclipse.swt.graphics.Image;
  *
  * @author Sebastian Thomschke
  */
-@SuppressWarnings({"deprecation", "restriction", "removal"})
+@SuppressWarnings({"restriction"})
 public final class DartOutlineSymbolsProvider extends SymbolsLabelProvider {
 
    @Override
    public @Nullable Image getImage(final @NonNullByDefault({}) Object item) {
       SymbolKind kind = null;
-      if (item instanceof final SymbolInformation symbolInfo) {
-         kind = symbolInfo.getKind();
-      } else if (item instanceof final DocumentSymbol docSymbol) {
+      if (item instanceof final DocumentSymbol docSymbol) {
          kind = docSymbol.getKind();
-      } else if (item instanceof final DocumentSymbolWithFile docSymbol) {
+      } else if (item instanceof final DocumentSymbolWithURI docSymbol) {
          kind = docSymbol.symbol.getKind();
       } else if (item instanceof final WorkspaceSymbol symbol) {
          kind = symbol.getKind();

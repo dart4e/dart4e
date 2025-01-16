@@ -12,7 +12,6 @@ import org.eclipse.core.runtime.Adapters;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.lsp4e.LSPEclipseUtils;
-import org.eclipse.lsp4e.outline.SymbolsModel.DocumentSymbolWithFile;
 import org.eclipse.lsp4e.outline.SymbolsModel.DocumentSymbolWithURI;
 import org.eclipse.lsp4j.DocumentSymbol;
 import org.eclipse.lsp4j.SymbolInformation;
@@ -25,7 +24,7 @@ import de.sebthom.eclipse.commons.ui.Editors;
  *
  * @author Sebastian Thomschke
  */
-@SuppressWarnings({"deprecation", "removal", "restriction"})
+@SuppressWarnings({"deprecation", "restriction"})
 public final class FileTypePropertyTester extends PropertyTester {
 
    private static final String PROPERTY_CONTENT_TYPE_ID = "contentTypeId";
@@ -69,8 +68,6 @@ public final class FileTypePropertyTester extends PropertyTester {
          file = f;
       } else if (candidate instanceof final DocumentSymbolWithURI docSymbolWithURI) {
          file = LSPEclipseUtils.getFileHandle(docSymbolWithURI.uri);
-      } else if (candidate instanceof final DocumentSymbolWithFile docSymbolWithFile) {
-         file = LSPEclipseUtils.getFileHandle(docSymbolWithFile.uri);
       } else if (candidate instanceof DocumentSymbol) {
          file = Editors.getActiveFile();
       } else {
