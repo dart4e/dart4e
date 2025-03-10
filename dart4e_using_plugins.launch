@@ -37,8 +37,6 @@
         <setEntry value="com.sun.jna.platform@default:default"/>
         <setEntry value="com.sun.jna@default:default"/>
         <setEntry value="de.sebthom.eclipse.commons@default:default"/>
-        <setEntry value="jakarta.activation-api@default:default"/>
-        <setEntry value="jakarta.xml.bind-api@default:default"/>
         <setEntry value="javax.annotation@default:default"/>
         <setEntry value="javax.inject@default:default"/>
         <setEntry value="net.sf.jstuff.core@default:default"/>
