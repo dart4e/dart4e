@@ -250,15 +250,32 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
       return installRoot.resolve("lib");
    }
 
-   @Nullable
-   public String getVersion() {
-      try (var lines = Files.lines(installRoot.resolve("version"))) {
-         final var version = lines.findFirst().orElse("");
-         return Strings.isBlank(version) ? null : version;
+   public @Nullable String getVersion() {
+      final var versionsFile = installRoot.resolve("version");
+      if (Files.exists(versionsFile)) {
+         try (var lines = Files.lines(installRoot.resolve("version"))) {
+            final var version = lines.findFirst().orElse("");
+            return Strings.isBlank(version) ? null : version;
+         } catch (final IOException ex) {
+            Dart4EPlugin.log().error(ex);
+         }
+      }
+
+      final var processBuilder = Processes.builder(getFlutterExecutable()).withArg("--version");
+      try (var reader = new BufferedReader(new InputStreamReader(processBuilder.start().getStdOut()))) {
+         String line;
+         while ((line = reader.readLine()) != null) {
+            // Example line: "Flutter 3.29.2 • channel stable • https://github.com/flutter/flutter.git"
+            if (line.startsWith("Flutter ")) {
+               final String[] parts = Strings.split(line, " ", 3);
+               if (parts.length >= 2)
+                  return parts[1]; // Extracts "3.29.2"
+            }
+         }
       } catch (final IOException ex) {
          Dart4EPlugin.log().error(ex);
-         return null;
       }
+      return null;
    }
 
    @Override
