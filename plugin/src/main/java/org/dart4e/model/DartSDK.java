@@ -215,7 +215,7 @@ public class DartSDK implements Comparable<DartSDK> {
          String line;
          while ((line = reader.readLine()) != null) {
             // Example line: "Dart SDK version: 3.7.2 (stable) (Tue Mar 11 04:27:50 2025 -0700) on "windows_x64"
-            if (line.startsWith("Flutter ")) {
+            if (line.startsWith("Dart ")) {
                final String[] parts = Strings.split(line, " ", 3);
                if (parts.length >= 2)
                   return parts[1]; // Extracts "3.7.2"
