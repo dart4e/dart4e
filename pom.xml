@@ -23,7 +23,7 @@
 
    <name>dart4e-parent</name>
    <description>Dart programming language support for the Eclipse IDE</description>
-   <url>https://github.com/dart4e/dart4e/</url>
+   <url>https://github.com/dart4e/dart4e</url>
    <inceptionYear>2022</inceptionYear>
    <organization>
       <name>The Dart4E Project</name>
@@ -96,7 +96,7 @@
       <dependency>
          <groupId>com.vegardit.no-npe</groupId>
          <artifactId>no-npe-eea-all</artifactId>
-         <version>[1.2.0,)</version>
+         <version>[1.3.0,)</version>
          <scope>provided</scope>
       </dependency>
    </dependencies>
@@ -306,6 +306,11 @@
                      <os>macosx</os>
                      <ws>cocoa</ws>
                      <arch>x86_64</arch>
+                  </environment>
+                  <environment>
+                     <os>macosx</os>
+                     <ws>cocoa</ws>
+                     <arch>aarch64</arch>
                   </environment>
                   <environment>
                      <os>win32</os>
