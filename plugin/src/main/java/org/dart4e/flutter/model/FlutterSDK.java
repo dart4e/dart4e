@@ -76,15 +76,14 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
 
       sdk = new FlutterSDK(flutterExe.getParent().getParent());
       return sdk.isValid() ? sdk : null;
-   }, (sdk, ageMS) -> ageMS > (sdk == null ? 15_000 : 60_000));
+   }, (sdk, ageMS) -> ageMS > (sdk == null ? 10_000 : 60_000));
 
    /**
     * Tries to locate the Flutter SDK via FLUTTER_ROOT and PATH environment variables
     *
     * @return null if not found
     */
-   @Nullable
-   public static FlutterSDK fromPath() {
+   public static @Nullable FlutterSDK fromPath() {
       return SDK_FROM_PATH.get();
    }
 
@@ -93,27 +92,27 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
 
    private @Nullable DartSDK dartSDK;
 
-   private final Supplier<Boolean> isValidCached = Suppliers.memoize(() -> {
+   private final Supplier<@Nullable String> getVersionCached = Suppliers.memoize(() -> {
       final var flutterExe = getFlutterExecutable();
       if (!Files.isExecutable(flutterExe))
-         return false;
+         return null;
 
-      final var processBuilder = Processes.builder(flutterExe).withArg("--version");
-      /* outputs something like:
-       *   Flutter 3.16.5 • channel stable • https://github.com/flutter/flutter.git
-       *   Framework • revision 78666c8dc5 (5 weeks ago) • 2023-12-19 16:14:14 -0800
-       *   Engine • revision 3f3e560236
-       *   Tools • Dart 3.2.3 • DevTools 2.28.4
-       */
+      final var processBuilder = Processes.builder(getFlutterExecutable()).withArg("--version");
       try (var reader = new BufferedReader(new InputStreamReader(processBuilder.start().getStdOut()))) {
-         final String line = reader.readLine();
-         if (line != null && line.contains("Flutter"))
-            return true;
+         String line;
+         while ((line = reader.readLine()) != null) {
+            // Example line: "Flutter 3.29.2 • channel stable • https://github.com/flutter/flutter.git"
+            if (line.startsWith("Flutter ")) {
+               final String[] parts = Strings.split(line, " ", 3);
+               if (parts.length >= 2)
+                  return parts[1]; // Extracts "3.29.2"
+            }
+         }
       } catch (final IOException ex) {
-         // ignore
+         Dart4EPlugin.log().error(ex);
       }
-      return false;
-   }, (exeIsValid, ageMS) -> ageMS > (exeIsValid ? 60_000 : 15_000));
+      return null;
+   }, (version, ageMS) -> ageMS > (version == null ? 10_000 : 60_000));
 
    @SuppressWarnings("unused")
    private FlutterSDK() {
@@ -251,31 +250,7 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
    }
 
    public @Nullable String getVersion() {
-      final var versionsFile = installRoot.resolve("version");
-      if (Files.exists(versionsFile)) {
-         try (var lines = Files.lines(installRoot.resolve("version"))) {
-            final var version = lines.findFirst().orElse("");
-            return Strings.isBlank(version) ? null : version;
-         } catch (final IOException ex) {
-            Dart4EPlugin.log().error(ex);
-         }
-      }
-
-      final var processBuilder = Processes.builder(getFlutterExecutable()).withArg("--version");
-      try (var reader = new BufferedReader(new InputStreamReader(processBuilder.start().getStdOut()))) {
-         String line;
-         while ((line = reader.readLine()) != null) {
-            // Example line: "Flutter 3.29.2 • channel stable • https://github.com/flutter/flutter.git"
-            if (line.startsWith("Flutter ")) {
-               final String[] parts = Strings.split(line, " ", 3);
-               if (parts.length >= 2)
-                  return parts[1]; // Extracts "3.29.2"
-            }
-         }
-      } catch (final IOException ex) {
-         Dart4EPlugin.log().error(ex);
-      }
-      return null;
+      return getVersionCached.get();
    }
 
    @Override
@@ -287,7 +262,7 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
     * If <code>installRoot</code> actually points to a valid location containing the Dart compiler
     */
    public boolean isValid() {
-      return isValidCached.get();
+      return getVersion() != null;
    }
 
    public String toShortString() {
@@ -296,6 +271,6 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
 
    @Override
    public String toString() {
-      return "DartSDK [name=" + name + ", installRoot=" + installRoot + "]";
+      return "FlutterSDK [name=" + name + ", installRoot=" + installRoot + "]";
    }
 }

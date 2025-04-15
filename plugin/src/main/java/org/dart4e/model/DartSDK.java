@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.console.DartConsole;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.sebthom.eclipse.commons.ui.Consoles;
 import net.sf.jstuff.core.Strings;
 import net.sf.jstuff.core.SystemUtils;
+import net.sf.jstuff.core.concurrent.Threads;
 import net.sf.jstuff.core.functional.Suppliers;
 import net.sf.jstuff.core.io.Processes;
 import net.sf.jstuff.core.ref.MutableRef;
@@ -72,39 +74,40 @@ public class DartSDK implements Comparable<DartSDK> {
 
       sdk = new DartSDK(dartExe.getParent().getParent());
       return sdk.isValid() ? sdk : null;
-   }, (sdk, ageMS) -> ageMS > (sdk == null ? 15_000 : 60_000));
+   }, (sdk, ageMS) -> ageMS > (sdk == null ? 10_000 : 60_000));
 
    /**
     * Tries to locate the Dart SDK via DART_HOME and PATH environment variables
     *
     * @return null if not found
     */
-   @Nullable
-   public static DartSDK fromPath() {
+   public static @Nullable DartSDK fromPath() {
       return SDK_FROM_PATH.get();
    }
 
    private @JsonProperty String name;
    private @JsonProperty Path installRoot;
 
-   private final Supplier<Boolean> isValidCached = Suppliers.memoize(() -> {
+   private final Supplier<@Nullable String> getVersionCached = Suppliers.memoize(() -> {
       final var dartExe = getDartExecutable();
       if (!Files.isExecutable(dartExe))
-         return false;
+         return null;
 
       final var processBuilder = Processes.builder(dartExe).withArg("--version");
-      /* outputs something like:
-       *   Dart SDK version: 3.2.3 (stable) (Tue Dec 5 17:58:33 2023 +0000) on "windows_x64"
-       */
+      final var versionPattern = Pattern.compile("Dart SDK version:\\s*(\\S+)");
       try (var reader = new BufferedReader(new InputStreamReader(processBuilder.start().getStdOut()))) {
-         final String line = reader.readLine();
-         if (line != null && line.contains("Dart"))
-            return true;
+         String line;
+         while ((line = reader.readLine()) != null) {
+            // Example line: "Dart SDK version: 3.7.2 (stable) (Tue Mar 11 04:27:50 2025 -0700) on "windows_x64"
+            final var matcher = versionPattern.matcher(line);
+            if (matcher.find())
+               return matcher.group(1); // Captured version (e.g., "3.7.2")
+         }
       } catch (final IOException ex) {
-         // ignore
+         Dart4EPlugin.log().error(ex);
       }
-      return false;
-   }, (exeIsValid, ageMS) -> ageMS > (exeIsValid ? 60_000 : 15_000));
+      return null;
+   }, (version, ageMS) -> ageMS > (version == null ? 10_000 : 60_000));
 
    @SuppressWarnings("unused")
    private DartSDK() {
@@ -200,31 +203,7 @@ public class DartSDK implements Comparable<DartSDK> {
    }
 
    public @Nullable String getVersion() {
-      final var versionsFile = installRoot.resolve("version");
-      if (Files.exists(versionsFile)) {
-         try (var lines = Files.lines(installRoot.resolve("version"))) {
-            final var version = lines.findFirst().orElse("");
-            return Strings.isBlank(version) ? null : version;
-         } catch (final IOException ex) {
-            Dart4EPlugin.log().error(ex);
-         }
-      }
-
-      final var processBuilder = Processes.builder(getDartExecutable()).withArg("--version");
-      try (var reader = new BufferedReader(new InputStreamReader(processBuilder.start().getStdOut()))) {
-         String line;
-         while ((line = reader.readLine()) != null) {
-            // Example line: "Dart SDK version: 3.7.2 (stable) (Tue Mar 11 04:27:50 2025 -0700) on "windows_x64"
-            if (line.startsWith("Dart ")) {
-               final String[] parts = Strings.split(line, " ", 3);
-               if (parts.length >= 2)
-                  return parts[1]; // Extracts "3.7.2"
-            }
-         }
-      } catch (final IOException ex) {
-         Dart4EPlugin.log().error(ex);
-      }
-      return null;
+      return getVersionCached.get();
    }
 
    public void installInteractiveShell(final IProgressMonitor monitor) throws CoreException {
@@ -237,6 +216,9 @@ public class DartSDK implements Comparable<DartSDK> {
                   interactivePackageIsInstalled.set(true);
                }
             }).start().waitForExit();
+      } catch (final InterruptedException ex) {
+         Threads.handleInterruptedException(ex);
+         Dart4EPlugin.log().error(ex);
       } catch (final Exception ex) {
          Dart4EPlugin.log().error(ex);
       }
@@ -256,7 +238,7 @@ public class DartSDK implements Comparable<DartSDK> {
     * If <code>installRoot</code> actually points to a valid location containing the Dart compiler
     */
    public boolean isValid() {
-      return isValidCached.get();
+      return getVersion() != null;
    }
 
    public String toShortString() {
