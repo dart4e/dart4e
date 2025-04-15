@@ -13,7 +13,7 @@
    <parent>
       <groupId>com.vegardit.maven</groupId>
       <artifactId>vegardit-maven-parent</artifactId>
-      <version>6.1.8</version>
+      <version>6.1.9</version>
    </parent>
 
    <groupId>org.dart4e</groupId>
@@ -71,6 +71,7 @@
       <java.version>17</java.version>
       <tycho.version>4.0.12</tycho.version>
       <tycho.target-platform>oldest</tycho.target-platform>
+      <jgit.dirtyWorkingTree>error</jgit.dirtyWorkingTree>
 
       <!-- to prevent:
       [ERROR] Failed to execute goal com.hubspot.maven.plugins:dependency-scope-maven-plugin:0.10:check (check@validate) on project org.dart4e:
@@ -153,9 +154,20 @@
                <version>${tycho.version}</version>
                <configuration>
                   <format>yyyyMMdd-HHmm</format>
+                  <timestampProvider>jgit</timestampProvider>
+                  <jgit.dirtyWorkingTree>${jgit.dirtyWorkingTree}</jgit.dirtyWorkingTree>
+                  <jgit.ignore>pom.xml</jgit.ignore>
+
                   <!-- replace SNAPSHOT version in the final product configuration -->
                   <finalName>${project.artifactId}_${unqualifiedVersion}.${buildQualifier}</finalName>
                </configuration>
+              <dependencies>
+                <dependency>
+                  <groupId>org.eclipse.tycho</groupId>
+                  <artifactId>tycho-buildtimestamp-jgit</artifactId>
+                  <version>${tycho.version}</version>
+                </dependency>
+              </dependencies>
             </plugin>
             <plugin>
                <!-- https://tycho.eclipseprojects.io/doc/latest/tycho-p2-plugin/plugin-info.html -->
@@ -320,6 +332,18 @@
    </build>
 
    <profiles>
+      <profile>
+        <!-- This profile prevents local maven builds from failing if uncommitted changes are present -->
+        <id>local-dev</id>
+        <activation>
+          <property>
+            <name>!env.CI</name>
+          </property>
+        </activation>
+        <properties>
+          <jgit.dirtyWorkingTree>warning</jgit.dirtyWorkingTree>
+        </properties>
+      </profile>
       <profile>
          <id>disable-tycho-packaging-plugin-if-executed-in-eclipse</id>
          <activation>
