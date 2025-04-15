@@ -228,20 +228,20 @@ public class DartSDK implements Comparable<DartSDK> {
    }
 
    public void installInteractiveShell(final IProgressMonitor monitor) throws CoreException {
-      final var interativePackageIsInstalled = MutableRef.of(false);
+      final var interactivePackageIsInstalled = MutableRef.of(false);
       try {
          getDartProcessBuilder(false) //
             .withArgs("pub", "global", "list") //
             .withRedirectOutput(line -> {
                if (line.startsWith("interactive")) {
-                  interativePackageIsInstalled.set(true);
+                  interactivePackageIsInstalled.set(true);
                }
             }).start().waitForExit();
       } catch (final Exception ex) {
          Dart4EPlugin.log().error(ex);
       }
 
-      if (!interativePackageIsInstalled.get()) {
+      if (!interactivePackageIsInstalled.get()) {
          DartConsole.runWithConsole(monitor, "Installing interactive Dart Shell...", this, null, "pub", "global", "activate",
             "interactive");
       }
