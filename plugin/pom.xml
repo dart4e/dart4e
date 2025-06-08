@@ -45,10 +45,10 @@
       </resources>
       <plugins>
          <plugin>
-            <groupId>com.googlecode.maven-download-plugin</groupId>
+            <groupId>io.github.download-maven-plugin</groupId>
             <artifactId>download-maven-plugin</artifactId>
-            <!-- https://github.com/maven-download-plugin/maven-download-plugin/releases -->
-            <version>1.13.0</version>
+            <!-- https://github.com/download-maven-plugin/download-maven-plugin/releases -->
+            <version>2.0.0</version>
             <executions>
                <!-- *.dart lang config -->
                <execution>
