@@ -1,4 +1,4 @@
-# https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings#example
+# https://docs.github.com/en/get-started/git-basics/configuring-git-to-handle-line-endings#example
 # inspired by
 # - https://github.com/alexkaratarakis/gitattributes/blob/master/Java.gitattributes
 # - https://github.com/alexkaratarakis/gitattributes/blob/master/Common.gitattributes
@@ -67,6 +67,7 @@ Dockerfile   text eol=lf
 *.py         text
 *.python     text
 *.sql        text
+mvnw         text eol=lf
 
 
 # Archives
