@@ -1,12 +1,12 @@
 # Dart4E - Dart/Flutter support for the Eclipse IDE
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/dart4e/dart4e/build.yml?logo=github)](https://github.com/dart4e/dart4e/actions/workflows/build.yml)
-[![License](https://img.shields.io/github/license/dart4e/dart4e.svg?color=blue)](LICENSE.txt)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
+[![License](https://img.shields.io/github/license/dart4e/dart4e.svg?color=blue)](LICENSE.txt)
 [![Eclipse Marketplace](https://img.shields.io/eclipse-marketplace/dt/dart4e?logo=eclipse&label=Downloads)](https://marketplace.eclipse.org/content/dart4e)
 
 
-**Feedback and high-quality pull requests are  highly welcome!**
+**Feedback and high-quality pull requests are highly welcome!**
 
 1. [About](#about)
 1. [Installation](#installation)
@@ -79,16 +79,16 @@ To build the project, follow these steps:
    <?xml version="1.0" encoding="UTF8"?>
    <toolchains xmlns="http://maven.apache.org/TOOLCHAINS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://maven.apache.org/TOOLCHAINS/1.1.0 https://maven.apache.org/xsd/toolchains-1.1.0.xsd">
-      <toolchain>
-         <type>jdk</type>
-         <provides>
-            <version>17</version>
-            <vendor>default</vendor>
-         </provides>
-         <configuration>
-            <jdkHome>[PATH_TO_YOUR_JDK_17]</jdkHome>
-         </configuration>
-      </toolchain>
+     <toolchain>
+       <type>jdk</type>
+       <provides>
+         <version>17</version>
+         <vendor>default</vendor>
+       </provides>
+       <configuration>
+         <jdkHome>[PATH_TO_YOUR_JDK_17]</jdkHome>
+       </configuration>
+     </toolchain>
    </toolchains>
    ```
 
