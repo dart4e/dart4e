@@ -6,38 +6,55 @@
  */
 package org.dart4e.tests.project;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.dart4e.localization.Messages;
-import org.eclipse.reddeer.junit.runner.RedDeerSuite;
-import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
-import org.eclipse.reddeer.swt.impl.menu.ShellMenu;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Sebastian Thomschke
  */
-@RunWith(RedDeerSuite.class)
-public class NewDartProjectTest {
+@ExtendWith({SWTBotJunit5Extension.class})
+@TestInstance(TestInstance.Lifecycle.PER_CLASS) // so @BeforeAll can be non-static
+class NewDartProjectTest {
 
-   private CleanWorkspaceRequirement cwr = new CleanWorkspaceRequirement();
+   private SWTWorkbenchBot bot;
 
-   @Before
-   public void setup() {
-      cwr.fulfill();
+   @BeforeAll
+   void initWorkbench() {
+      try {
+         SWTBotPreferences.MAX_ERROR_SCREENSHOT_COUNT = 0;
+         bot = new SWTWorkbenchBot();
+         // close intro view
+         bot.viewByTitle("Welcome").close();
+      } catch (final Exception ignored) {
+         /* ignore, view absent */
+      }
    }
 
-   @After
-   public void teardown() {
-      cwr.fulfill();
+   @BeforeEach
+   @AfterEach
+   void cleanWorkspace() throws CoreException {
+      for (final IProject p : ResourcesPlugin.getWorkspace().getRoot().getProjects())
+         if (p.exists()) {
+            p.delete(true, true, null);
+         }
    }
 
    @Test
-   public void testMenuEntriesAvailable() {
-      assertThat(new ShellMenu().hasItem("File", "New", Messages.Label_Dart_Project)).isTrue();
-      assertThat(new ShellMenu().hasItem("File", "New", Messages.Label_Dart_File)).isTrue();
+   void testMenuEntriesAvailable() {
+      assertThat(bot.menu("File").menu("New").menu(Messages.Label_Dart_Project).isEnabled()).isTrue();
+      assertThat(bot.menu("File").menu("New").menu(Messages.Label_Dart_File).isEnabled()).isTrue();
    }
 }

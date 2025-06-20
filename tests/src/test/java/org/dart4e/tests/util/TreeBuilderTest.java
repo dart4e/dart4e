@@ -9,15 +9,15 @@ package org.dart4e.tests.util;
 import static org.assertj.core.api.Assertions.*;
 
 import org.dart4e.util.TreeBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Sebastian Thomschke
  */
-public class TreeBuilderTest {
+class TreeBuilderTest {
 
    @Test
-   public void testTreeBuilder() {
+   void testTreeBuilder() {
       final var mb = new TreeBuilder<String>();
 
       assertThat(mb.getMap()).isEmpty();

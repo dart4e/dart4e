@@ -26,16 +26,16 @@ buildNumber.properties
 .mvn/timing.properties
 
 # IntelliJ
-.idea
-*.iml
-*.ipr
-*.iws
+/.idea
+/*.iml
+/*.ipr
+/*.iws
 
 # NetBeans
 nb-configuration.xml
 
 # Visual Studio Code
-.vscode
+/.vscode
 
 # OSX
 .DS_Store

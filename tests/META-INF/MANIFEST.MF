@@ -7,7 +7,13 @@ Bundle-Vendor: The Dart4E Project
 Fragment-Host: org.dart4e
 Automatic-Module-Name: org.dart4e.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-17
-Require-Bundle: org.junit,
- org.eclipse.jdt.ui,
- org.eclipse.reddeer.go,
- assertj-core
+Require-Bundle: org.eclipse.jdt.ui,
+ assertj-core,
+ org.mockito.mockito-core,
+ net.bytebuddy.byte-buddy-agent,
+ net.bytebuddy.byte-buddy,
+ org.eclipse.swtbot.eclipse.core,
+ org.eclipse.swtbot.eclipse.finder,
+ org.eclipse.swtbot.junit5_x,
+ org.eclipse.swtbot.swt.finder,
+ junit-jupiter-api
