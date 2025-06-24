@@ -150,9 +150,6 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
       );
       alternativeDartSDK.configureEnvVars(env);
       env.put(ENV_FLUTTER_ROOT, installRoot);
-      if (System.getenv(DartSDK.ENV_PUB_CACHE) == null) {
-         env.put(DartSDK.ENV_PUB_CACHE, installRoot.resolve(".pub-cache"));
-      }
    }
 
    @Override
@@ -173,7 +170,7 @@ public final class FlutterSDK implements Comparable<FlutterSDK> {
             @Override
             public Path getPubCacheDir() {
                // TODO workaround for https://github.com/dart4e/dart4e/issues/51 / https://github.com/flutter/flutter/issues/105257
-               if (SystemUtils.IS_OS_MAC && System.getenv(ENV_PUB_CACHE) == null)
+               if (SystemUtils.IS_OS_MAC && System.getenv(DartSDK.ENV_PUB_CACHE) == null)
                   return FlutterSDK.this.getInstallRoot().resolve(".pub-cache");
                return super.getPubCacheDir();
             }
