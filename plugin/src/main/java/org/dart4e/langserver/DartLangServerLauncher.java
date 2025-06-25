@@ -11,7 +11,8 @@ import static net.sf.jstuff.core.validation.NullAnalysisHelper.lateNonNull;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.Arrays;
+import java.nio.file.Files;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.SystemUtils;
@@ -72,13 +73,18 @@ public final class DartLangServerLauncher extends ProcessStreamConnectionProvide
       }
 
       if (dartSDK == null)
-         throw new IllegalStateException("Cannot initialize Dart Language Server, no Dart SDK found.");
+         throw new IllegalStateException("Cannot initialize Dart Language Server: no Dart SDK found.");
 
       this.dartSDK = dartSDK;
-      setCommands(Arrays.asList( //
-         dartSDK.getDartExecutable().toString(), //
-         dartSDK.getInstallRoot().resolve("bin/snapshots/analysis_server.dart.snapshot").toString(), //
-         "--protocol=lsp"));
+      final var dartInstallRoot = dartSDK.getInstallRoot();
+      var langServer = dartInstallRoot.resolve("bin/snapshots/analysis_server.dart.snapshot");
+      if (!Files.exists(langServer)) {
+         final var langServer2 = dartInstallRoot.resolve("bin/cache/dart-sdk/bin/snapshots/analysis_server.dart.snapshot");
+         if (!Files.exists(langServer2))
+            throw new IllegalStateException("Cannot initialize Dart Language Server: Required file " + langServer + " not found.");
+         langServer = langServer2;
+      }
+      setCommands(List.of(dartSDK.getDartExecutable().toString(), langServer.toString(), "--protocol=lsp"));
 
       /*
        * https://github.com/dart-lang/sdk/blob/main/pkg/analysis_server/tool/lsp_spec/README.md#initialization-options

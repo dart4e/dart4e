@@ -88,6 +88,15 @@ public class DartSDK implements Comparable<DartSDK> {
    private @JsonProperty String name;
    private @JsonProperty Path installRoot;
 
+   private final Supplier<Path> getRealInstallRoot = Suppliers.memoize(() -> {
+      // in case installRoot points to flutter install dir
+      final var installRoot2 = installRoot.resolve("bin/cache/dart-sdk");
+      if (Files.exists(installRoot2))
+         return installRoot2;
+
+      return installRoot;
+   }, (installRoot, ageMS) -> ageMS > 60_000);
+
    private final Supplier<@Nullable String> getVersionCached = Suppliers.memoize(() -> {
       final var dartExe = getDartExecutable();
       if (!Files.isExecutable(dartExe))
@@ -137,9 +146,9 @@ public class DartSDK implements Comparable<DartSDK> {
 
    public void configureEnvVars(final Map<String, Object> env) {
       env.merge("PATH", installRoot, //
-         (oldValue, dartPath) -> dartPath + File.pathSeparator + oldValue //
+         (oldValue, dartPath) -> ((Path) dartPath).resolve("bin") + File.pathSeparator + oldValue //
       );
-      env.put(ENV_DART_HOME, installRoot);
+      env.put(ENV_DART_HOME, getRealInstallRoot.get());
       env.put(ENV_PUB_CACHE, getPubCacheDir());
 
       if (Consoles.isAnsiColorsSupported()) {
@@ -160,7 +169,19 @@ public class DartSDK implements Comparable<DartSDK> {
    }
 
    public Path getDartExecutable() {
-      return installRoot.resolve(SystemUtils.IS_OS_WINDOWS ? "bin\\dart.exe" : "bin/dart");
+      if (SystemUtils.IS_OS_WINDOWS) {
+         final var dartExe = installRoot.resolve("bin\\dart.exe");
+         if (Files.exists(dartExe))
+            return dartExe;
+
+         // in case installRoot points to flutter install dir
+         final var dartBat = installRoot.resolve("bin\\dart.bat");
+         if (Files.exists(dartBat))
+            return dartBat;
+
+         return dartExe;
+      }
+      return installRoot.resolve("bin/dart");
    }
 
    public Processes.Builder getDartProcessBuilder(final boolean cleanEnv) {
@@ -199,7 +220,7 @@ public class DartSDK implements Comparable<DartSDK> {
    }
 
    public Path getStandardLibDir() {
-      return installRoot.resolve("lib");
+      return getRealInstallRoot.get().resolve("lib");
    }
 
    public @Nullable String getVersion() {
