@@ -155,11 +155,14 @@ public final class DartDependenciesUpdater extends AbstractResourcesChangedListe
          } else {
             stdLibFolder.createLink(sdk.getStandardLibDir().toUri(), IResource.REPLACE, monitor);
          }
+         if (!stdLibFolder.isDerived()) {
+            stdLibFolder.setDerived(true, monitor);
+         }
+
          /*
           * create/update "Dart Dependencies" top-level virtual folder
           */
          final var depsFolder = project.getFolder(DEPS_MAGIC_FOLDER_NAME);
-
          final var buildFile = BuildFile.of(project);
 
          // if no build file exists remove the dependencies folder
@@ -176,6 +179,9 @@ public final class DartDependenciesUpdater extends AbstractResourcesChangedListe
                      + DEPS_MAGIC_FOLDER_NAME + "' exists!");
          } else {
             depsFolder.create(IResource.VIRTUAL, true, monitor);
+         }
+         if (!depsFolder.isDerived()) {
+            depsFolder.setDerived(true, monitor);
          }
 
          final var depsToCheck = buildFile //
