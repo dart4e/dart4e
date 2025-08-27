@@ -91,10 +91,6 @@ public final class NewFlutterProjectWizard extends Wizard implements INewWizard 
                   args.add("--android-language");
                   args.add(newProjectPage.androidLanguage.get());
                }
-               if (newProjectPage.platforms.get().contains("ios")) {
-                  args.add("--ios-language");
-                  args.add(newProjectPage.iosLanguage.get());
-               }
 
                if (Strings.equalsAny(selectedTemplate, "app", "plugin")) {
                   args.add("--platforms");

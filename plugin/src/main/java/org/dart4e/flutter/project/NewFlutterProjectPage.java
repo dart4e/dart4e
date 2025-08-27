@@ -52,7 +52,6 @@ public final class NewFlutterProjectPage extends WizardNewProjectCreationPage {
    public MutableObservableRef<String> orgName = MutableObservableRef.of("com.example");
    public MutableObservableRef<List<String>> platforms = MutableObservableRef.of(TARGET_PLATFORMS);
    public MutableObservableRef<String> androidLanguage = MutableObservableRef.of("kotlin");
-   public MutableObservableRef<String> iosLanguage = MutableObservableRef.of("swift");
    public MutableObservableRef<String> appSampleId = MutableObservableRef.of("");
 
    public NewFlutterProjectPage(final String pageName) {
@@ -143,22 +142,6 @@ public final class NewFlutterProjectPage extends WizardNewProjectCreationPage {
          }) //
          .bind(androidLanguage, androidLanguage.get());
       platforms.subscribe(platforms -> cmbAndroidLang.setEnabled(platforms.contains("android")));
-
-      /*
-       * iOS Language
-       */
-      final var lblIOSLang = new Label(container, SWT.NONE);
-      lblIOSLang.setLayoutData(GridDatas.alignRight());
-      lblIOSLang.setText("iOS Language:");
-      final var cmbIOSLang = new ComboWrapper<String>(container, GridDatas.fillHorizontalExcessive()) //
-         .setItems("swift", "objc") //
-         .setLabelProvider(item -> item + " - " + switch (item) {
-            case "swift" -> "(default)";
-            case "objc" -> "(legacy)";
-            default -> item;
-         }) //
-         .bind(iosLanguage, iosLanguage.get());
-      platforms.subscribe(platforms -> cmbIOSLang.setEnabled(platforms.contains("ios")));
 
       /*
        * App Sample https://api.flutter.dev/snippets/index.json
