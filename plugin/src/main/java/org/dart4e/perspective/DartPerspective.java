@@ -6,6 +6,7 @@
  */
 package org.dart4e.perspective;
 
+import org.dart4e.util.TerminalOpener;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
@@ -29,14 +30,15 @@ public class DartPerspective implements IPerspectiveFactory {
 
       final var bottom = layout.createFolder("bottom", IPageLayout.BOTTOM, (float) 0.80, editorArea);
       bottom.addView("org.eclipse.ui.console.ConsoleView");
+      bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
       bottom.addView(IPageLayout.ID_BOOKMARKS);
       bottom.addView(IPageLayout.ID_TASK_LIST);
-      bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
       bottom.addView("de.sebthom.eclipse.previewer.ui.PreviewView");
       bottom.addView("de.sebthom.eclipse.findview.ui.FindView");
       bottom.addView("org.eclipse.team.ui.GenericHistoryView");
       bottom.addView("org.eclipse.egit.ui.StagingView");
-      bottom.addView("org.eclipse.tm.terminal.view.ui.TerminalsView");
+      bottom.addView(TerminalOpener.TERMINAL_VIEWS_ID_OLD);
+      bottom.addView(TerminalOpener.TERMINAL_VIEWS_ID_NEW);
 
       final var bottom_right = layout.createFolder("bottom_right", IPageLayout.RIGHT, (float) 0.80, "bottom");
       bottom_right.addView(IPageLayout.ID_PROGRESS_VIEW);
@@ -56,12 +58,16 @@ public class DartPerspective implements IPerspectiveFactory {
    public void defineMenuActions(final IPageLayout layout) {
       layout.addShowViewShortcut(IPageLayout.ID_PROJECT_EXPLORER);
       layout.addShowViewShortcut("org.eclipse.ui.console.ConsoleView");
+      layout.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
       layout.addShowViewShortcut(IPageLayout.ID_BOOKMARKS);
       layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
-      layout.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
       layout.addShowViewShortcut(IPageLayout.ID_PROGRESS_VIEW);
+      layout.addShowViewShortcut("de.sebthom.eclipse.previewer.ui.PreviewView");
+      layout.addShowViewShortcut("de.sebthom.eclipse.findview.ui.FindView");
       layout.addShowViewShortcut("org.eclipse.team.ui.GenericHistoryView");
       layout.addShowViewShortcut("org.eclipse.egit.ui.StagingView");
+      layout.addShowViewShortcut(TerminalOpener.TERMINAL_VIEWS_ID_OLD);
+      layout.addShowViewShortcut(TerminalOpener.TERMINAL_VIEWS_ID_NEW);
       layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
       layout.addShowViewShortcut(IPageLayout.ID_PROP_SHEET);
       layout.addShowViewShortcut("org.eclipse.pde.runtime.LogView");

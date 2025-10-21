@@ -55,9 +55,14 @@
       <import plugin="org.eclipse.tm4e.ui"/>
       <import plugin="org.eclipse.tm4e.languageconfiguration"/>
       <import plugin="org.eclipse.tm4e.registry"/>
+      <!-- commented out because of this mess: https://github.com/eclipse-platform/eclipse.platform/issues/2206#issuecomment-3426260069
+      <import plugin="org.eclipse.terminal.connector.local"/>
+      <import plugin="org.eclipse.terminal.view.core"/>
+      <import plugin="org.eclipse.terminal.view.ui"/>
       <import plugin="org.eclipse.tm.terminal.connector.local"/>
       <import plugin="org.eclipse.tm.terminal.view.core"/>
       <import plugin="org.eclipse.tm.terminal.view.ui"/>
+      -->
       <import plugin="org.eclipse.wildwebdeveloper.embedder.node"/>
       <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.20.0" match="compatible"/>
       <import plugin="com.fasterxml.jackson.core.jackson-core" version="2.20.0" match="compatible"/>

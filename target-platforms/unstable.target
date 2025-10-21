@@ -12,7 +12,7 @@
          <repository location="https://download.eclipse.org/releases/2025-12/"/>
          <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
          <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
-         <unit id="org.eclipse.tm.terminal.feature.feature.group" version="0.0.0"/>
+         <unit id="org.eclipse.terminal.feature.feature.group" version="0.0.0"/>
          <unit id="org.eclipse.wildwebdeveloper.embedder.node.feature.feature.group" version="0.0.0"/>
 
          <!-- pinning to JUnit 5 as long as Tycho is not compatible with JUnit 6 -->

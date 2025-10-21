@@ -6,16 +6,12 @@
  */
 package org.dart4e.shell;
 
-import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
-
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-
 import org.dart4e.Dart4EPlugin;
 import org.dart4e.localization.Messages;
 import org.dart4e.model.DartSDK;
 import org.dart4e.prefs.DartProjectPreference;
 import org.dart4e.prefs.DartWorkspacePreference;
+import org.dart4e.util.TerminalOpener;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -25,10 +21,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.tm.terminal.view.core.TerminalServiceFactory;
-import org.eclipse.tm.terminal.view.core.interfaces.constants.ITerminalsConnectorConstants;
-import org.eclipse.tm.terminal.view.ui.interfaces.IUIConstants;
-import org.eclipse.tm.terminal.view.ui.view.TerminalsView;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.sebthom.eclipse.commons.resources.Projects;
@@ -54,7 +46,7 @@ public class RunShellEmbeddedHandler extends AbstractHandler {
       return Status.CANCEL_STATUS;
    }
 
-   private void launchShell(@Nullable final IProject project) {
+   private void launchShell(final @Nullable IProject project) {
       final var job = Job.create("Preparing Dart Shell", jobMonitor -> {
          if (jobMonitor == null) {
             jobMonitor = new NullProgressMonitor();
@@ -74,35 +66,18 @@ public class RunShellEmbeddedHandler extends AbstractHandler {
 
          dartSDK.installInteractiveShell(jobMonitor);
 
-         // CHECKSTYLE:IGNORE .* FOR NEXT LINE
-         // see https://github.com/eclipse-cdt/cdt/blob/main/terminal/plugins/org.eclipse.tm.terminal.view.core/src/org/eclipse/tm/terminal/view/core/interfaces/constants/ITerminalsConnectorConstants.java
-         final var properties = new HashMap<String, Object>();
-         properties.put(ITerminalsConnectorConstants.PROP_ENCODING, StandardCharsets.UTF_8.name());
-         properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID, "org.eclipse.tm.terminal.connector.local.launcher.local");
-         properties.put(ITerminalsConnectorConstants.PROP_PROCESS_PATH, dartSDK.getDartExecutable().toString());
-         if (project != null) {
-            properties.put(ITerminalsConnectorConstants.PROP_TITLE, "Dart Shell (" + project.getName() + ")");
-            properties.put(ITerminalsConnectorConstants.PROP_PROCESS_WORKING_DIR, Resources.toAbsolutePath(project).toString());
-            properties.put(ITerminalsConnectorConstants.PROP_PROCESS_ARGS, "pub global run interactive --directory \"" + Strings.replace(
-               Resources.toAbsolutePath(project).toString(), '\\', '/') + "\"");
-         } else {
-            properties.put(ITerminalsConnectorConstants.PROP_TITLE, "Dart Shell");
-            properties.put(ITerminalsConnectorConstants.PROP_PROCESS_ARGS, "pub global run --enable-vm-service=" + NetUtils
-               .getAvailableLocalPort() + " interactive ");
-         }
-
          UI.run(() -> {
             try {
-               final TerminalsView terminalView = asNonNull(UI.openView(IUIConstants.ID));
-               terminalView.show(null);
-               terminalView.setFocus();
+               TerminalOpener.showTerminalView();
+               if (project != null) {
+                  TerminalOpener.runInTerminal("Dart Shell (" + project.getName() + ")", dartSDK.getDartExecutable(),
+                     "pub global run interactive --directory \"" + Strings.replace(Resources.toAbsolutePath(project).toString(), '\\', '/')
+                           + "\"", Resources.toAbsolutePath(project));
+               } else {
+                  TerminalOpener.runInTerminal("Dart Shell", dartSDK.getDartExecutable(), "pub global run --enable-vm-service=" + NetUtils
+                     .getAvailableLocalPort() + " interactive ", null);
+               }
 
-               final var terminal = TerminalServiceFactory.getService();
-               terminal.openConsole(properties, status -> {
-                  if (!status.isOK()) {
-                     Dialogs.showStatus("Cannot open Dart shell", status, true);
-                  }
-               });
             } catch (final Exception ex) {
                final var status = Dart4EPlugin.status().createError(ex, "Failed to launch Dart shell");
                Dialogs.showStatus("Cannot open Dart shell", status, true);
