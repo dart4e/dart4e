@@ -127,7 +127,7 @@
                   <!--
                      workaround since Tycho 5 where for some unknown reason the Maven build aborts with
                         org.apache.maven.lifecycle.LifecycleExecutionException:
-                        Failed to execute goal org.codehaus.gmavenplus:gmavenplus-plugin:4.2.1:execute (groovy.script.onValidate@validate) on project org.haxe4e.parent:
+                        Failed to execute goal org.codehaus.gmavenplus:gmavenplus-plugin:4.2.1:execute (groovy.script.onValidate@validate) on project org.dart4e.parent:
                         Error occurred while calling a method on a Groovy class from classpath.
                         Caused by: org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
                         General error during conversion: Error grabbing Grapes [download failed: commons-codec#commons-codec;1.18.0!commons-codec.jar]

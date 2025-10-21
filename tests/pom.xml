@@ -22,6 +22,9 @@
 
    <properties>
       <tycho-surefire-plugin.platformArgs></tycho-surefire-plugin.platformArgs>
+
+      <!-- https://tycho.eclipseprojects.io/doc/latest/tycho-surefire-plugin/test-mojo.html#showEclipseLog-->
+      <tycho.showEclipseLog>true</tycho.showEclipseLog>
    </properties>
 
    <build>
@@ -48,7 +51,6 @@
                      <failIfNoTests>true</failIfNoTests>
                      <enableAssertions>true</enableAssertions>
                      <forkedProcessTimeoutInSeconds>120</forkedProcessTimeoutInSeconds>
-                     <showEclipseLog>false</showEclipseLog>
 
                      <product>org.eclipse.platform.ide</product>
                      <application>org.eclipse.ui.ide.workbench</application>

@@ -25,7 +25,6 @@
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
          <repository location="https://download.eclipse.org/technology/swtbot/releases/4.3.0/"/>
          <unit id="org.eclipse.swtbot.eclipse.feature.group" version="0.0.0"/>
-         <unit id="org.eclipse.swtbot.feature.group" version="0.0.0"/>
          <unit id="org.eclipse.swtbot.junit5.feature.group" version="0.0.0"/>
       </location>
 

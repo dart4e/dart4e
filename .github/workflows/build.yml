@@ -79,7 +79,7 @@ jobs:
       development-updatesite-branch: updatesite-preview
       release-branch: release
       release-updatesite-branch: updatesite
-      release-archive-name: org.haxe4e.plugin.updatesite.zip
+      release-archive-name: org.dart4e.plugin.updatesite.zip
 
       debug-with-ssh: ${{ inputs.debug-with-ssh || 'never' }}
       debug-with-ssh-only-for-actor: ${{ inputs.debug-with-ssh-only-for-actor || true }}
