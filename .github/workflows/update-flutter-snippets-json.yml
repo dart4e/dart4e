@@ -1,37 +1,38 @@
-# https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
+# https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax
 name: Update Flutter Snippets
 
-on:
+on:  # https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows
   schedule:
-    # https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows
-    - cron: '0 5 * * *' # daily at 5 a.m.
+    # https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule
+    - cron: '0 16 * * 3' # Wednesday at 16:00
   workflow_dispatch:
-    # https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/
+    # https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch
+
 
 defaults:
   run:
     shell: bash
 
-jobs:
 
+jobs:
   ###########################################################
   update-syntax-files:
   ###########################################################
     runs-on: ubuntu-latest
 
     steps:
+    - name: "Show: GitHub context"
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: printf '%s' "$GITHUB_CONTEXT" | python -m json.tool
 
-    - name: Generate GitHub Access Token
-      uses: tibdex/github-app-token@v2 # https://github.com/tibdex/github-app-token
-      id: generate_token
-      # see https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#authenticating-with-github-app-generated-tokens
-      with:
-        # see https://github.com/organizations/dart4e/settings/apps/dart4e-tu
-        app_id: ${{ secrets.DART4E_TU_APP_ID }}
-        private_key: ${{ secrets.DART4E_TU_PRIVATE_KEY }}
+
+    - name: "Show: environment variables"
+      run: env | sort
+
 
     - name: Git Checkout
-      uses: actions/checkout@v5 # https://github.com/actions/checkout
+      uses: actions/checkout@v5  # https://github.com/actions/checkout
 
     - name: Download Flutter snippets.json 
       id: update_flutter_snippets
@@ -51,15 +52,27 @@ jobs:
           echo "${delimiter}" >> "${GITHUB_OUTPUT}"
         fi
 
+
+    - name: Generate GitHub Access Token
+      uses: tibdex/github-app-token@v2  # https://github.com/tibdex/github-app-token
+      id: generate_token
+      if: "${{ steps.update_flutter_snippets.outputs.updates != '' }}"
+      # see https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#authenticating-with-github-app-generated-tokens
+      with:
+        # see https://github.com/organizations/dart4e/settings/apps/dart4e-tu
+        app_id: ${{ secrets.DART4E_TU_APP_ID }}
+        private_key: ${{ secrets.DART4E_TU_PRIVATE_KEY }}
+
+
     - name: Create PR
       id: create-pr
-      uses: peter-evans/create-pull-request@v7 # https://github.com/peter-evans/create-pull-request
+      uses: peter-evans/create-pull-request@v7  # https://github.com/peter-evans/create-pull-request
       if: "${{ steps.update_flutter_snippets.outputs.updates != '' }}"
       with:
-        title: "chore: Update Flutter snippets.json"
+        title: "fix(deps): Update Flutter snippets.json"
         author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
         committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
-        commit-message: "chore: Update Flutter snippets.json"
+        commit-message: "fix(deps): Update Flutter snippets.json"
         body: ${{ steps.update_flutter_snippets.outputs.updates }}
         add-paths: plugin/src/main/resources/flutter/snippets.json
         branch: dependencies/flutter_snippets

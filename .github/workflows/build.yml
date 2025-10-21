@@ -1,7 +1,10 @@
-# https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions
+# https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax
 name: Build
 
-on:
+on:  # https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows
+  schedule:
+    # https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule
+    - cron: "0 15 1 * *"
   push:
     branches-ignore:  # build all branches except:
     - "dependabot/**"  # prevent GHA triggered twice (once for commit to the branch and once for opening/syncing the PR)
@@ -16,6 +19,7 @@ on:
     - ".github/*.yml"
     - ".github/ISSUE_TEMPLATE/*"
     - ".github/workflows/stale.yml"
+    - ".github/workflows/update-*.yml"
     - "codecov.yml"
   pull_request:
     paths-ignore:
@@ -27,9 +31,10 @@ on:
     - ".github/*.yml"
     - ".github/ISSUE_TEMPLATE/*"
     - ".github/workflows/stale.yml"
+    - ".github/workflows/update-*.yml"
     - "codecov.yml"
   workflow_dispatch:
-    # https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#workflow_dispatch
+    # https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_dispatch
     inputs:
       extra-maven-args:
         description: "Additional command-line arguments to append to all Maven invocations"
