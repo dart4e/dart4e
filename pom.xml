@@ -69,7 +69,7 @@
 
    <properties>
       <java.version>17</java.version>
-      <tycho.version>5.0.0</tycho.version>
+      <tycho.version>5.0.1</tycho.version>
       <tycho.target-platform>oldest</tycho.target-platform>
       <jgit.dirtyWorkingTree>error</jgit.dirtyWorkingTree>
 
@@ -130,13 +130,13 @@
                         Failed to execute goal org.codehaus.gmavenplus:gmavenplus-plugin:4.2.1:execute (groovy.script.onValidate@validate) on project org.dart4e.parent:
                         Error occurred while calling a method on a Groovy class from classpath.
                         Caused by: org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
-                        General error during conversion: Error grabbing Grapes [download failed: commons-codec#commons-codec;1.18.0!commons-codec.jar]
+                        General error during conversion: Error grabbing Grapes [download failed: commons-codec#commons-codec;1.19.0!commons-codec.jar]
                         at groovy.grape.GrapeIvy.getDependencies(GrapeIvy.groovy:487)
                   -->
                   <dependency>
                     <groupId>commons-codec</groupId>
                     <artifactId>commons-codec</artifactId>
-                    <version>1.18.0</version>
+                    <version>1.19.0</version>
                   </dependency>
                </dependencies>
             </plugin>
