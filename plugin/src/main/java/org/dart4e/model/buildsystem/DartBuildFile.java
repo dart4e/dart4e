@@ -110,6 +110,7 @@ public class DartBuildFile extends BuildFile {
                         yield resolvedLocalPath;
                      }
                      case "path" -> {
+                        @SuppressWarnings("null")
                         final var path = (@NonNull String) ((Map<?, ?>) descr).get("path");
                         final var isRelative = (Boolean) ((Map<?, ?>) descr).get("relative");
                         yield isRelative //

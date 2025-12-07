@@ -59,6 +59,8 @@ public final class NewDartFileWizard extends Wizard implements INewWizard {
    public boolean performFinish() {
       final var folderName = dartFilePage.getContainerFullPath().toOSString();
       final var fileName = dartFilePage.getFileName();
+      if (fileName == null)
+         return false;
 
       try {
          getContainer().run(true, false, progress -> {
@@ -66,7 +68,7 @@ public final class NewDartFileWizard extends Wizard implements INewWizard {
                progress.beginTask(NLS.bind(Messages.NewDartFile_Creating, fileName), 2);
 
                final var folder = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(folderName));
-               if (!folder.exists() || !(folder instanceof IContainer))
+               if (folder == null || !folder.exists() || !(folder instanceof IContainer))
                   throw new CoreException(Dart4EPlugin.status().createError(Messages.NewDartFile_DirectoryDoesNotExist, folderName));
 
                final var newDartFile = ((IContainer) folder).getFile(new Path(fileName));

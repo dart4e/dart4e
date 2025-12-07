@@ -118,7 +118,7 @@ public class FlutterAppLaunchConfigLauncher extends LaunchConfigurationDelegate 
          case ILaunchManager.RUN_MODE:
             try {
                final var proc = flutterSDK.getFlutterProcessBuilder(!appendEnvVars) //
-                  .withArgs(flutterArgs.toArray()) //
+                  .withArgs(flutterArgs) //
                   .withEnvironment(env -> env.putAll(envVars)) //
                   .withWorkingDirectory(workdir) //
                   .onExit(process -> {
