@@ -1,7 +1,7 @@
 # Dart4E - Dart/Flutter support for the Eclipse IDE
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/dart4e/dart4e/build.yml?logo=github)](https://github.com/dart4e/dart4e/actions/workflows/build.yml)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.1%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v3.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 [![License](https://img.shields.io/github/license/dart4e/dart4e.svg?color=blue)](LICENSE.txt)
 [![Eclipse Marketplace](https://img.shields.io/eclipse-marketplace/dt/dart4e?logo=eclipse&label=Downloads)](https://marketplace.eclipse.org/content/dart4e)
 
@@ -65,11 +65,11 @@ This ensures full binary compatibility of the compiled artifacts with the runtim
 
 To build the project, follow these steps:
 
-1. **Install a Java 17 JDK**
+1. **Install a Java 21 JDK**
 
-   Download and install a Java 17 SDK, e.g. from:
-   - https://adoptium.net/releases.html?variant=openjdk17
-   - https://www.azul.com/downloads/?version=java-17-lts&package=jdk#zulu
+   Download and install a Java 21 SDK, e.g. from:
+   - https://adoptium.net/temurin/releases?version=21
+   - https://www.azul.com/downloads/?version=java-21-lts&package=jdk#zulu
 
 2. **Configure Maven Toolchains**
 
@@ -82,17 +82,17 @@ To build the project, follow these steps:
      <toolchain>
        <type>jdk</type>
        <provides>
-         <version>17</version>
+         <version>21</version>
          <vendor>default</vendor>
        </provides>
        <configuration>
-         <jdkHome>[PATH_TO_YOUR_JDK_17]</jdkHome>
+         <jdkHome>[PATH_TO_YOUR_JDK_21]</jdkHome>
        </configuration>
      </toolchain>
    </toolchains>
    ```
 
-   Replace `[PATH_TO_YOUR_JDK_17]` with the path to your JDK installation.
+   Replace `[PATH_TO_YOUR_JDK_21]` with the path to your JDK installation.
 
 3. **Clone the Repository**
 
