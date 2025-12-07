@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.preference.IPersistentPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
@@ -38,13 +39,20 @@ public final class DartWorkspacePreference {
       @Override
       public void initializeDefaultPreferences() {
          STORE.setDefault(PREFKEY_FORMATTER_MAX_LINE_LENGTH, 80);
-         STORE.setDefault(PREFKEY_WARNED_NO_SDK_REGISTERED, false);
+
+         STORE.setDefault(PREFKEY_INLAY_HINTS_ENABLED, true);
+         STORE.setDefault(PREFKEY_INLAY_HINTS_DOT_SHORTHAND_TYPES_ENABLED, true);
+         STORE.setDefault(PREFKEY_INLAY_HINTS_PARAMETER_NAMES_MODE, "all");
+         STORE.setDefault(PREFKEY_INLAY_HINTS_PARAMETER_TYPES_ENABLED, true);
+         STORE.setDefault(PREFKEY_INLAY_HINTS_RETURN_TYPES_ENABLED, true);
+         STORE.setDefault(PREFKEY_INLAY_HINTS_TYPE_ARGUMENTS_ENABLED, true);
+         STORE.setDefault(PREFKEY_INLAY_HINTS_VARIABLE_TYPES_ENABLED, true);
       }
    }
 
    static final String PREFKEY_DEFAULT_DART_SDK = "dart.default_sdk";
    static final String PREFKEY_DART_SDKS = "dart.sdks";
-   static final String PREFKEY_FORMATTER_MAX_LINE_LENGTH = "dart.formatter.max_line_length";
+
    static final String PREFKEY_WARNED_NO_SDK_REGISTERED = "dart.warned_no_sdk_registered";
 
    static final String PREFKEY_DAP_TRACE_IO = "dart.dap.trace.io";
@@ -54,11 +62,26 @@ public final class DartWorkspacePreference {
    static final String PREFKEY_LSP_TRACE_IO = "dart.lsp.trace.io";
    static final String PREFKEY_LSP_TRACE_IO_VERBOSE = "dart.lsp.trace.io.verbose";
 
+   public static final String PREFKEY_LSP_CLIENT_PREFIX = "dart.lsp.client.";
+   static final String PREFKEY_FORMATTER_MAX_LINE_LENGTH = PREFKEY_LSP_CLIENT_PREFIX + "formatter.max_line_length";
+   static final String PREFKEY_INLAY_HINTS_ENABLED = PREFKEY_LSP_CLIENT_PREFIX + "inlay_hints.enabled";
+   static final String PREFKEY_INLAY_HINTS_DOT_SHORTHAND_TYPES_ENABLED = PREFKEY_LSP_CLIENT_PREFIX
+         + "inlay_hints.dot_shorthand_types.enabled";
+   static final String PREFKEY_INLAY_HINTS_PARAMETER_NAMES_MODE = PREFKEY_LSP_CLIENT_PREFIX + "inlay_hints.parameter_names.mode";
+   static final String PREFKEY_INLAY_HINTS_PARAMETER_TYPES_ENABLED = PREFKEY_LSP_CLIENT_PREFIX + "inlay_hints.parameter_types.enabled";
+   static final String PREFKEY_INLAY_HINTS_RETURN_TYPES_ENABLED = PREFKEY_LSP_CLIENT_PREFIX + "inlay_hints.return_types.enabled";
+   static final String PREFKEY_INLAY_HINTS_TYPE_ARGUMENTS_ENABLED = PREFKEY_LSP_CLIENT_PREFIX + "inlay_hints.type_arguments.enabled";
+   static final String PREFKEY_INLAY_HINTS_VARIABLE_TYPES_ENABLED = PREFKEY_LSP_CLIENT_PREFIX + "inlay_hints.variable_types.enabled";
+
    static final IPersistentPreferenceStore STORE = new ScopedPreferenceStore(InstanceScope.INSTANCE, Dart4EPlugin.PLUGIN_ID);
 
    // CHECKSTYLE:IGNORE .* FOR NEXT 3 LINES
    private static final SortedSet<DartSDK> dartSDKs = new TreeSet<>();
    private static boolean isDartSDKsInitialized = false;
+
+   public static void addPreferenceChangeListener(final IPropertyChangeListener listener) {
+      STORE.addPropertyChangeListener(listener);
+   }
 
    private static void ensureDartSDKsInitialized() {
       synchronized (dartSDKs) {
@@ -169,6 +192,13 @@ public final class DartWorkspacePreference {
       return STORE.getInt(PREFKEY_FORMATTER_MAX_LINE_LENGTH);
    }
 
+   public static String getInlayHintsParameterNamesMode() {
+      final var mode = STORE.getString(PREFKEY_INLAY_HINTS_PARAMETER_NAMES_MODE);
+      if ("none".equals(mode) || "literal".equals(mode) || "all".equals(mode))
+         return mode;
+      return "all";
+   }
+
    public static boolean isDAPTraceIO() {
       if (STORE.contains(PREFKEY_DAP_TRACE_IO))
          return STORE.getBoolean(PREFKEY_DAP_TRACE_IO);
@@ -181,6 +211,48 @@ public final class DartWorkspacePreference {
       return Platform.getDebugBoolean(Dart4EPlugin.PLUGIN_ID + "/trace/dap/io/verbose");
    }
 
+   public static boolean isInlayHintsDotShorthandTypesEnabled() {
+      if (STORE.contains(PREFKEY_INLAY_HINTS_DOT_SHORTHAND_TYPES_ENABLED))
+         return STORE.getBoolean(PREFKEY_INLAY_HINTS_DOT_SHORTHAND_TYPES_ENABLED);
+      return true;
+   }
+
+   public static boolean isInlayHintsEnabled() {
+      if (STORE.contains(PREFKEY_INLAY_HINTS_ENABLED))
+         return STORE.getBoolean(PREFKEY_INLAY_HINTS_ENABLED);
+      return true;
+   }
+
+   public static boolean isInlayHintsParameterTypesEnabled() {
+      if (STORE.contains(PREFKEY_INLAY_HINTS_PARAMETER_TYPES_ENABLED))
+         return STORE.getBoolean(PREFKEY_INLAY_HINTS_PARAMETER_TYPES_ENABLED);
+      return true;
+   }
+
+   public static boolean isInlayHintsReturnTypesEnabled() {
+      if (STORE.contains(PREFKEY_INLAY_HINTS_RETURN_TYPES_ENABLED))
+         return STORE.getBoolean(PREFKEY_INLAY_HINTS_RETURN_TYPES_ENABLED);
+      return true;
+   }
+
+   public static boolean isInlayHintsTypeArgumentsEnabled() {
+      if (STORE.contains(PREFKEY_INLAY_HINTS_TYPE_ARGUMENTS_ENABLED))
+         return STORE.getBoolean(PREFKEY_INLAY_HINTS_TYPE_ARGUMENTS_ENABLED);
+      return true;
+   }
+
+   public static boolean isInlayHintsVariableTypesEnabled() {
+      if (STORE.contains(PREFKEY_INLAY_HINTS_VARIABLE_TYPES_ENABLED))
+         return STORE.getBoolean(PREFKEY_INLAY_HINTS_VARIABLE_TYPES_ENABLED);
+      return true;
+   }
+
+   public static boolean isLSPTraceInitOptions() {
+      if (STORE.contains(PREFKEY_LSP_TRACE_INITOPTS))
+         return STORE.getBoolean(PREFKEY_LSP_TRACE_INITOPTS);
+      return Platform.getDebugBoolean(Dart4EPlugin.PLUGIN_ID + "/trace/lsp/init_options");
+   }
+
    public static boolean isLSPTraceIO() {
       if (STORE.contains(PREFKEY_LSP_TRACE_IO))
          return STORE.getBoolean(PREFKEY_LSP_TRACE_IO);
@@ -191,12 +263,6 @@ public final class DartWorkspacePreference {
       if (STORE.contains(PREFKEY_LSP_TRACE_IO_VERBOSE))
          return STORE.getBoolean(PREFKEY_LSP_TRACE_IO_VERBOSE);
       return Platform.getDebugBoolean(Dart4EPlugin.PLUGIN_ID + "/trace/lsp/io/verbose");
-   }
-
-   public static boolean isLSPTraceInitOptions() {
-      if (STORE.contains(PREFKEY_LSP_TRACE_INITOPTS))
-         return STORE.getBoolean(PREFKEY_LSP_TRACE_INITOPTS);
-      return Platform.getDebugBoolean(Dart4EPlugin.PLUGIN_ID + "/trace/lsp/init_options");
    }
 
    public static boolean save() {

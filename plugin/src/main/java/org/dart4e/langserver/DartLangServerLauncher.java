@@ -40,6 +40,8 @@ import net.sf.jstuff.core.io.stream.LineTransformingOutputStream;
  */
 public final class DartLangServerLauncher extends ProcessStreamConnectionProvider {
 
+   public static final String DART_LANGUAGE_SERVER_ID = "org.dart4e.langserver";
+
    public DartLangServerLauncher() {
       setWorkingDirectory(SystemUtils.getUserDir().getAbsolutePath());
    }

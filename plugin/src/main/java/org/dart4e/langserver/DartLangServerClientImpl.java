@@ -45,15 +45,32 @@ public final class DartLangServerClientImpl extends LanguageClientImpl implement
                maxLineLength = prefs.getFormatterMaxLineLength();
             }
          }
+
          // https://github.com/dart-lang/sdk/blob/main/pkg/analysis_server/tool/lsp_spec/README.md#client-workspace-configuration
-         configs.add(new TreeBuilder<String>() //
+         final var configBuilder = new TreeBuilder<String>() //
             .put("enableSdkFormatter", true) //
             .put("lineLength", maxLineLength) //
             .put("completeFunctionCalls", true) //
+            .put("showTodos", true) //
             .put("renameFilesWithClasses", "prompt") //
             .put("enableSnippets", true) //
             .put("updateImportsOnRename", true) //
-            .getMap());
+            .put("documentation", "full") //
+            .put("includeDependenciesInWorkspaceSymbols", true);
+
+         if (DartWorkspacePreference.isInlayHintsEnabled()) {
+            configBuilder.put("inlayHints", new TreeBuilder<String>() //
+               .put("dotShorthandTypes", DartWorkspacePreference.isInlayHintsDotShorthandTypesEnabled()) //
+               .put("parameterNames", DartWorkspacePreference.getInlayHintsParameterNamesMode()) //
+               .put("parameterTypes", DartWorkspacePreference.isInlayHintsParameterTypesEnabled()) //
+               .put("returnTypes", DartWorkspacePreference.isInlayHintsReturnTypesEnabled()) //
+               .put("typeArguments", DartWorkspacePreference.isInlayHintsTypeArgumentsEnabled()) //
+               .put("variableTypes", DartWorkspacePreference.isInlayHintsVariableTypesEnabled()));
+         } else {
+            configBuilder.put("inlayHints", false);
+         }
+
+         configs.add(configBuilder.getMap());
       }
       return CompletableFuture.completedFuture(configs);
    }

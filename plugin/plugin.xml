@@ -56,6 +56,12 @@
          name="Dart">
          <keywordReference id="org.dart4e.prefs.keyword.dart" />
       </page>
+      <page id="org.dart4e.prefs.DartInlayHintsPreferencePage"
+         class="org.dart4e.prefs.DartInlayHintsPreferencePage"
+         category="org.dart4e.prefs.DartPreferencePage"
+         name="Inlay Hints">
+         <keywordReference id="org.dart4e.prefs.keyword.dart" />
+      </page>
       <page id="org.dart4e.prefs.DartSDKPreferencePage"
          class="org.dart4e.prefs.DartSDKPreferencePage"
          category="org.dart4e.prefs.DartPreferencePage"
@@ -84,13 +90,13 @@
    <!-- Language Server                       -->
    <!-- ===================================== -->
    <extension point="org.eclipse.lsp4e.languageServer">
-      <server id="org.dart4e.langserv"
+      <server id="org.dart4e.langserver"
          class="org.dart4e.langserver.DartLangServerLauncher"
          clientImpl="org.dart4e.langserver.DartLangServerClientImpl"
          serverInterface="org.dart4e.langserver.DartLangServerAPI"
          label="%Label_Dart_Language_Server"
       />
-      <contentTypeMapping id="org.dart4e.langserv" contentType="org.dart4e.content.dart" />
+      <contentTypeMapping id="org.dart4e.langserver" contentType="org.dart4e.content.dart" />
    </extension>
 
 

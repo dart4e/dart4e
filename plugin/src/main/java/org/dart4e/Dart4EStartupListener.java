@@ -6,8 +6,10 @@
  */
 package org.dart4e;
 
+import org.dart4e.langserver.DartLSPClientPreferenceChangeListener;
 import org.dart4e.navigation.ActiveEditorChangeListener;
 import org.dart4e.navigation.DartDependenciesUpdater;
+import org.dart4e.prefs.DartWorkspacePreference;
 import org.dart4e.project.DartProjectNature;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -29,5 +31,7 @@ public class Dart4EStartupListener implements IStartup {
       DartDependenciesUpdater.INSTANCE.onProjectsConfigChanged(Projects.getOpenProjectsWithNature(DartProjectNature.NATURE_ID).toList());
 
       ActiveEditorChangeListener.INSTANCE.attach();
+
+      DartWorkspacePreference.addPreferenceChangeListener(DartLSPClientPreferenceChangeListener.INSTANCE);
    }
 }
