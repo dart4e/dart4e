@@ -93,8 +93,8 @@ public abstract class JSON {
    }
 
    public static <T> T deserialize(final URL json, final TypeReference<T> type) throws RuntimeIOException {
-      try {
-         return JSON_MAPPER.readerFor(type).readValue(json);
+      try (var is = json.openStream()) {
+         return JSON_MAPPER.readerFor(type).readValue(is);
       } catch (final IOException ex) {
          throw new RuntimeIOException(ex);
       }
@@ -125,8 +125,8 @@ public abstract class JSON {
    }
 
    public static <T> List<T> deserializeList(final URL json, final Class<T> type) throws RuntimeIOException {
-      try {
-         final List<T> list = JSON_MAPPER.readerForListOf(type).readValue(json);
+      try (var is = json.openStream()) {
+         final List<T> list = JSON_MAPPER.readerForListOf(type).readValue(is);
          if (list == null)
             return Collections.emptyList();
          return list;

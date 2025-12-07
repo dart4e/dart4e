@@ -9,7 +9,7 @@ package org.dart4e.model.buildsystem;
 import static net.sf.jstuff.core.validation.NullAnalysisHelper.asNonNull;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -95,7 +95,7 @@ public class DartBuildFile extends BuildFile {
 
                   final java.nio.file.Path libLocation = switch (source) {
                      case "hosted" -> {
-                        final var url = new URL(asNonNull((String) ((Map<?, ?>) descr).get("url")));
+                        final var url = URI.create(asNonNull((String) ((Map<?, ?>) descr).get("url")));
                         yield pubCacheDir.resolve(source).resolve(url.getHost()).resolve(name + "-" + version);
                      }
                      case "git" -> {

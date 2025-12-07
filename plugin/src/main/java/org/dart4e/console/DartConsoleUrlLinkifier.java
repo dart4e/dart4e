@@ -7,7 +7,7 @@
 package org.dart4e.console;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 
 import org.dart4e.Dart4EPlugin;
 import org.eclipse.jdt.annotation.Nullable;
@@ -52,7 +52,7 @@ public final class DartConsoleUrlLinkifier implements IPatternMatchListenerDeleg
             @Override
             public void linkActivated() {
                try {
-                  UI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(new URL(sourceLoc));
+                  UI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(URI.create(sourceLoc).toURL());
                } catch (PartInitException | MalformedURLException ex) {
                   Dart4EPlugin.log().debug(ex);
                }
