@@ -30,52 +30,6 @@
       <update label="Dart4E Latest" url="https://raw.githubusercontent.com/dart4e/dart4e/updatesite/"/>
    </url>
 
-   <requires>
-      <import plugin="org.eclipse.platform" version="4.29.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.expressions"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.debug.ui"/>
-      <import plugin="org.eclipse.jface.notifications"/>
-      <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.eclipse.osgi"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.ui.console"/>
-      <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.ui.genericeditor"/>
-      <import plugin="org.eclipse.ui.navigator"/>
-      <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.eclipse.lsp4e"/>
-      <import plugin="org.eclipse.lsp4e.debug"/>
-      <import plugin="org.eclipse.lsp4j"/>
-      <import plugin="org.eclipse.lsp4j.debug"/>
-      <import plugin="org.eclipse.lsp4j.jsonrpc"/>
-      <import plugin="org.eclipse.tm4e.core"/>
-      <import plugin="org.eclipse.tm4e.ui"/>
-      <import plugin="org.eclipse.tm4e.languageconfiguration"/>
-      <import plugin="org.eclipse.tm4e.registry"/>
-      <!-- commented out because of this mess: https://github.com/eclipse-platform/eclipse.platform/issues/2206#issuecomment-3426260069
-      <import plugin="org.eclipse.terminal.connector.local"/>
-      <import plugin="org.eclipse.terminal.view.core"/>
-      <import plugin="org.eclipse.terminal.view.ui"/>
-      <import plugin="org.eclipse.tm.terminal.connector.local"/>
-      <import plugin="org.eclipse.tm.terminal.view.core"/>
-      <import plugin="org.eclipse.tm.terminal.view.ui"/>
-      -->
-      <import plugin="org.eclipse.wildwebdeveloper.embedder.node"/>
-      <import plugin="com.fasterxml.jackson.core.jackson-annotations" version="2.20.0" match="compatible"/>
-      <import plugin="com.fasterxml.jackson.core.jackson-core" version="2.20.0" match="compatible"/>
-      <import plugin="com.fasterxml.jackson.core.jackson-databind" version="2.20.0" match="compatible"/>
-      <import plugin="org.apache.commons.commons-io" version="2.20.0" match="compatible"/>
-      <import plugin="org.apache.commons.lang3" version="3.19.0" match="compatible"/>
-      <import plugin="net.sf.jstuff.core" version="8.2.0" match="compatible"/>
-      <import plugin="net.sf.jstuff.xml" version="8.2.0" match="compatible"/>
-      <import plugin="de.sebthom.eclipse.commons" version="1.0.0.20250222-0150" match="compatible"/>
-      <import plugin="org.yaml.snakeyaml" version="2.5.0" match="compatible"/>
-      <import plugin="org.ec4j.core" version="1.1.0" match="greaterOrEqual"/>
-   </requires>
-
    <plugin
          id="org.dart4e"
          version="0.0.0"/>

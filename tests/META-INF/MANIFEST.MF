@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: The Dart4E Project
 Fragment-Host: org.dart4e
 Automatic-Module-Name: org.dart4e.tests
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.eclipse.jdt.ui,
  assertj-core,
  org.mockito.mockito-core,

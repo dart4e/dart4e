@@ -9,7 +9,7 @@
       </location>
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <repository location="https://download.eclipse.org/releases/2023-09/"/>
+         <repository location="https://download.eclipse.org/releases/2024-06/"/>
          <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
          <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
          <unit id="org.eclipse.tm.terminal.feature.feature.group" version="0.0.0"/>
@@ -17,7 +17,7 @@
       </location>
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <repository location="https://download.eclipse.org/eclipse/updates/4.29/"/>
+         <repository location="https://download.eclipse.org/eclipse/updates/4.32/"/>
          <unit id="org.eclipse.jface.text.tests" version="0.0.0"/>
          <unit id="org.eclipse.test.feature.group" version="0.0.0"/>
       </location>
@@ -29,7 +29,7 @@
       </location>
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <repository location="https://download.eclipse.org/lsp4e/releases/0.24.5/"/>
+         <repository location="https://download.eclipse.org/lsp4e/releases/0.26.2/"/>
          <unit id="org.eclipse.lsp4e" version="0.0.0"/>
          <unit id="org.eclipse.lsp4e.source" version="0.0.0"/>
          <unit id="org.eclipse.lsp4e.debug" version="0.0.0"/>
@@ -41,7 +41,7 @@
       </location>
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <repository location="https://download.eclipse.org/tm4e/releases/0.9.0/"/>
+         <repository location="https://download.eclipse.org/tm4e/releases/0.16.0/"/>
          <unit id="org.eclipse.tm4e.feature.feature.group" version="0.0.0"/>
       </location>
 
@@ -68,13 +68,13 @@
             <dependency>
                <groupId>net.sf.jstuff</groupId>
                <artifactId>jstuff-core</artifactId>
-               <version>8.2.0</version>
+               <version>8.2.1</version>
                <type>jar</type>
             </dependency>
             <dependency>
                <groupId>net.sf.jstuff</groupId>
                <artifactId>jstuff-xml</artifactId>
-               <version>8.2.0</version>
+               <version>8.2.1</version>
                <type>jar</type>
             </dependency>
             <dependency>
@@ -87,5 +87,5 @@
       </location>
    </locations>
 
-   <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
+   <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21"/>
 </target>

@@ -54,6 +54,8 @@
 
                      <product>org.eclipse.platform.ide</product>
                      <application>org.eclipse.ui.ide.workbench</application>
+
+                     <providerHint>junit5</providerHint>
                   </configuration>
                </execution>
             </executions>
