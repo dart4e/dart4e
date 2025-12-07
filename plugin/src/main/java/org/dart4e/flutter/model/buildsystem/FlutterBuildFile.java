@@ -34,12 +34,13 @@ public class FlutterBuildFile extends DartBuildFile {
    @Override
    protected Path getSDKDependencyLocation(final String sdkName, final String pkgName, final String pkgVersion) {
       if (!"flutter".equals(sdkName))
-         throw new IllegalArgumentException("Unsupported SDK [" + sdkName + "] of package [" + pkgName + "]");
+         throw new IllegalArgumentException(location.getProject().getName() + ": Unsupported SDK [" + sdkName + "] of package [" + pkgName
+               + "]");
 
       final var prefs = FlutterProjectPreference.get(getProject());
       final var flutterSDK = prefs.getEffectiveFlutterSDK();
       if (flutterSDK == null)
-         throw new IllegalStateException("No Flutter SDK found!");
+         throw new IllegalStateException(location.getProject().getName() + ": No Flutter SDK found!");
 
       var path = flutterSDK.getInstallRoot().resolve(Paths.get("packages", pkgName));
       if (Files.isDirectory(path))
@@ -49,7 +50,8 @@ public class FlutterBuildFile extends DartBuildFile {
       if (Files.isDirectory(path))
          return path;
 
-      throw new IllegalArgumentException("Package [" + pkgName + "] of SDK [" + sdkName + "] not found.");
+      throw new IllegalArgumentException(location.getProject().getName() + ": Package [" + pkgName + "] of SDK [" + sdkName
+            + "] not found.");
    }
 
    @Override

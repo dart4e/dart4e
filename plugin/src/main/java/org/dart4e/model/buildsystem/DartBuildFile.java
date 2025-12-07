@@ -61,7 +61,7 @@ public class DartBuildFile extends BuildFile {
 
       final var dartSDK = prefs.getEffectiveDartSDK();
       if (dartSDK == null)
-         throw new IllegalStateException("No Dart SDK found!");
+         throw new IllegalStateException(location.getProject().getName() + ": No Dart SDK found!");
 
       final var pubCacheDir = dartSDK.getPubCacheDir();
 
@@ -117,7 +117,8 @@ public class DartBuildFile extends BuildFile {
                               : Paths.get(path);
                      }
                      case "sdk" -> getSDKDependencyLocation((String) descr, name, version);
-                     default -> throw new IllegalArgumentException("Unkown source " + source + " for package " + name);
+                     default -> throw new IllegalArgumentException(location.getProject().getName() + ": Unkown source " + source
+                           + " for package " + name);
                   };
 
                   final var dependencyType = (String) asNonNull(meta.get("dependency"));
@@ -143,19 +144,21 @@ public class DartBuildFile extends BuildFile {
    protected java.nio.file.Path getSDKDependencyLocation(final String sdkName, final String pkgName,
          @SuppressWarnings("unused") final String pkgVersion) {
       if (!"dart".equals(sdkName))
-         throw new IllegalArgumentException("Unsupported SDK [" + sdkName + "] of package [" + pkgName + "]");
+         throw new IllegalArgumentException(location.getProject().getName() + ": Unsupported SDK [" + sdkName + "] of package [" + pkgName
+               + "]");
 
       final var prefs = DartProjectPreference.get(getProject());
       final var dartSDK = prefs.getEffectiveDartSDK();
       if (dartSDK == null)
-         throw new IllegalStateException("No Dart SDK found!");
+         throw new IllegalStateException(location.getProject().getName() + ": No Dart SDK found!");
 
       // pkg path exists as of Dart SDK 3.4.0
       final var path = dartSDK.getInstallRoot().resolve(Paths.get("pkg", pkgName));
       if (Files.isDirectory(path))
          return path;
 
-      throw new IllegalArgumentException("Package [" + pkgName + "] of SDK [" + sdkName + "] not found.");
+      throw new IllegalArgumentException(location.getProject().getName() + ": Package [" + pkgName + "] of SDK [" + sdkName
+            + "] not found.");
    }
 
    /**
