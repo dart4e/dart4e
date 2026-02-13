@@ -8,6 +8,7 @@
          <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
       </location>
 
+      <!-- 4.32 = Eclipse 2024-06 -->
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
          <repository location="https://download.eclipse.org/releases/2024-06/"/>
          <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
@@ -51,7 +52,7 @@
       </location>
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2025-12/"/>
+         <repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-03/"/>
          <unit id="assertj-core" version="0.0.0"/>
          <unit id="assertj-core.source" version="0.0.0"/>
          <unit id="com.fasterxml.jackson.core.jackson-annotations" version="0.0.0"/>
