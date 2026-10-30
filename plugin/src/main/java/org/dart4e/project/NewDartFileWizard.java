@@ -86,10 +86,12 @@ public final class NewDartFileWizard extends Wizard implements INewWizard {
                progress.setTaskName(Messages.NewDartFile_OpeningInEditor);
                UI.run(() -> {
                   final var page = UI.getActiveWorkbenchPage();
-                  try {
-                     IDE.openEditor(page, newDartFile, true);
-                  } catch (final PartInitException ex) {
-                     Dart4EPlugin.log().error(ex, ex.getMessage());
+                  if (page != null) {
+                     try {
+                        IDE.openEditor(page, newDartFile, true);
+                     } catch (final PartInitException ex) {
+                        Dart4EPlugin.log().error(ex, ex.getMessage());
+                     }
                   }
                });
                progress.worked(1);
