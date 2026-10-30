@@ -8,9 +8,9 @@
          <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
       </location>
 
-      <!-- 4.38 = Eclipse 2025-12 -->
+      <!-- 4.41 = Eclipse 2026-09 -->
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <repository location="https://download.eclipse.org/releases/2025-12/"/>
+         <repository location="https://download.eclipse.org/releases/2026-09/"/>
          <unit id="org.eclipse.equinox.executable.feature.group" version="0.0.0"/>
          <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
          <unit id="org.eclipse.terminal.feature.feature.group" version="0.0.0"/>
@@ -18,7 +18,7 @@
       </location>
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <repository location="https://download.eclipse.org/eclipse/updates/4.38/"/>
+         <repository location="https://download.eclipse.org/eclipse/updates/4.41/"/>
          <unit id="org.eclipse.jface.text.tests" version="0.0.0"/>
          <unit id="org.eclipse.test.feature.group" version="0.0.0"/>
       </location>
@@ -52,7 +52,7 @@
       </location>
 
       <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-03/"/>
+         <repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-09/"/>
          <unit id="assertj-core" version="0.0.0"/>
          <unit id="assertj-core.source" version="0.0.0"/>
          <unit id="com.fasterxml.jackson.core.jackson-annotations" version="0.0.0"/>
