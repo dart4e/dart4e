@@ -66,6 +66,9 @@
 *.python     text
 *.sql        text
 mvnw         text eol=lf
+# stored as-is because the Maven Wrapper generates it with CRLF and Dependabot commits it via the GitHub API,
+# bypassing EOL normalization, which leaves a phantom-modified file in CI that breaks git checkout
+mvnw.cmd     -text
 **/Dockerfile text eol=lf
 **/*.Dockerfile text eol=lf
 
