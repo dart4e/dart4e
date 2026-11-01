@@ -1,3 +1,4 @@
+# Builds Dart4E and publishes preview/stable releases through the shared workflow.
 # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax
 name: Build
 
@@ -80,10 +81,15 @@ jobs:
       release-branch: release
       release-updatesite-branch: updatesite
       release-archive-name: org.dart4e.plugin.updatesite.zip
+      # Configure this repository variable with dart4e-tu's Client ID.
+      release-github-app-client-id: ${{ vars.DART4E_TU_CLIENT_ID }}
 
       debug-with-ssh: ${{ inputs.debug-with-ssh || 'never' }}
       debug-with-ssh-only-for-actor: ${{ inputs.debug-with-ssh-only-for-actor || true }}
       debug-with-ssh-only-jobs-matching: ${{ inputs.debug-with-ssh-only-jobs-matching }}
+
+    secrets:
+      RELEASE_GITHUB_APP_PRIVATE_KEY: ${{ secrets.DART4E_TU_PRIVATE_KEY }}
 
     permissions:
       actions: write       # to delete action cache entries
